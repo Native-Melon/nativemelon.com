@@ -1,0 +1,37 @@
+{
+  "name": "gatsby-starter-prismic-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "gatsby-starter-prismic-blog",
+  "author": "Mahesh Samudra <maheshsamudra@gmail.com>",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "0BSD",
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@prismicio/react": "^2.9.0",
+    "gatsby": "^5.13.7",
+    "gatsby-plugin-image": "^3.13.1",
+    "gatsby-plugin-manifest": "^5.13.1",
+    "gatsby-plugin-prismic-previews": "^5.3.1",
+    "gatsby-plugin-sass": "^6.13.1",
+    "gatsby-plugin-sharp": "^5.13.1",
+    "gatsby-plugin-sitemap": "^6.13.1",
+    "gatsby-source-filesystem": "^5.13.1",
+    "gatsby-source-prismic": "^5.3.1",
+    "gatsby-transformer-sharp": "^5.13.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sass": "^1.79.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}

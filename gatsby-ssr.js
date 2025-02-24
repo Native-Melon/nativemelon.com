@@ -3,8 +3,8 @@ import { PrismicPreviewProvider } from "gatsby-plugin-prismic-previews";
 
 import { repositoryConfigs } from "./config/prismic/previews";
 
-import "./src/normalize.css";
-import "./src/style.css";
+import "./src/css/normalize.css";
+import "./src/css/style.css";
 
 export const wrapRootElement = ({ element }) => (
   <PrismicPreviewProvider repositoryConfigs={repositoryConfigs}>

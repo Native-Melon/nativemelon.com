@@ -64,7 +64,7 @@ export const homePageQuery = graphql`
         user_image {
           url
           alt
-          gatsbyImageData(width: 50, height: 50, placeholder: BLURRED)
+          gatsbyImageData(width: 300, height: 300, placeholder: BLURRED)
         }
         description {
           richText

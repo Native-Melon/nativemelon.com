@@ -9,18 +9,16 @@ import Bio from "../components/bio";
 const HomePageTemplate = ({ data, location }) => {
   const {
     title,
-    description,
-    user_image: userImage,
   } = data?.prismicHomePage?.data || {};
 
   const blogList = data?.allPrismicPost?.nodes || [];
 
   return (
-    <Layout location={location} title={title.text}>
+    <Layout location={location}>
       {/* Masthead */}
       <header class="masthead" id="home">
           <div class="container">
-              <div class="masthead-heading text-uppercase">Native Melon Consulting</div>
+              <div class="masthead-heading text-uppercase">{title.text}</div>
               <a class="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
@@ -252,42 +250,33 @@ const HomePageTemplate = ({ data, location }) => {
               To make this form functional, sign up at
               https://startbootstrap.com/solution/contact-forms
               to get an API token! */}
-              <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+              <form id="contactForm" action="https://submit-form.com/HmGCa39GM">
                   <div class="row align-items-stretch mb-5">
                       <div class="col-md-6">
                           <div class="form-group">
-                              <input class="form-control" id="name" type="text" placeholder="Your Name *" data-sb-validations="required" />
+                              <input class="form-control" id="name" name="name" type="text" placeholder="Your Name *" data-sb-validations="required" />
                               <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                           </div>
                           <div class="form-group">
-                              <input class="form-control" id="email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
+                              <input class="form-control" id="email" name="email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
                               <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                               <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                           </div>
                           <div class="form-group mb-md-0">
-                              <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" data-sb-validations="required" />
+                              <input class="form-control" id="phone" name="tel" type="tel" placeholder="Your Phone" />
                               <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
                           </div>
                       </div>
                       <div class="col-md-6">
                           <div class="form-group form-group-textarea mb-md-0">
-                              <textarea class="form-control" id="message" placeholder="Your Message *" data-sb-validations="required"></textarea>
+                              <textarea class="form-control" id="message" name="message" placeholder="Your Message *" data-sb-validations="required"></textarea>
                               <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                           </div>
                       </div>
                   </div>
-                  {/* Submit success message */}
-                  <div class="d-none" id="submitSuccessMessage">
-                      <div class="text-center text-white mb-3">
-                          <div class="fw-bolder">Form submission successful!</div>
-                          To activate this form, sign up at
-                          <br />
-                          <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                      </div>
-                  </div>
                   {/* Submit error message */}
                   <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                  <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit">Send Message</button></div>
+                  <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Send Message</button></div>
               </form>
           </div>
       </section>
@@ -335,11 +324,6 @@ export const homePageQuery = graphql`
         title {
           richText
           text
-        }
-        user_image {
-          url
-          alt
-          gatsbyImageData(width: 300, height: 300, placeholder: BLURRED)
         }
         description {
           richText

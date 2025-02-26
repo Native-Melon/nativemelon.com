@@ -4,11 +4,13 @@ import { Container, Image, Navbar, Nav } from "react-bootstrap";
 
 import logo from "../images/logo.png";
 
+const handleSelect = (e, ek) => console.log(e);
+
 const Layout = ({ location, title, children }) => {
   const [scrolled, setScrolled] = useState(false);
   let listener = null;
 
-
+  
   useEffect(() => {
     listener = document.addEventListener("scroll", e => {
       setScrolled(document.scrollingElement.scrollTop > 1 ? true : false);
@@ -23,17 +25,18 @@ const Layout = ({ location, title, children }) => {
     {/* Navigation */}
     <Navbar bg={scrolled ? "dark" : "transparent"} data-bs-theme={scrolled ? "dark" : "light"} fixed="top" expand="md" id="mainNav">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="#home" eventKey={0}>
           <Image src={logo} alt="Native Melon Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto" />
-          <Nav>
-            <Nav.Link href="#services">Services</Nav.Link>
-            <Nav.Link href="#portfolio">Portfolio</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
-            <Nav.Link href="#contact">Contact</Nav.Link>
+          <Nav activeKey="0">
+            <Nav.Link eventKey={0} href="#home">Home</Nav.Link>
+            <Nav.Link eventKey={1} href="#services">Services</Nav.Link>
+            <Nav.Link eventKey={2} href="#portfolio">Portfolio</Nav.Link>
+            <Nav.Link eventKey={3} href="#about">About</Nav.Link>
+            <Nav.Link eventKey={4} href="#contact">Contact</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

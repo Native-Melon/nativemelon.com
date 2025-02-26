@@ -16,6 +16,9 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@prismicio/react": "^2.9.0",
     "bootstrap": "^5.3.3",
     "gatsby": "^5.13.7",

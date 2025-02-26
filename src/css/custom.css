@@ -1,0 +1,11 @@
+body {
+  background-color: #dfd6bd;
+}
+.global-header {
+  display: flex;
+}
+
+.logo-image-top {
+  width: 50px;
+  margin-right: 1em;
+}

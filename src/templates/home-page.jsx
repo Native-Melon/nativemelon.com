@@ -1,18 +1,40 @@
 import * as React from "react";
 import { graphql } from "gatsby";
-
+import { useState } from "react";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 import Layout from "../components/layout";
 import Seo from "../components/seo";
 import { Image } from "react-bootstrap";
 
+import Botpoison from "@botpoison/browser";
+import axios from "axios";
+
+const botpoison = new Botpoison({
+  publicKey: "pk_6b12d516-1f8d-4f5c-a43a-ebff44d2e6a4"
+});
+
 const HomePageTemplate = ({ data, location }) => {
+  const [formSubmitted, setFormSubmitted] = useState('N');
+  
   const {
     title,
   } = data?.prismicHomePage?.data || {};
 
   const serviceList = data?.allPrismicService?.nodes || [];
-  console.log("data", data);
+  
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const message = "";
+    setFormSubmitted('P');
+    // Process a challenge
+    const { solution } = await botpoison.challenge();
+    await axios.post("https://submit-form.com/HmGCa39GM", {
+      message,
+      // Forward the solution
+      _botpoison: solution,
+    });
+    setFormSubmitted('Y');
+  };
 
   return (
     <Layout location={location}>
@@ -28,6 +50,7 @@ const HomePageTemplate = ({ data, location }) => {
           <div className="container">
               <div className="text-center">
                   <h2 className="section-heading text-uppercase">Services</h2>
+                  <h3 className="section-subheading text-muted"></h3>
               </div>
               <div className="row text-center">
                 {serviceList.map((service) => {
@@ -232,13 +255,16 @@ const HomePageTemplate = ({ data, location }) => {
           <div className="container">
               <div className="text-center">
                   <h2 className="section-heading text-uppercase">Contact Us</h2>
-                  <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                  <h3 className="section-subheading text-muted"></h3>
               </div>
               {/* This form is pre-integrated with SB Forms.
               To make this form functional, sign up at
               https://startbootstrap.com/solution/contact-forms
               to get an API token! */}
-              <form id="contactForm" action="https://submit-form.com/HmGCa39GM">
+              <form id="contactForm" onSubmit={onSubmit}>
+              {/* <form id="contactForm" action="https://submit-form.com/HmGCa39GM" method="POST"> */}
+              {/* smart forms */}
+              {/* <form id="contactForm" action="https://smartforms.dev/submit/67c0f20c5b45507342a0e603" method="POST"> */}
                   <div className="row align-items-stretch mb-5">
                       <div className="col-md-6">
                           <div className="form-group">
@@ -253,9 +279,6 @@ const HomePageTemplate = ({ data, location }) => {
                           <div className="form-group">
                               <input className="form-control" id="phone" name="Phone" type="tel" placeholder="Your Phone" />
                           </div>
-                          <div className="form-group mb-md-0">
-                              <div className="h-captcha" data-sitekey="9f40a904-85ea-4be6-92de-54ded53caff4"></div>
-                          </div>
                       </div>
                       <div className="col-md-6">
                           <div className="form-group form-group-textarea mb-md-0">
@@ -266,7 +289,10 @@ const HomePageTemplate = ({ data, location }) => {
                   </div>
                   {/* Submit error message */}
                   <div className="text-center">
-                    <button className="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Send Message</button>
+                    <button className={`btn btn-primary btn-xl text-uppercase ${formSubmitted == 'N' ? '' : 'disabled'}`}
+                      id="submitButton" type="submit">
+                        {formSubmitted == 'N' ? "Send Message" : formSubmitted == 'Y' ? 'Message Sent!' : 'Sending Message...'}
+                      </button>
                   </div>
               </form>
           </div>

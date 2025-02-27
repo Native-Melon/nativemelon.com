@@ -6,10 +6,11 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Prismic Blog`,
-    siteUrl: `https://gatsbystarterprismicblog.gatsbyjs.io/`,
+    title: `Native Melon Consulting`,
+    description: `Our services include technical consulting and web solutions`,
+    siteUrl: `https://nativemelon.com/`,
     social: {
-      twitter: "MaheshSamudra",
+      twitter: "abu3antar7770",
     },
   },
   plugins: [

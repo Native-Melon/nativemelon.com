@@ -1,157 +1,145 @@
 import * as React from "react";
-import { Link, graphql } from "gatsby";
+import { graphql } from "gatsby";
 
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 import Layout from "../components/layout";
 import Seo from "../components/seo";
-import Bio from "../components/bio";
+import { Image } from "react-bootstrap";
 
 const HomePageTemplate = ({ data, location }) => {
   const {
     title,
   } = data?.prismicHomePage?.data || {};
 
-  const blogList = data?.allPrismicPost?.nodes || [];
+  const serviceList = data?.allPrismicService?.nodes || [];
+  console.log("data", data);
 
   return (
     <Layout location={location}>
       {/* Masthead */}
-      <header class="masthead" id="home">
-          <div class="container">
-              <div class="masthead-heading text-uppercase">{title.text}</div>
-              <a class="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
+      <header className="masthead" id="home">
+          <div className="container">
+              <div className="masthead-heading text-uppercase">{title.text}</div>
+              <a className="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
       {/* Services */}
-      <section class="page-section" id="services">
-          <div class="container">
-              <div class="text-center">
-                  <h2 class="section-heading text-uppercase">Services</h2>
-                  <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+      <section className="page-section" id="services">
+          <div className="container">
+              <div className="text-center">
+                  <h2 className="section-heading text-uppercase">Services</h2>
               </div>
-              <div class="row text-center">
-                  <div class="col-md-4">
-                      <span class="fa-stack fa-4x">
-                          <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                          <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                      </span>
-                      <h4 class="my-3">E-Commerce</h4>
-                      <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                  </div>
-                  <div class="col-md-4">
-                      <span class="fa-stack fa-4x">
-                          <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                          <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-                      </span>
-                      <h4 class="my-3">Responsive Design</h4>
-                      <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                  </div>
-                  <div class="col-md-4">
-                      <span class="fa-stack fa-4x">
-                          <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                          <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-                      </span>
-                      <h4 class="my-3">Web Security</h4>
-                      <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                  </div>
+              <div className="row text-center">
+                {serviceList.map((service) => {
+                  const title = service.data.title.text;
+
+                  return (
+                    <div className="col-md-4">
+                        <Image src={service?.data?.image?.url} />
+                        <h4 className="my-3">{title}</h4>
+                        <p className="text-muted" dangerouslySetInnerHTML={{__html: service?.data?.description?.text || []}} />
+                    </div>
+                  );
+                })}
+
               </div>
           </div>
       </section>
       {/* Portfolio Grid */}
-      <section class="page-section bg-light" id="portfolio">
-          <div class="container">
-              <div class="text-center">
-                  <h2 class="section-heading text-uppercase">Portfolio</h2>
-                  <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+      <section className="page-section bg-light" id="portfolio">
+          <div className="container">
+              <div className="text-center">
+                  <h2 className="section-heading text-uppercase">Portfolio</h2>
+                  <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
               </div>
-              <div class="row">
-                  <div class="col-lg-4 col-sm-6 mb-4">
+              <div className="row">
+                  <div className="col-lg-4 col-sm-6 mb-4">
                       {/* Portfolio item 1 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/1.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/1.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Threads</div>
-                              <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Threads</div>
+                              <div className="portfolio-caption-subheading text-muted">Illustration</div>
                           </div>
                       </div>
                   </div>
-                  <div class="col-lg-4 col-sm-6 mb-4">
+                  <div className="col-lg-4 col-sm-6 mb-4">
                       {/* Portfolio item 2 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Explore</div>
-                              <div class="portfolio-caption-subheading text-muted">Graphic Design</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Explore</div>
+                              <div className="portfolio-caption-subheading text-muted">Graphic Design</div>
                           </div>
                       </div>
                   </div>
-                  <div class="col-lg-4 col-sm-6 mb-4">
+                  <div className="col-lg-4 col-sm-6 mb-4">
                       {/* Portfolio item 3 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Finish</div>
-                              <div class="portfolio-caption-subheading text-muted">Identity</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Finish</div>
+                              <div className="portfolio-caption-subheading text-muted">Identity</div>
                           </div>
                       </div>
                   </div>
-                  <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+                  <div className="col-lg-4 col-sm-6 mb-4 mb-lg-0">
                       {/* Portfolio item 4 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/4.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/4.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Lines</div>
-                              <div class="portfolio-caption-subheading text-muted">Branding</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Lines</div>
+                              <div className="portfolio-caption-subheading text-muted">Branding</div>
                           </div>
                       </div>
                   </div>
-                  <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                  <div className="col-lg-4 col-sm-6 mb-4 mb-sm-0">
                       {/* Portfolio item 5 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/5.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/5.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Southwest</div>
-                              <div class="portfolio-caption-subheading text-muted">Website Design</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Southwest</div>
+                              <div className="portfolio-caption-subheading text-muted">Website Design</div>
                           </div>
                       </div>
                   </div>
-                  <div class="col-lg-4 col-sm-6">
+                  <div className="col-lg-4 col-sm-6">
                       {/* Portfolio item 6 */}
-                      <div class="portfolio-item">
-                          <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
-                              <div class="portfolio-hover">
-                                  <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                      <div className="portfolio-item">
+                          <a className="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
+                              <div className="portfolio-hover">
+                                  <div className="portfolio-hover-content"><i className="fas fa-plus fa-3x"></i></div>
                               </div>
-                              <img class="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
+                              <img className="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
                           </a>
-                          <div class="portfolio-caption">
-                              <div class="portfolio-caption-heading">Window</div>
-                              <div class="portfolio-caption-subheading text-muted">Photography</div>
+                          <div className="portfolio-caption">
+                              <div className="portfolio-caption-heading">Window</div>
+                              <div className="portfolio-caption-subheading text-muted">Photography</div>
                           </div>
                       </div>
                   </div>
@@ -159,55 +147,55 @@ const HomePageTemplate = ({ data, location }) => {
           </div>
       </section>
       {/* About */}
-      <section class="page-section" id="about">
-          <div class="container">
-              <div class="text-center">
-                  <h2 class="section-heading text-uppercase">About</h2>
-                  <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+      <section className="page-section" id="about">
+          <div className="container">
+              <div className="text-center">
+                  <h2 className="section-heading text-uppercase">About</h2>
+                  <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
               </div>
-              <ul class="timeline">
+              <ul className="timeline">
                   <li>
-                      <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/1.jpg" alt="..." /></div>
-                      <div class="timeline-panel">
-                          <div class="timeline-heading">
+                      <div className="timeline-image"><img className="rounded-circle img-fluid" src="assets/img/about/1.jpg" alt="..." /></div>
+                      <div className="timeline-panel">
+                          <div className="timeline-heading">
                               <h4>2009-2011</h4>
-                              <h4 class="subheading">Our Humble Beginnings</h4>
+                              <h4 className="subheading">Our Humble Beginnings</h4>
                           </div>
-                          <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                          <div className="timeline-body"><p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
                       </div>
                   </li>
-                  <li class="timeline-inverted">
-                      <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/2.jpg" alt="..." /></div>
-                      <div class="timeline-panel">
-                          <div class="timeline-heading">
+                  <li className="timeline-inverted">
+                      <div className="timeline-image"><img className="rounded-circle img-fluid" src="assets/img/about/2.jpg" alt="..." /></div>
+                      <div className="timeline-panel">
+                          <div className="timeline-heading">
                               <h4>March 2011</h4>
-                              <h4 class="subheading">An Agency is Born</h4>
+                              <h4 className="subheading">An Agency is Born</h4>
                           </div>
-                          <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                          <div className="timeline-body"><p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
                       </div>
                   </li>
                   <li>
-                      <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/3.jpg" alt="..." /></div>
-                      <div class="timeline-panel">
-                          <div class="timeline-heading">
+                      <div className="timeline-image"><img className="rounded-circle img-fluid" src="assets/img/about/3.jpg" alt="..." /></div>
+                      <div className="timeline-panel">
+                          <div className="timeline-heading">
                               <h4>December 2015</h4>
-                              <h4 class="subheading">Transition to Full Service</h4>
+                              <h4 className="subheading">Transition to Full Service</h4>
                           </div>
-                          <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                          <div className="timeline-body"><p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
                       </div>
                   </li>
-                  <li class="timeline-inverted">
-                      <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/4.jpg" alt="..." /></div>
-                      <div class="timeline-panel">
-                          <div class="timeline-heading">
+                  <li className="timeline-inverted">
+                      <div className="timeline-image"><img className="rounded-circle img-fluid" src="assets/img/about/4.jpg" alt="..." /></div>
+                      <div className="timeline-panel">
+                          <div className="timeline-heading">
                               <h4>July 2020</h4>
-                              <h4 class="subheading">Phase Two Expansion</h4>
+                              <h4 className="subheading">Phase Two Expansion</h4>
                           </div>
-                          <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
+                          <div className="timeline-body"><p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p></div>
                       </div>
                   </li>
-                  <li class="timeline-inverted">
-                      <div class="timeline-image">
+                  <li className="timeline-inverted">
+                      <div className="timeline-image">
                           <h4>
                               Be Part
                               <br />
@@ -221,64 +209,64 @@ const HomePageTemplate = ({ data, location }) => {
           </div>
       </section>
       {/* Clients */}
-      <div class="py-5">
-          <div class="container">
-              <div class="row align-items-center">
-                  <div class="col-md-3 col-sm-6 my-3">
-                      <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="..." aria-label="Microsoft Logo" /></a>
+      <div className="py-5">
+          <div className="container">
+              <div className="row align-items-center">
+                  <div className="col-md-3 col-sm-6 my-3">
+                      <a href="#!"><img className="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="..." aria-label="Microsoft Logo" /></a>
                   </div>
-                  <div class="col-md-3 col-sm-6 my-3">
-                      <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
+                  <div className="col-md-3 col-sm-6 my-3">
+                      <a href="#!"><img className="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
                   </div>
-                  <div class="col-md-3 col-sm-6 my-3">
-                      <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/facebook.svg" alt="..." aria-label="Facebook Logo" /></a>
+                  <div className="col-md-3 col-sm-6 my-3">
+                      <a href="#!"><img className="img-fluid img-brand d-block mx-auto" src="assets/img/logos/facebook.svg" alt="..." aria-label="Facebook Logo" /></a>
                   </div>
-                  <div class="col-md-3 col-sm-6 my-3">
-                      <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="..." aria-label="IBM Logo" /></a>
+                  <div className="col-md-3 col-sm-6 my-3">
+                      <a href="#!"><img className="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="..." aria-label="IBM Logo" /></a>
                   </div>
               </div>
           </div>
       </div>
       {/* Contact */}
-      <section class="page-section" id="contact">
-          <div class="container">
-              <div class="text-center">
-                  <h2 class="section-heading text-uppercase">Contact Us</h2>
-                  <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+      <section className="page-section" id="contact">
+          <div className="container">
+              <div className="text-center">
+                  <h2 className="section-heading text-uppercase">Contact Us</h2>
+                  <h3 className="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
               </div>
               {/* This form is pre-integrated with SB Forms.
               To make this form functional, sign up at
               https://startbootstrap.com/solution/contact-forms
               to get an API token! */}
               <form id="contactForm" action="https://submit-form.com/HmGCa39GM">
-                  <div class="row align-items-stretch mb-5">
-                      <div class="col-md-6">
-                          <div class="form-group">
-                              <input class="form-control" id="name" name="Name" type="text" placeholder="Your Name *" data-sb-validations="required" />
-                              <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                  <div className="row align-items-stretch mb-5">
+                      <div className="col-md-6">
+                          <div className="form-group">
+                              <input className="form-control" id="name" name="Name" type="text" placeholder="Your Name *" data-sb-validations="required" />
+                              <div className="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                           </div>
-                          <div class="form-group">
-                              <input class="form-control" id="email" name="Email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
-                              <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                              <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                          <div className="form-group">
+                              <input className="form-control" id="email" name="Email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
+                              <div className="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                              <div className="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                           </div>
-                          <div class="form-group">
-                              <input class="form-control" id="phone" name="Phone" type="tel" placeholder="Your Phone" />
+                          <div className="form-group">
+                              <input className="form-control" id="phone" name="Phone" type="tel" placeholder="Your Phone" />
                           </div>
-                          <div class="form-group mb-md-0">
-                              <div class="h-captcha" data-sitekey="9f40a904-85ea-4be6-92de-54ded53caff4"></div>
+                          <div className="form-group mb-md-0">
+                              <div className="h-captcha" data-sitekey="9f40a904-85ea-4be6-92de-54ded53caff4"></div>
                           </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="form-group form-group-textarea mb-md-0">
-                              <textarea class="form-control" id="message" name="Message" placeholder="Your Message *" data-sb-validations="required"></textarea>
-                              <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                      <div className="col-md-6">
+                          <div className="form-group form-group-textarea mb-md-0">
+                              <textarea className="form-control" id="message" name="Message" placeholder="Your Message *" data-sb-validations="required"></textarea>
+                              <div className="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                           </div>
                       </div>
                   </div>
                   {/* Submit error message */}
-                  <div class="text-center">
-                    <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Send Message</button>
+                  <div className="text-center">
+                    <button className="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">Send Message</button>
                   </div>
               </form>
           </div>
@@ -350,6 +338,23 @@ export const homePageQuery = graphql`
           }
           post_body {
             html
+          }
+        }
+      }
+    }
+    allPrismicService {
+      nodes {
+        url
+        uid
+        data {
+          title {
+            text
+          }
+          image {
+            url
+          }
+          description {
+            text
           }
         }
       }

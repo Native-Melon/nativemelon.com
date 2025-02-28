@@ -9,17 +9,23 @@ import ContactForm from "../components/contactForm";
 
 const HomePageTemplate = ({ data, location }) => {  
   const {
-    title,
+    company_name,
+    slogan1,
+    slogan2,
+    slogan3,
   } = data?.prismicHomePage?.data || {};
 
   const serviceList = data?.allPrismicService?.nodes || [];
+  const slogans = [slogan1, slogan2, slogan3];
+  const slogan = slogans[Math.floor(Math.random() * 3)];
   
   return (
     <Layout location={location}>
       {/* Masthead */}
       <header className="masthead" id="home">
           <div className="container">
-              <div className="masthead-heading text-uppercase">{title.text}</div>
+              <div className="masthead-heading text-uppercase">{company_name.text}</div>
+              <div className="masthead-subheading">{slogan.text}</div>
               <a className="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
@@ -237,9 +243,9 @@ const HomePageTemplate = ({ data, location }) => {
 };
 
 export const Head = ({ data }) => {
-  const { title, description } = data?.prismicHomePage?.data || {};
+  const { company_name, slogan1 } = data?.prismicHomePage?.data || {};
   return <>
-    <Seo title={title.text} description={description.text} />
+    <Seo company={company_name.text} slogan={slogan1.text} />
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   </>;
 };
@@ -249,30 +255,17 @@ export const homePageQuery = graphql`
     prismicHomePage {
       _previewable
       data {
-        title {
-          richText
+        company_name {
           text
         }
-        description {
-          richText
+        slogan1 {
           text
         }
-      }
-    }
-    allPrismicPost {
-      nodes {
-        url
-        uid
-        data {
-          post_date
-          excerpt
-          title {
-            html
-            text
-          }
-          post_body {
-            html
-          }
+        slogan2 {
+          text
+        }
+        slogan3 {
+          text
         }
       }
     }

@@ -24,12 +24,18 @@ const HomePageTemplate = ({ data, location }) => {
   
   const onSubmit = async (e) => {
     e.preventDefault();
-    const message = "";
+    const formDataRaw = new FormData(e.target);
+    const formData = {
+      'Name': formDataRaw.get('Name'),
+      'Email': formDataRaw.get('Email'),
+      'Phone': formDataRaw.get('Phone'),
+      'Message': formDataRaw.get('Message'),
+    }
     setFormSubmitted('P');
     // Process a challenge
     const { solution } = await botpoison.challenge();
     await axios.post("https://submit-form.com/HmGCa39GM", {
-      message,
+      formData,
       // Forward the solution
       _botpoison: solution,
     });
@@ -276,7 +282,7 @@ const HomePageTemplate = ({ data, location }) => {
                               <div className="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                               <div className="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                           </div>
-                          <div className="form-group">
+                          <div className="form-group mb-md-0">
                               <input className="form-control" id="phone" name="Phone" type="tel" placeholder="Your Phone" />
                           </div>
                       </div>

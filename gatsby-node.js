@@ -5,7 +5,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   // Define a template for blog post
   const homePage = path.resolve(`./src/templates/home-page.jsx`);
-  const blogPost = path.resolve(`./src/templates/blog-post.jsx`);
+  const genericPage = path.resolve(`./src/templates/generic-page.jsx`);
 
   const homePageQueryResult = await graphql(
     `
@@ -38,20 +38,21 @@ exports.createPages = async ({ graphql, actions }) => {
   });
 
   // Get all markdown blog posts sorted by date
-  const blogPostsQueryResult = await graphql(
+  const genericPageQueryResult = await graphql(
     `
       {
-        allPrismicPost(sort: { data: {post_date: DESC }}) {
+        allPrismicGenericPage {
           nodes {
             id
             uid
             url
             data {
-              excerpt
               title {
                 text
               }
-              post_date(formatString: "MMMM d, yyyy")
+              content {
+                html
+              }
             }
           }
         }
@@ -59,22 +60,15 @@ exports.createPages = async ({ graphql, actions }) => {
     `
   );
 
-  const posts = blogPostsQueryResult.data.allPrismicPost.nodes;
+  const posts = genericPageQueryResult.data.allPrismicGenericPage.nodes;
 
   if (posts.length > 0) {
     posts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : posts[index - 1].uid;
-      const nextPostId =
-        index === posts.length - 1 ? null : posts[index + 1].uid;
-
       createPage({
         path: post.url,
-        component: blogPost,
+        component: genericPage,
         context: {
           id: post.id,
-          uid: post.uid,
-          previousPostId,
-          nextPostId,
         },
       });
     });

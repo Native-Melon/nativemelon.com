@@ -9,3 +9,9 @@ body {
   width: 50px;
   margin-right: 1em;
 }
+
+.generic-page-content {
+  padding-top: 8rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}

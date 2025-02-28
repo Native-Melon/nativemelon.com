@@ -1,6 +1,6 @@
 import { linkResolver } from "./link-resolver";
 
-import PostTemplate from "../../src/templates/blog-post";
+import GenericPageTemplate from "../../src/templates/generic-page";
 import HomePageTemplate from "../../src/templates/home-page";
 
 /**
@@ -18,7 +18,7 @@ export const repositoryConfigs = [
     linkResolver,
     componentResolver: {
       homePage: HomePageTemplate,
-      post: PostTemplate,
+      page: GenericPageTemplate,
     },
   },
 ];

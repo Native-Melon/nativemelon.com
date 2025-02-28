@@ -64,9 +64,9 @@ const HomePageTemplate = ({ data, location }) => {
 
                   return (
                     <div className="col-md-4">
-                        <Image src={service?.data?.image?.url} />
+                        <Image src={service?.data?.image?.url} className="img-thumbnail" />
                         <h4 className="my-3">{title}</h4>
-                        <p className="text-muted" dangerouslySetInnerHTML={{__html: service?.data?.description?.text || []}} />
+                        <p className="text-muted text-justify" dangerouslySetInnerHTML={{__html: service?.data?.description?.text || []}} />
                     </div>
                   );
                 })}

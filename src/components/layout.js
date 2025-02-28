@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Container, Image, Navbar, Nav, CloseButton } from "react-bootstrap";
+import { Container, Image, Navbar, Nav } from "react-bootstrap";
 
 import logo from "../images/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebookF, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Layout = ({ location, title, children }) => {
   const headerModes = {
@@ -17,7 +19,11 @@ const Layout = ({ location, title, children }) => {
       class: 'navbar-shrink',
     }
   };
-  const [headerMode, setHeaderMode] = useState(location.pathname == "/" ? headerModes.top : headerModes.scrolled);
+  const isHome = location.pathname == "/";
+  const isMobile = window.innerWidth < 992;
+  const isScrolled = document.scrollingElement.scrollTop > 1;
+  const defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
+  const [headerMode, setHeaderMode] = useState(defaultHeaderMode);
   let listener = null;
 
   
@@ -25,7 +31,7 @@ const Layout = ({ location, title, children }) => {
     if (location.pathname == "/") {
       listener = document.addEventListener("scroll", e => {
         const scrolled = document.scrollingElement.scrollTop > 1 ? true : false;
-        setHeaderMode(scrolled ? headerModes.scrolled : headerModes.top);
+        setHeaderMode(scrolled ? headerModes.scrolled : defaultHeaderMode);
       })
     }
     return () => {
@@ -65,9 +71,15 @@ const Layout = ({ location, title, children }) => {
             <div className="row align-items-center">
                 <div className="col-lg-4 text-lg-start">{new Date().getFullYear()} Native Melon &copy;</div>
                 <div className="col-lg-4 my-3 my-lg-0">
-                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
-                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
-                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter">
+                      <FontAwesomeIcon icon={faXTwitter} />
+                    </a>
+                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook">
+                      <FontAwesomeIcon icon={faFacebookF} />
+                    </a>
+                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn">
+                      <FontAwesomeIcon icon={faLinkedinIn} />
+                    </a>
                 </div>
                 <div className="col-lg-4 text-lg-end">
                     <a className="link-dark text-decoration-none me-3" href="/privacy-policy">Privacy Policy</a>

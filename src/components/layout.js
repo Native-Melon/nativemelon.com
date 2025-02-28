@@ -19,9 +19,12 @@ const Layout = ({ location, title, children }) => {
       class: 'navbar-shrink',
     }
   };
-  const isHome = location.pathname == "/";
-  const isScrolled = document.scrollingElement.scrollTop > 1;
-  const defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
+  let defaultHeaderMode = headerModes.top;
+  if (typeof document !== 'undefined') {
+    const isHome = location.pathname == "/";
+    const isScrolled = document.scrollingElement.scrollTop > 1;
+    defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
+  }
   const [headerMode, setHeaderMode] = useState(defaultHeaderMode);
   let listener = null;
 

@@ -1,7 +1,7 @@
 exports.linkResolver = (doc) => {
   switch (doc.type) {
-    case "post":
-      return `/blog/${doc.uid}`;
+    case "page":
+      return `/${doc.uid}`;
 
     default:
       if (!doc.uid) return "/";

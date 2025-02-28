@@ -25,15 +25,17 @@ const Layout = ({ location, title, children }) => {
 
   
   useEffect(() => {
-    const isHome = location.pathname == "/";
-    const isScrolled = document.scrollingElement.scrollTop > 1;
-    const defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
-    setHeaderMode(defaultHeaderMode);
+    const getDefaultHeaderMode = () => {
+      const isHome = location.pathname == "/";
+      const isScrolled = document.scrollingElement.scrollTop > 1;
+      return (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
+    }
+    setHeaderMode(getDefaultHeaderMode());
 
     if (location.pathname == "/") {
       listener = document.addEventListener("scroll", e => {
         const scrolled = document.scrollingElement.scrollTop > 1 ? true : false;
-        setHeaderMode(scrolled ? headerModes.scrolled : defaultHeaderMode);
+        setHeaderMode(scrolled ? headerModes.scrolled : getDefaultHeaderMode());
       })
     }
     return () => {

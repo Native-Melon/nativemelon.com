@@ -19,17 +19,17 @@ const Layout = ({ location, title, children }) => {
       class: 'navbar-shrink',
     }
   };
-  let defaultHeaderMode = headerModes.top;
-  if (typeof document !== 'undefined') {
-    const isHome = location.pathname == "/";
-    const isScrolled = document.scrollingElement.scrollTop > 1;
-    defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
-  }
-  const [headerMode, setHeaderMode] = useState(defaultHeaderMode);
+
+  const [headerMode, setHeaderMode] = useState(headerModes.top);
   let listener = null;
 
   
   useEffect(() => {
+    const isHome = location.pathname == "/";
+    const isScrolled = document.scrollingElement.scrollTop > 1;
+    const defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
+    setHeaderMode(defaultHeaderMode);
+
     if (location.pathname == "/") {
       listener = document.addEventListener("scroll", e => {
         const scrolled = document.scrollingElement.scrollTop > 1 ? true : false;
@@ -39,7 +39,7 @@ const Layout = ({ location, title, children }) => {
     return () => {
       document.removeEventListener("scroll", listener)
     }
-  }, [headerMode])
+  }, [])
 
   return (
     <div className="global-wrapper">

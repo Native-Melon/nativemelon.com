@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Container, Image, Navbar, Nav } from "react-bootstrap";
-
+import { isMobile } from "react-device-detect";
 import logo from "../images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -20,7 +20,6 @@ const Layout = ({ location, title, children }) => {
     }
   };
   const isHome = location.pathname == "/";
-  const isMobile = window.innerWidth < 992;
   const isScrolled = document.scrollingElement.scrollTop > 1;
   const defaultHeaderMode = (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
   const [headerMode, setHeaderMode] = useState(defaultHeaderMode);

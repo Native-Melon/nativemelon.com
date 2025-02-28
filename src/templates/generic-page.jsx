@@ -6,11 +6,8 @@ import Seo from "../components/seo";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 
 const GenericPageTemplate = ({ data, location }) => {
-  const { previous, next, site, prismicGenericPage: page } = data;
+  const { site, prismicGenericPage: page } = data;
   const siteTitle = site.siteMetadata?.title || `Welcome`;
-
-  const { description, user_image: userImage } =
-    data?.prismicHomePage?.data || {};
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -51,23 +48,6 @@ export const blogPostQuery = graphql`
         }
         content {
           html
-        }
-      }
-    }
-    prismicHomePage {
-      data {
-        title {
-          richText
-          text
-        }
-        user_image {
-          url
-          alt
-          gatsbyImageData(width: 50, height: 50, placeholder: BLURRED)
-        }
-        description {
-          richText
-          text
         }
       }
     }

@@ -1,53 +1,31 @@
 import * as React from "react";
 import { graphql } from "gatsby";
-import { useState } from "react";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 import Layout from "../components/layout";
 import Seo from "../components/seo";
 import { Image } from "react-bootstrap";
 
-import Botpoison from "@botpoison/browser";
-import axios from "axios";
+import ContactForm from "../components/contactForm";
 
-const botpoison = new Botpoison({
-  publicKey: "pk_6b12d516-1f8d-4f5c-a43a-ebff44d2e6a4"
-});
-
-const HomePageTemplate = ({ data, location }) => {
-  const [formSubmitted, setFormSubmitted] = useState('N');
-  
+const HomePageTemplate = ({ data, location }) => {  
   const {
-    title,
+    company_name,
+    slogan1,
+    slogan2,
+    slogan3,
   } = data?.prismicHomePage?.data || {};
 
   const serviceList = data?.allPrismicService?.nodes || [];
+  const slogans = [slogan1, slogan2, slogan3];
+  const slogan = slogans[Math.floor(Math.random() * 3)];
   
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const formDataRaw = new FormData(e.target);
-    const formData = {
-      'Name': formDataRaw.get('Name'),
-      'Email': formDataRaw.get('Email'),
-      'Phone': formDataRaw.get('Phone'),
-      'Message': formDataRaw.get('Message'),
-    }
-    setFormSubmitted('P');
-    // Process a challenge
-    const { solution } = await botpoison.challenge();
-    await axios.post("https://submit-form.com/HmGCa39GM", {
-      formData,
-      // Forward the solution
-      _botpoison: solution,
-    });
-    setFormSubmitted('Y');
-  };
-
   return (
     <Layout location={location}>
       {/* Masthead */}
       <header className="masthead" id="home">
           <div className="container">
-              <div className="masthead-heading text-uppercase">{title.text}</div>
+              <div className="masthead-heading text-uppercase">{company_name.text}</div>
+              <div className="masthead-subheading">{slogan.text}</div>
               <a className="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
@@ -258,86 +236,16 @@ const HomePageTemplate = ({ data, location }) => {
       </div>
       {/* Contact */}
       <section className="page-section" id="contact">
-          <div className="container">
-              <div className="text-center">
-                  <h2 className="section-heading text-uppercase">Contact Us</h2>
-                  <h3 className="section-subheading text-muted"></h3>
-              </div>
-              {/* This form is pre-integrated with SB Forms.
-              To make this form functional, sign up at
-              https://startbootstrap.com/solution/contact-forms
-              to get an API token! */}
-              <form id="contactForm" onSubmit={onSubmit}>
-              {/* <form id="contactForm" action="https://submit-form.com/HmGCa39GM" method="POST"> */}
-              {/* smart forms */}
-              {/* <form id="contactForm" action="https://smartforms.dev/submit/67c0f20c5b45507342a0e603" method="POST"> */}
-                  <div className="row align-items-stretch mb-5">
-                      <div className="col-md-6">
-                          <div className="form-group">
-                              <input className="form-control" id="name" name="Name" type="text" placeholder="Your Name *" data-sb-validations="required" />
-                              <div className="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                          </div>
-                          <div className="form-group">
-                              <input className="form-control" id="email" name="Email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
-                              <div className="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                              <div className="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                          </div>
-                          <div className="form-group mb-md-0">
-                              <input className="form-control" id="phone" name="Phone" type="tel" placeholder="Your Phone" />
-                          </div>
-                      </div>
-                      <div className="col-md-6">
-                          <div className="form-group form-group-textarea mb-md-0">
-                              <textarea className="form-control" id="message" name="Message" placeholder="Your Message *" data-sb-validations="required"></textarea>
-                              <div className="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                          </div>
-                      </div>
-                  </div>
-                  {/* Submit error message */}
-                  <div className="text-center">
-                    <button className={`btn btn-primary btn-xl text-uppercase ${formSubmitted == 'N' ? '' : 'disabled'}`}
-                      id="submitButton" type="submit">
-                        {formSubmitted == 'N' ? "Send Message" : formSubmitted == 'Y' ? 'Message Sent!' : 'Sending Message...'}
-                      </button>
-                  </div>
-              </form>
-          </div>
+        <ContactForm />
       </section>
-
-      {/* <Bio image={userImage} description={description.richText} />
-      <ol style={{ listStyle: `none` }}>
-        {blogList.map((post) => {
-          const title = post.data.title.text;
-
-          return (
-            <li key={post.uid}>
-              <article
-                className="post-list-item"
-                itemScope
-                itemType="http://schema.org/Article"
-              >
-                <header>
-                  <h2>
-                    <Link to={post.url} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
-                  </h2>
-                  <small>{post.data.post_date}</small>
-                  <p>{post.data.excerpt}</p>
-                </header>
-              </article>
-            </li>
-          );
-        })}
-      </ol> */}
     </Layout>
   );
 };
 
 export const Head = ({ data }) => {
-  const { title, description } = data?.prismicHomePage?.data || {};
+  const { company_name, slogan1 } = data?.prismicHomePage?.data || {};
   return <>
-    <Seo title={title.text} description={description.text} />
+    <Seo company={company_name.text} slogan={slogan1.text} />
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   </>;
 };
@@ -347,30 +255,17 @@ export const homePageQuery = graphql`
     prismicHomePage {
       _previewable
       data {
-        title {
-          richText
+        company_name {
           text
         }
-        description {
-          richText
+        slogan1 {
           text
         }
-      }
-    }
-    allPrismicPost {
-      nodes {
-        url
-        uid
-        data {
-          post_date
-          excerpt
-          title {
-            html
-            text
-          }
-          post_body {
-            html
-          }
+        slogan2 {
+          text
+        }
+        slogan3 {
+          text
         }
       }
     }

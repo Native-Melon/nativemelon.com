@@ -10,7 +10,7 @@ const Layout = ({ location, title, children }) => {
   const headerModes = {
     top: {
       bg: 'transparent',
-      theme: 'light',
+      theme: 'dark',
       class: '',
     },
     scrolled: {

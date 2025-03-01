@@ -46,7 +46,7 @@ const Layout = ({ location, title, children }) => {
   return (
     <div className="global-wrapper">
     {/* Navigation */}
-    <Navbar bg={headerMode.bg} data-bs-theme={headerMode.theme}
+    <Navbar collapseOnSelect bg={headerMode.bg} data-bs-theme={headerMode.theme}
       fixed="top" expand="md" id="mainNav" className={headerMode.class}>
       <Container>
         <Navbar.Brand href="/#home">

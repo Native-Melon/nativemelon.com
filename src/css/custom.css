@@ -24,3 +24,12 @@ body {
   color: rgba(255, 255, 255, 1);
   background-color: rgb(102, 85, 68, .75);
 }
+
+#mainNav.bg-dark {
+  background-color: #161111 !important;
+  filter: drop-shadow(0 0 5x #000);
+}
+
+section#contact {
+  background-color: #161111;
+}

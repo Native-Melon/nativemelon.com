@@ -26,13 +26,13 @@ const Layout = ({ location, title, children }) => {
   
   useEffect(() => {
     const getDefaultHeaderMode = () => {
-      const isHome = location.pathname == "/";
+      const isHome = location.pathname === "/";
       const isScrolled = document.scrollingElement.scrollTop > 1;
       return (!isHome || isMobile || isScrolled) ? headerModes.scrolled : headerModes.top;
     }
     setHeaderMode(getDefaultHeaderMode());
 
-    if (location.pathname == "/") {
+    if (location.pathname === "/") {
       listener = document.addEventListener("scroll", e => {
         const scrolled = document.scrollingElement.scrollTop > 1 ? true : false;
         setHeaderMode(scrolled ? headerModes.scrolled : getDefaultHeaderMode());
@@ -66,7 +66,7 @@ const Layout = ({ location, title, children }) => {
       </Container>
     </Navbar>
     {/* Content */}
-    <div className={location.pathname == "/" ? '' : 'generic-page-content'}>
+    <div className={location.pathname === "/" ? '' : 'generic-page-content'}>
       {children}
     </div>
     {/* Footer */}

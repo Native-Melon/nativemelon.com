@@ -26,8 +26,8 @@ body {
 }
 
 #mainNav.bg-dark {
-  background-color: #161111 !important;
-  filter: drop-shadow(0 0 5x #000);
+  background-color: rgb(22, 17, 17, 0.75) !important;
+  filter: drop-shadow(0 0 5px #000);
 }
 
 section#contact {

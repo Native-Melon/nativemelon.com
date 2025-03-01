@@ -23,7 +23,6 @@ const HomePageTemplate = ({ data, location }) => {
           <div className="container">
               <div className="masthead-heading text-uppercase">{company_name.text}</div>
               <div className="masthead-subheading">{slogan.slogan.text}</div>
-              <a className="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
       {/* Services */}
@@ -31,7 +30,7 @@ const HomePageTemplate = ({ data, location }) => {
           <div className="container">
               <div className="text-center">
                   <h2 className="section-heading text-uppercase">Services</h2>
-                  <h3 className="section-subheading text-muted"></h3>
+                  {/* <h3 className="section-subheading text-muted"></h3> */}
               </div>
               <div className="row text-center">
                 {serviceList.map((service) => {

@@ -10,22 +10,19 @@ import ContactForm from "../components/contactForm";
 const HomePageTemplate = ({ data, location }) => {  
   const {
     company_name,
-    slogan1,
-    slogan2,
-    slogan3,
+    slogans,
   } = data?.prismicHomePage?.data || {};
 
   const serviceList = data?.allPrismicService?.nodes || [];
-  const slogans = [slogan1, slogan2, slogan3];
-  const slogan = slogans[Math.floor(Math.random() * 3)];
-  
+  const slogan = slogans.filter(s => s.slogan?.text)[Math.floor(Math.random() * slogans.length)];
+
   return (
     <Layout location={location}>
       {/* Masthead */}
       <header className="masthead" id="home">
           <div className="container">
               <div className="masthead-heading text-uppercase">{company_name.text}</div>
-              <div className="masthead-subheading">{slogan.text}</div>
+              <div className="masthead-subheading">{slogan.slogan.text}</div>
               <a className="btn btn-primary btn-xl text-uppercase" href="#services">Our Services</a>
           </div>
       </header>
@@ -243,9 +240,9 @@ const HomePageTemplate = ({ data, location }) => {
 };
 
 export const Head = ({ data }) => {
-  const { company_name, slogan1 } = data?.prismicHomePage?.data || {};
+  const { company_name, slogans } = data?.prismicHomePage?.data || {};
   return <>
-    <Seo company={company_name.text} slogan={slogan1.text} />
+    <Seo company={company_name.text} slogan={slogans[0].text} />
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   </>;
 };
@@ -258,14 +255,10 @@ export const homePageQuery = graphql`
         company_name {
           text
         }
-        slogan1 {
-          text
-        }
-        slogan2 {
-          text
-        }
-        slogan3 {
-          text
+        slogans {
+          slogan {
+            text
+          }
         }
       }
     }

@@ -11,18 +11,15 @@ exports.createPages = async ({ graphql, actions }) => {
     `
       {
         prismicHomePage {
+          id
           data {
             company_name {
               text
             }
-            slogan1 {
-              text
-            }
-            slogan2 {
-              text
-            }
-            slogan3 {
-              text
+            slogans {
+              slogan {
+                text
+              }
             }
           }
         }

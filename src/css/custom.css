@@ -33,3 +33,13 @@ body {
 section#contact {
   background-color: #161111;
 }
+
+.portfolio-item {
+  filter: drop-shadow(0 0 5px rgb(0, 0, 0, 0.2));
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.portfolio-item .portfolio-caption {
+  flex-grow: 1;
+}

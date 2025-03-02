@@ -34,7 +34,7 @@ const ContactForm = ({ image, description }) => {
       <div className="container">
       <div className="text-center">
           <h2 className="section-heading text-uppercase">Contact Us</h2>
-          <h3 className="section-subheading text-muted"></h3>
+          {/* <h3 className="section-subheading text-muted"></h3> */}
       </div>
       {/* This form is pre-integrated with SB Forms.
       To make this form functional, sign up at
@@ -70,11 +70,11 @@ const ContactForm = ({ image, description }) => {
           <div className="text-center">
             <button className={`
               btn btn-xl text-uppercase
-              ${formSubmitted == 'N' ? '' : 'disabled'}
-              ${formSubmitted == 'N' ? 'btn-primary' : formSubmitted == 'Y' ? 'btn-success' : 'btn-secondary'}
+              ${formSubmitted === 'N' ? '' : 'disabled'}
+              ${formSubmitted === 'N' ? 'btn-primary' : formSubmitted === 'Y' ? 'btn-success' : 'btn-secondary'}
               `}
               id="submitButton" type="submit">
-                {formSubmitted == 'N' ? "Send Message" : formSubmitted == 'Y' ? `Message Sent!` : 'Sending Message...'}
+                {formSubmitted === 'N' ? "Send Message" : formSubmitted === 'Y' ? `Message Sent!` : 'Sending Message...'}
               </button>
           </div>
       </form>

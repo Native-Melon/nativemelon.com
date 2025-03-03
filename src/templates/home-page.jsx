@@ -7,6 +7,7 @@ import { Image } from "react-bootstrap";
 
 import ContactForm from "../components/contactForm";
 import AboutCompany from "../components/aboutCompany";
+import Services from "../components/services";
 
 const HomePageTemplate = ({ data, location }) => {
   const { company_name, about_intro, about_content, slogans } = data?.prismicHomePage?.data || {};
@@ -30,33 +31,7 @@ const HomePageTemplate = ({ data, location }) => {
       </header>
       {/* Services */}
       <section className="page-section" id="services">
-        <div className="container">
-          <div className="text-center">
-            <h2 className="section-heading text-uppercase">Services</h2>
-            {/* <h3 className="section-subheading text-muted"></h3> */}
-          </div>
-          <div className="row text-center">
-            {serviceList.map((service) => {
-              const title = service.data.title.text;
-
-              return (
-                <div className="col-md-4">
-                  <Image
-                    src={service?.data?.image?.url}
-                    className="img-thumbnail"
-                  />
-                  <h4 className="my-3">{title}</h4>
-                  <p
-                    className="text-muted text-justify"
-                    dangerouslySetInnerHTML={{
-                      __html: service?.data?.description?.text || [],
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Services serviceList={serviceList} />
       </section>
       {/* Portfolio Grid */}
       <section className="page-section bg-light" id="portfolio">

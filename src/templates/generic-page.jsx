@@ -11,6 +11,7 @@ const GenericPageTemplate = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
+      <div className="container">
         <h1 itemProp="headline">{page.data.title.text}</h1>
         <section
           dangerouslySetInnerHTML={{
@@ -18,6 +19,7 @@ const GenericPageTemplate = ({ data, location }) => {
           }}
           itemProp="articleBody"
         />
+      </div>
     </Layout>
   );
 };

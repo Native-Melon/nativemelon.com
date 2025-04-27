@@ -73,7 +73,7 @@ const Layout = ({ location, title, children }) => {
     <footer className="footer py-4">
         <div className="container">
             <div className="row align-items-center">
-                <div className="col-lg-4 text-lg-start">{new Date().getFullYear()} Native Melon &copy;</div>
+                <div className="col-lg-4 text-lg-start">{new Date().getFullYear()} Native Melon Consulting LLC &copy;</div>
                 <div className="col-lg-4 my-3 my-lg-0">
                     <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter">
                       <FontAwesomeIcon icon={faXTwitter} />

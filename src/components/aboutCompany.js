@@ -10,7 +10,7 @@ const AboutCompany = ({ intro, content }) => {
       </div>
       <div className="about-content">
         <p
-          className="text-muted text-justify"
+          className="text-justify"
           dangerouslySetInnerHTML={{ __html: content?.html || [] }}
         />
       </div>

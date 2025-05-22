@@ -6,7 +6,7 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Native Melon Consulting`,
+    companyName: `Native Melon Consulting`,
     description: `Our services include technical consulting and web solutions`,
     siteUrl: `https://nativemelon.com/`,
     social: {

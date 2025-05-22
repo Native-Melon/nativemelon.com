@@ -53,7 +53,7 @@ export const Head = ({ data }) => {
   const { company_name, slogans } = data?.prismicHomePage?.data || {};
   return (
     <>
-      <Seo company={company_name.text} slogan={slogans[0].text} />
+      <Seo pageTitle='Home' slogan={slogans[0].text} />
       <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     </>
   );

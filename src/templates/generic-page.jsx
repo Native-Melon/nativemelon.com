@@ -7,7 +7,7 @@ import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 
 const GenericPageTemplate = ({ data, location }) => {
   const { site, prismicGenericPage: page } = data;
-  const siteTitle = site.siteMetadata?.title || `Welcome`;
+  const siteTitle = site.siteMetadata?.companyName || `Welcome`;
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -26,7 +26,7 @@ const GenericPageTemplate = ({ data, location }) => {
 
 export const Head = ({ data }) => {
   const { title, content } = data?.prismicGenericPage?.data || {};
-  return <Seo title={title.text} description={content} />;
+  return <Seo pageTitle={title.text} description={content} />;
 };
 
 export default withPrismicPreview(GenericPageTemplate);
@@ -37,7 +37,7 @@ export const blogPostQuery = graphql`
   ) {
     site {
       siteMetadata {
-        title
+        companyName
       }
     }
     prismicGenericPage(id: { eq: $id }) {

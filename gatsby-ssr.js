@@ -12,6 +12,14 @@ export const wrapRootElement = ({ element }) => (
   </PrismicPreviewProvider>
 );
 
-export const onRenderBody = ({ setHtmlAttributes }) => {
+export const onRenderBody = ({ setHtmlAttributes, setHeadComponents }) => {
   setHtmlAttributes({ lang: "en" });
+  setHeadComponents([
+    <script
+      key="prismic-toolbar"
+      async
+      defer
+      src="https://static.cdn.prismic.io/prismic.js?new=true&repo=nativemelon"
+    />,
+  ]);
 };

@@ -8,9 +8,10 @@ import ContactForm from "../components/contactForm";
 import AboutCompany from "../components/aboutCompany";
 import Services from "../components/services";
 import Portfolio from "../components/portfolio";
+import Products from "../components/products";
 
 const HomePageTemplate = ({ data, location }) => {
-  const { company_name, about_intro, about_content, slogans } = data?.prismicHomePage?.data || {};
+  const { about_intro, about_content, slogans } = data?.prismicHomePage?.data || {};
 
   const serviceList = data?.allPrismicService?.nodes || [];
   const portfolioList = data?.allPrismicPortfolioItem?.nodes || [];
@@ -20,27 +21,65 @@ const HomePageTemplate = ({ data, location }) => {
 
   return (
     <Layout location={location}>
-      {/* Masthead */}
+      {/* Hero */}
       <header className="masthead" id="home">
         <div className="container">
-          <div className="masthead-heading text-uppercase">
-            {company_name.text}
+          <div className="masthead-hero-stack">
+            <div className="masthead-heading">
+              Consulting <span className="masthead-accent-dot">&middot;</span>
+            </div>
+            <div className="masthead-heading">
+              Products <span className="masthead-accent-dot">&middot;</span>
+            </div>
+            <div className="masthead-heading">Community</div>
           </div>
-          <div className="masthead-subheading">{slogan.slogan.text}</div>
+          <div className="masthead-rule" />
+          <div className="masthead-subheading">
+            {slogan.slogan.text}
+          </div>
+          <div className="masthead-ctas">
+            <a href="#products" className="btn btn-primary btn-xl">
+              Our Products
+            </a>
+            <a href="#contact" className="btn btn-outline-light btn-xl">
+              Let&rsquo;s Talk
+            </a>
+          </div>
         </div>
       </header>
-      {/* Services */}
+
+      {/* Dot divider */}
+      <div className="dot-divider" aria-hidden="true" />
+
+      {/* Products */}
+      <section className="page-section" id="products">
+        <Products />
+      </section>
+
+      {/* Dot divider */}
+      <div className="dot-divider" aria-hidden="true" />
+
+      {/* Consulting Services */}
       <section className="page-section" id="services">
         <Services serviceList={serviceList} />
       </section>
-      {/* Portfolio Grid */}
+
+      {/* Dot divider */}
+      <div className="dot-divider" aria-hidden="true" />
+
+      {/* Work / Portfolio */}
       <section className="page-section bg-light" id="portfolio">
-        <Portfolio portfolioList={ portfolioList } />
+        <Portfolio portfolioList={portfolioList} />
       </section>
+
+      {/* Dot divider */}
+      <div className="dot-divider" aria-hidden="true" />
+
       {/* About */}
       <section className="page-section" id="about">
         <AboutCompany intro={about_intro} content={about_content} />
       </section>
+
       {/* Contact */}
       <section className="page-section" id="contact">
         <ContactForm />
@@ -50,7 +89,7 @@ const HomePageTemplate = ({ data, location }) => {
 };
 
 export const Head = ({ data }) => {
-  const { company_name, slogans } = data?.prismicHomePage?.data || {};
+  const { slogans } = data?.prismicHomePage?.data || {};
   return (
     <>
       <Seo pageTitle='Home' slogan={slogans[0].text} />

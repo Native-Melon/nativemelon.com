@@ -12,7 +12,9 @@ const GenericPageTemplate = ({ data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <div className="container">
-        <h1 itemProp="headline">{page.data.title.text}</h1>
+        <div className="generic-page-title-area">
+          <h1 itemProp="headline">{page.data.title.text}</h1>
+        </div>
         <section
           dangerouslySetInnerHTML={{
             __html: page?.data?.content?.html || [],

@@ -173,6 +173,7 @@ export const homePageQuery = graphql`
             text
             html
           }
+          project_url
         }
       }
     }

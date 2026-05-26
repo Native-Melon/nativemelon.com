@@ -26,10 +26,12 @@ const Portfolio = ({ portfolioList }) => {
             <p className="portfolio-feature-card__desc">
               {portfolioList[0]?.data?.description?.text || portfolioList[0]?.data?.summary?.text}
             </p>
-            {portfolioList[0]?.url && (
+            {portfolioList[0]?.data?.project_url && (
               <a
-                href={portfolioList[0].url}
+                href={portfolioList[0].data.project_url}
                 className="product-card__link"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 View project &rarr;
               </a>

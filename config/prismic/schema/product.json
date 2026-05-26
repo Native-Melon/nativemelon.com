@@ -1,0 +1,61 @@
+{
+  "Main": {
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "Slug"
+      }
+    },
+    "name": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "Name"
+      }
+    },
+    "tagline": {
+      "type": "Text",
+      "config": {
+        "label": "Tagline"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "config": {
+        "label": "Description"
+      }
+    },
+    "status": {
+      "type": "Select",
+      "config": {
+        "options": ["live", "coming-soon"],
+        "default_value": "coming-soon",
+        "label": "Status"
+      }
+    },
+    "app_store_url": {
+      "type": "Text",
+      "config": {
+        "label": "App Store URL"
+      }
+    },
+    "play_store_url": {
+      "type": "Text",
+      "config": {
+        "label": "Google Play URL"
+      }
+    },
+    "web_url": {
+      "type": "Text",
+      "config": {
+        "label": "Web URL"
+      }
+    },
+    "sort_order": {
+      "type": "Number",
+      "config": {
+        "label": "Sort Order"
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ const HomePageTemplate = ({ data, location }) => {
 
   const serviceList = data?.allPrismicService?.nodes || [];
   const portfolioList = data?.allPrismicPortfolioItem?.nodes || [];
+  const productList = data?.allPrismicProduct?.nodes || [];
   const slogan = slogans.filter((s) => s.slogan?.text)[
     Math.floor(Math.random() * slogans.length)
   ];
@@ -53,7 +54,7 @@ const HomePageTemplate = ({ data, location }) => {
 
       {/* Products */}
       <section className="page-section" id="products">
-        <Products />
+        <Products productList={productList} />
       </section>
 
       {/* Dot divider */}
@@ -133,6 +134,23 @@ export const homePageQuery = graphql`
           description {
             text
           }
+        }
+      }
+    }
+    allPrismicProduct(sort: { data: { sort_order: ASC } }) {
+      nodes {
+        uid
+        data {
+          name {
+            text
+          }
+          tagline
+          description
+          status
+          app_store_url
+          play_store_url
+          web_url
+          sort_order
         }
       }
     }

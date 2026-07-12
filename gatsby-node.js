@@ -6,6 +6,7 @@ exports.createPages = async ({ graphql, actions }) => {
   // Define a template for blog post
   const homePage = path.resolve(`./src/templates/home-page.jsx`);
   const genericPage = path.resolve(`./src/templates/generic-page.jsx`);
+  const productPage = path.resolve(`./src/templates/product-page.jsx`);
 
   const homePageQueryResult = await graphql(
     `
@@ -73,4 +74,29 @@ exports.createPages = async ({ graphql, actions }) => {
       });
     });
   }
+
+  const productPageQueryResult = await graphql(
+    `
+      {
+        allPrismicProduct {
+          nodes {
+            id
+            uid
+          }
+        }
+      }
+    `
+  );
+
+  const products = productPageQueryResult.data.allPrismicProduct.nodes;
+
+  products.forEach((product) => {
+    createPage({
+      path: `/${product.uid}`,
+      component: productPage,
+      context: {
+        id: product.id,
+      },
+    });
+  });
 };

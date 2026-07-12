@@ -324,6 +324,51 @@ header.masthead .container {
   text-decoration: underline;
 }
 
+.product-landing {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+  padding: 2rem;
+}
+
+.product-landing__card {
+  max-width: 480px;
+  text-align: center;
+}
+
+.product-landing__name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.product-landing__tagline {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.product-landing__desc {
+  font-size: 1.05rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.product-landing__links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .product-card__status-dot {
   display: inline-block;
   width: 7px;

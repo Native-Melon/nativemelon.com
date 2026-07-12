@@ -40,25 +40,33 @@ const Portfolio = ({ portfolioList }) => {
         </div>
       ) : (
         <div className="row row-eq-height">
-          {portfolioList.map((portfolio) => (
-            <div key={portfolio.uid} className="col-lg-4 col-sm-6 mb-4">
-              <div className="portfolio-item">
-                <img
-                  className="img-fluid"
-                  src={portfolio?.data?.image?.url}
-                  alt={portfolio?.data?.image?.alt}
-                />
-                <div className="portfolio-caption">
-                  <div className="portfolio-caption-heading">
-                    {portfolio?.data?.title?.text}
+          {portfolioList.map((portfolio) => {
+            const projectUrl = portfolio?.data?.project_url;
+            const CardTag = projectUrl ? "a" : "div";
+            const cardProps = projectUrl
+              ? { href: projectUrl, target: "_blank", rel: "noopener noreferrer" }
+              : {};
+
+            return (
+              <div key={portfolio.uid} className="col-lg-4 col-sm-6 mb-4">
+                <CardTag className="portfolio-item" {...cardProps}>
+                  <img
+                    className="img-fluid"
+                    src={portfolio?.data?.image?.url}
+                    alt={portfolio?.data?.image?.alt}
+                  />
+                  <div className="portfolio-caption">
+                    <div className="portfolio-caption-heading">
+                      {portfolio?.data?.title?.text}
+                    </div>
+                    <div className="portfolio-caption-subheading text-muted">
+                      {portfolio?.data?.summary?.text}
+                    </div>
                   </div>
-                  <div className="portfolio-caption-subheading text-muted">
-                    {portfolio?.data?.summary?.text}
-                  </div>
-                </div>
+                </CardTag>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

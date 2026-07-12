@@ -6,7 +6,7 @@ import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 
 const ProductPageTemplate = ({ data }) => {
   const product = data.prismicProduct.data;
-  const { name, tagline, description, app_store_url, play_store_url, web_url } = product;
+  const { name, tagline, description, app_store_url, play_store_url, web_url, image } = product;
 
   const storeLinks = [
     app_store_url && { label: "App Store", href: app_store_url },
@@ -17,6 +17,13 @@ const ProductPageTemplate = ({ data }) => {
   return (
     <div className="product-landing">
       <div className="product-landing__card">
+        {image?.url && (
+          <img
+            className="product-landing__image"
+            src={image.url}
+            alt={image.alt || name.text}
+          />
+        )}
         <h1 className="product-landing__name">{name.text}</h1>
         <p className="product-landing__tagline">{tagline}</p>
         <p className="product-landing__desc">{description}</p>
@@ -64,6 +71,7 @@ export const productPageQuery = graphql`
         web_url
         image {
           url
+          alt
         }
       }
     }

@@ -151,6 +151,9 @@ export const homePageQuery = graphql`
           play_store_url
           web_url
           sort_order
+          image {
+            url
+          }
         }
       }
     }

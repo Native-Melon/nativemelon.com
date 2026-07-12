@@ -39,8 +39,10 @@ const ProductPageTemplate = ({ data }) => {
 };
 
 export const Head = ({ data }) => {
-  const { name, tagline } = data?.prismicProduct?.data || {};
-  return <Seo pageTitle={name?.text} description={tagline} />;
+  const { name, description, image } = data?.prismicProduct?.data || {};
+  return (
+    <Seo pageTitle={name?.text} slogan={description} image={image?.url} />
+  );
 };
 
 export default withPrismicPreview(ProductPageTemplate);
@@ -60,6 +62,9 @@ export const productPageQuery = graphql`
         app_store_url
         play_store_url
         web_url
+        image {
+          url
+        }
       }
     }
   }

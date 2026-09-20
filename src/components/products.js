@@ -58,6 +58,7 @@ const Products = ({ productList = [] }) => {
           const isLive = status === "live";
 
           const storeLinks = [
+            product.uid === "abjad" && { label: "Explore the app", href: "/abjad/", internal: true },
             app_store_url && { label: "App Store", href: app_store_url },
             play_store_url && { label: "Google Play", href: play_store_url },
             web_url && { label: "Open App", href: web_url },
@@ -80,13 +81,12 @@ const Products = ({ productList = [] }) => {
                     className="product-card__status-dot product-card__status-dot--live"
                     aria-hidden="true"
                   />
-                  {storeLinks.map(({ label, href }) => (
+                  {storeLinks.map(({ label, href, internal }) => (
                     <a
                       key={label}
                       href={href}
                       className="product-card__link"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                     >
                       {label} &rarr;
                     </a>

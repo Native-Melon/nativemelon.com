@@ -6,6 +6,8 @@ import { repositoryConfigs } from "./config/prismic/previews";
 import "./src/css/style.css";
 import './src/css/custom.css'
 
+export { wrapPageElement } from "./src/components/abjad/wrap-page-element";
+
 export const wrapRootElement = ({ element }) => (
   <PrismicPreviewProvider repositoryConfigs={repositoryConfigs}>
     {element}

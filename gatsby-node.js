@@ -1,6 +1,22 @@
 const path = require(`path`);
+const { createExplorePages } = require("./config/abjad/explore-pages");
 
-exports.createPages = async ({ graphql, actions }) => {
+// Ship only the public fields of the Abjad app manifest to the browser (see the loader for details).
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    module: {
+      rules: [
+        {
+          test: /app-manifest\.json$/,
+          type: "javascript/auto",
+          loader: require.resolve("./config/abjad/manifest-loader.js"),
+        },
+      ],
+    },
+  });
+};
+
+exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
 
   // Define a template for blog post
@@ -91,6 +107,9 @@ exports.createPages = async ({ graphql, actions }) => {
   const products = productPageQueryResult.data.allPrismicProduct.nodes;
 
   products.forEach((product) => {
+    // /abjad is the "Explore the app" experience (createExplorePages); the product document still feeds the home
+    // page grid and the explorer's store links, it just has no standalone page.
+    if (product.uid === "abjad") return;
     createPage({
       path: `/${product.uid}`,
       component: productPage,
@@ -99,4 +118,7 @@ exports.createPages = async ({ graphql, actions }) => {
       },
     });
   });
+
+  // Abjad "Explore the app": one page per screen/leaf, joined with Prismic + static media.
+  await createExplorePages({ graphql, actions, reporter });
 };

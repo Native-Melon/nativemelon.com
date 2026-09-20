@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore Abjad (mockup)</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Nunito:wght@600;700;800&family=Playfair+Display:wght@700&family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ───────────── Tokens (site palette from src/css/custom.css + Abjad accents) ───────────── */
+:root{
+  --charcoal:#242424; --coral:#E05C3A; --coral-d:#C4492A; --warm:#F9F5EE; --sage:#5E7A55; --tan:#C4A882;
+  --marigold:#F2A93B; --teal:#1F7F74; --indigo:#3E4C9E; --plum:#8A4B8C;
+  --paper:#FFF7E8; --line:#E6DCCB; --muted:#6B645B; --ink:#242424;
+  --f-head:'Playfair Display',Georgia,serif;
+  --f-body:'Roboto Slab',Georgia,serif;
+  --f-ar:'Cairo','Geeza Pro','Noto Naskh Arabic',system-ui,sans-serif;
+  --f-app:'Nunito','Cairo',system-ui,sans-serif;
+  --star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.1' opacity='.55'%3E%3Crect x='9' y='9' width='26' height='26'/%3E%3Crect x='9' y='9' width='26' height='26' transform='rotate(45 22 22)'/%3E%3Ccircle cx='22' cy='22' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  --star-dark:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23C4A882' stroke-width='1.1' opacity='.35'%3E%3Crect x='9' y='9' width='26' height='26'/%3E%3Crect x='9' y='9' width='26' height='26' transform='rotate(45 22 22)'/%3E%3Ccircle cx='22' cy='22' r='4'/%3E%3C/g%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--warm);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+button{font:inherit;color:inherit;cursor:pointer}
+.ar,[lang=ar]{font-family:var(--f-ar);line-height:1.7}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+/* ───────────── Site chrome (imitation of nativemelon.com navbar) ───────────── */
+.site-bar{background:var(--charcoal);color:#fff}
+.site-bar .in{max-width:1120px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:28px}
+.site-bar b{font-family:var(--f-body);font-weight:700;color:var(--coral);letter-spacing:.02em;font-size:18px}
+.site-bar a{color:rgba(255,255,255,.8);text-decoration:none;font-weight:500;letter-spacing:.05em;font-size:14px}
+.site-bar a.on{color:var(--coral)}
+.mock-tag{margin-inline-start:auto;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--coral);color:#fff;padding:3px 10px;border-radius:999px;font-weight:700}
+
+/* ───────────── Mockup option bar ───────────── */
+.opts{background:#fff;border-bottom:1px solid var(--line)}
+.opts .in{max-width:1120px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:12.5px}
+.opts label{display:flex;align-items:center;gap:8px;color:var(--muted)}
+.opts .k{font-weight:700;color:var(--ink);white-space:nowrap}
+.opts h2{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--coral-d)}
+.opts .link{background:none;border:0;color:var(--coral-d);text-decoration:underline;padding:0;font-size:12.5px}
+.notes{max-width:1120px;margin:0 auto;padding:0 24px 14px;font-size:13px;color:var(--muted)}
+.notes[hidden]{display:none}
+.notes h3{font-size:13px;margin:12px 0 4px;color:var(--ink)}
+.notes ul{margin:0;padding-inline-start:18px}
+.notes code{background:#f3ecdd;padding:0 4px;border-radius:4px;font-size:12px}
+
+/* segmented control */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:#fff;overflow:hidden}
+.seg button{border:0;background:transparent;padding:5px 12px;font-size:12.5px;white-space:nowrap;min-height:30px}
+.seg button[aria-pressed=true]{background:var(--charcoal);color:#fff;font-weight:700}
+.seg button + button{border-inline-start:1px solid var(--line)}
+.seg.big button{padding:7px 16px;font-size:14px;min-height:38px}
+
+/* ───────────── Page header ───────────── */
+.page-head{max-width:1120px;margin:0 auto;padding:22px 24px 0}
+.eyebrow-top{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral-d);font-weight:700;margin:0 0 6px}
+.page-head h1{font-family:var(--f-head);font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 6px;color:var(--charcoal)}
+.page-head p{margin:0;max-width:820px;color:var(--muted);font-size:15px}
+.dots{height:14px;margin:12px 0 0;background-image:radial-gradient(circle,var(--tan) 1.5px,transparent 1.5px);background-size:14px 14px;opacity:.7;max-width:210px}
+
+/* ───────────── Explorer shell (container for viewport-independent responsive) ───────────── */
+.wrap{overflow-x:auto}
+.shell{container:ex/inline-size;max-width:1120px;margin:0 auto;padding:8px 24px 72px}
+.shell[data-view=desktop]{width:1120px;max-width:none}
+.shell[data-view=mobile]{width:438px;max-width:none;padding:0 24px 72px;--dev-h:660px}
+.shell[data-view=mobile] .frame-label{display:block}
+.frame-label{display:none;text-align:center;font-size:12px;color:var(--muted);margin:14px 0 8px}
+.shell[data-view=mobile] .explore{border:1px solid var(--line);border-radius:26px;overflow:hidden;background:var(--warm);box-shadow:0 20px 50px -25px rgba(36,36,36,.45);padding:0}
+
+.explore{position:relative;display:grid;grid-template-columns:372px minmax(0,1fr);gap:56px;align-items:start;padding:14px 0}
+.explore[data-panel=start] .panel{order:-1}
+
+/* ───────────── Narration panel ───────────── */
+.panel{padding-top:8px;max-width:470px}
+.crumbs{display:flex;flex-wrap:wrap;gap:4px 2px;font-size:13px;margin-bottom:14px;min-height:22px}
+.crumbs button{background:none;border:0;padding:2px 4px;color:var(--muted);border-radius:6px;text-decoration:underline;text-decoration-color:transparent}
+.crumbs button:hover{color:var(--coral-d);text-decoration-color:currentColor}
+.crumbs span.cur{padding:2px 4px;font-weight:700;color:var(--ink)}
+.crumbs i{font-style:normal;color:var(--tan);padding:0 2px}
+.explore[dir=rtl] .crumbs i{display:inline-block;transform:scaleX(-1)}
+.p-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700;margin:0 0 4px}
+.explore[dir=rtl] .p-eyebrow{letter-spacing:0;font-size:14px}
+.p-title{font-family:var(--f-head);font-size:42px;line-height:1.12;margin:0 0 12px;color:var(--charcoal);overflow-wrap:anywhere}
+.explore[lang=ar] .p-title{font-family:var(--f-ar);font-weight:800;font-size:40px;line-height:1.5}
+.p-explain{font-size:17px;margin:0 0 14px;color:#3b3731}
+.p-stat{display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 14px;font-size:15px}
+.p-stat::before{content:"";width:18px;height:18px;background:var(--star-dark);background-size:44px;background-position:center;border-radius:50%;background-color:var(--coral);background-image:var(--star);background-size:22px}
+.p-stat:empty{display:none}
+.ctrls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:22px}
+.btn-all{border:2px solid var(--charcoal);background:#fff;border-radius:10px;padding:8px 16px;font-weight:700;min-height:40px;display:inline-flex;gap:8px;align-items:center;transition:transform .2s,box-shadow .2s}
+.btn-all:hover{transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,.12)}
+.sibs h4{margin:0 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.explore[dir=rtl] .sibs h4{letter-spacing:0;font-size:14px}
+.sibs div{display:flex;flex-wrap:wrap;gap:8px}
+.sibs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:14px;min-height:34px}
+.sibs button:hover{border-color:var(--coral);color:var(--coral-d)}
+
+/* ───────────── Phone ───────────── */
+.device{position:relative;justify-self:center;height:min(730px,calc(100dvh - 150px));min-height:600px;aspect-ratio:9/18.6;background:#1a1a1a;border-radius:48px;padding:11px;box-shadow:0 34px 60px -24px rgba(36,36,36,.55),inset 0 0 0 2px #3c3c3c;font-family:var(--f-app);position:sticky;top:20px}
+.device::before{content:"";position:absolute;top:19px;left:50%;transform:translateX(-50%);width:84px;height:22px;background:#000;border-radius:999px;z-index:30;pointer-events:none}
+.screen{position:relative;height:100%;border-radius:38px;overflow:hidden;background:var(--paper);isolation:isolate}
+.explore[lang=ar] .device{font-family:'Cairo','Nunito',system-ui,sans-serif}
+.explore[lang=ar] .device *{line-height:1.5}
+
+.pane{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--paper);background-image:var(--star-dark);background-size:44px;overflow:hidden}
+.pane.over{box-shadow:0 0 34px rgba(0,0,0,.22)}
+.bar{display:flex;align-items:center;gap:10px;padding:38px 14px 10px;min-height:88px;flex:none;background:linear-gradient(#FFEFCF,#FFF7E8);border-bottom:1px solid #f1e2c3}
+.bar-title{flex:1;font-weight:800;font-size:22px;color:var(--charcoal);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:var(--charcoal);display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.back:hover{background:#ffe8c4}
+.explore[dir=rtl] .back svg{transform:scaleX(-1)}
+.bar.home-bar{justify-content:center;background:linear-gradient(#FFD9A0,#FFF1D6)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:26px;color:var(--charcoal)}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--coral) var(--star);background-size:20px;box-shadow:0 2px 0 var(--coral-d)}
+
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 90px;scrollbar-width:thin;scrollbar-color:#d9c7a5 transparent}
+.scroll::-webkit-scrollbar{width:6px}.scroll::-webkit-scrollbar-thumb{background:#d9c7a5;border-radius:6px}
+.scroll.grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(126px,auto);gap:12px;align-content:start}
+
+/* Fallback tile: themed, zero media */
+.tile{position:relative;border:0;text-align:start;border-radius:20px;padding:12px 12px 12px;min-height:126px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;color:var(--fg,#fff);background:var(--star) center/44px,linear-gradient(150deg,var(--a),var(--b));overflow:hidden;box-shadow:0 5px 0 rgba(0,0,0,.14),0 10px 18px -8px rgba(0,0,0,.35);transition:transform .15s,box-shadow .15s}
+.tile.wide{grid-column:1/-1;min-height:104px}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--scrim,rgba(0,0,0,.3)),transparent 65%);pointer-events:none}
+.tile>*{position:relative;z-index:1}
+.tile:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.14)}
+.tile:hover{transform:translateY(-2px)}
+.glyph{position:absolute!important;z-index:0!important;inset-inline-end:-6px;top:-14px;font-family:var(--f-ar);font-weight:800;font-size:96px;line-height:1;opacity:.24;pointer-events:none}
+.t-title{font-weight:800;font-size:17px;line-height:1.2}
+.t-sub{font-size:13px;opacity:.92;font-weight:600}
+.t-meta{font-size:12px;font-weight:700;opacity:.95}
+.tile .chip{align-self:flex-start;margin-top:4px}
+
+/* Games list (tall scroll) */
+.scroll.list{padding-top:6px}
+.sec{position:sticky;top:-1px;z-index:3;margin:12px -14px 8px;padding:9px 16px;font-size:14px;font-weight:800;letter-spacing:.02em;color:#fff;background:var(--charcoal);display:flex;align-items:center;gap:10px}
+.sec::before{content:"";width:16px;height:16px;background:var(--coral) var(--star);background-size:20px;border-radius:4px;flex:none}
+.row{position:relative;display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:start;background:#fff;border-radius:16px;padding:9px 12px;margin-bottom:8px;min-height:58px;box-shadow:0 2px 0 #eadbbd;transition:transform .12s}
+.row:hover{transform:translateX(2px)}
+.explore[dir=rtl] .row:hover{transform:translateX(-2px)}
+.row .dotc{flex:none;width:34px;height:34px;border-radius:11px;background:var(--star) center/22px,linear-gradient(150deg,var(--a),var(--b))}
+.row .r-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.row .r-txt b{font-size:15.5px;font-weight:800;line-height:1.2;color:var(--charcoal)}
+.row .r-txt small{font-size:12.5px;color:var(--muted);font-weight:600}
+.row .chev{flex:none;color:#b9a88a}
+.explore[dir=rtl] .chev{transform:scaleX(-1)}
+.fade{position:absolute;inset-inline:0;bottom:0;height:80px;background:linear-gradient(transparent,var(--paper) 85%);pointer-events:none;z-index:4}
+.scrollcue{position:absolute;bottom:14px;inset-inline:0;margin:auto;width:max-content;z-index:5;background:var(--charcoal);color:#fff;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;pointer-events:none;animation:nudge 1.6s ease-in-out infinite}
+.pane.scrolled .scrollcue,.pane.scrolled .fade{opacity:0;transition:opacity .3s}
+@keyframes nudge{50%{transform:translateY(-5px)}}
+
+/* chips (tier badges) */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;line-height:1;padding:5px 9px;border-radius:999px;white-space:nowrap;background:#fff;color:var(--ink)}
+.chip.free{background:var(--sage);color:#fff}
+.chip.premium{background:var(--coral-d);color:#fff}
+.chip.world{background:var(--marigold);color:#2a1c05}
+.chip.tokens{background:var(--indigo);color:#fff}
+.chip.mixed{background:var(--teal);color:#fff}
+.chip.none{background:transparent;border:1px dashed #b7ab97;color:#8a8175;font-weight:700}
+.chip.lg{font-size:13px;padding:7px 12px}
+.chip .ic{width:10px;height:10px;border-radius:50%;background:currentColor;opacity:.85}
+.chip.premium .ic{border-radius:2px;transform:rotate(45deg)}
+.chip.free .ic{border-radius:50% 50% 50% 0;transform:rotate(-45deg)}
+
+/* Hotspot hint dots */
+.pulse{position:absolute;z-index:6;width:16px;height:16px;border-radius:50%;background:var(--coral);border:2.5px solid #fff;box-shadow:0 0 0 0 rgba(255,255,255,.8);animation:pulse 1.7s infinite;pointer-events:none}
+.tile .pulse,.row .pulse{inset-inline-end:10px;top:10px}
+.row .pulse{top:-4px;inset-inline-end:-4px;width:14px;height:14px}
+.tile:hover .pulse{animation-play-state:paused}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.8),0 0 0 0 rgba(224,92,58,.5)}70%{box-shadow:0 0 0 13px rgba(255,255,255,0),0 0 0 13px rgba(224,92,58,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(224,92,58,0)}}
+.explore[data-hints=off] .pulse,.explore[data-hints=off] .coach{display:none}
+.coach{position:absolute;z-index:7;bottom:16px;inset-inline:0;margin:auto;width:max-content;max-width:86%;background:rgba(36,36,36,.92);color:#fff;font-size:13px;font-weight:700;padding:8px 14px;border-radius:999px;display:flex;gap:8px;align-items:center;text-align:center}
+.coach::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 3px rgba(224,92,58,.4)}
+.pane.has-scrollcue .coach{display:none}
+
+/* ── Screenshot look (Home) ── */
+.shot{position:absolute;inset:0;direction:ltr;background:linear-gradient(#7FD0E8 0%,#BFE9F2 38%,#FFE7B0 62%,#F4C27A 100%);overflow:hidden}
+.shot .sun{position:absolute;width:120px;height:120px;border-radius:50%;background:#FFD24A;inset-inline-end:-30px;top:24%;box-shadow:0 0 0 18px rgba(255,210,74,.3)}
+.shot .dune{position:absolute;bottom:-40px;left:-20%;width:140%;height:34%;background:#E7A85F;border-radius:50% 50% 0 0}
+.shot .dune.b{left:-40%;bottom:-70px;background:#D68F45}
+.art{position:absolute;border-radius:16px;display:grid;place-items:center;text-align:center;font-family:var(--f-app);font-weight:800;color:#fff;font-size:20px;line-height:1.1;box-shadow:0 5px 0 rgba(0,0,0,.18);background-size:44px}
+.explore[lang=ar] .art{font-family:var(--f-ar)}
+.art.plain{background:var(--star) center/44px,linear-gradient(150deg,var(--a),var(--b))}
+.art.letters{direction:rtl;display:flex;gap:6px;background:none;box-shadow:none;padding:0}
+.art.letters span{flex:1;height:100%;border-radius:12px;display:grid;place-items:center;font-family:var(--f-ar);font-size:34px;font-weight:800;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.art.explorer{background:none;box-shadow:none}
+.art.explorer i{width:78%;aspect-ratio:1;border-radius:50%;background:#F7D9A8;border:5px solid #B5773A;position:relative;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.art.explorer i::before,.art.explorer i::after{content:"";position:absolute;top:38%;width:11%;aspect-ratio:1;border-radius:50%;background:#3b2a16}
+.art.explorer i::before{left:30%}.art.explorer i::after{right:30%}
+.art.explorer em{position:absolute;top:2%;width:64%;height:26%;background:var(--coral);border-radius:50% 50% 6px 6px;left:18%}
+.hot{position:absolute;z-index:6;border:2px dashed rgba(255,255,255,.98);border-radius:16px;background:rgba(224,92,58,.14);box-shadow:0 0 0 1.5px rgba(36,36,36,.45);padding:0;transition:background .15s}
+.hot:hover,.hot:focus-visible{background:rgba(224,92,58,.34)}
+.hot .pulse{top:7px;left:calc(100% - 24px)}
+.hot.flip .pulse{left:8px}
+.ph-chip{position:absolute;z-index:8;top:36px;left:50%;transform:translateX(-50%);background:rgba(36,36,36,.82);color:#fff;font:700 10.5px/1.2 ui-monospace,Menlo,monospace;padding:4px 9px;border-radius:999px;white-space:nowrap;direction:ltr}
+
+/* ── Leaf: clip + info card ── */
+.leaf{position:absolute;inset:0;display:flex;flex-direction:column;background:#111}
+.bar.overlay{position:absolute;z-index:12;inset-inline:0;top:0;background:none;border:0;min-height:0;padding-top:38px}
+.bar.overlay .back{background:rgba(255,255,255,.92)}
+.bar.overlay .bar-title{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);font-size:18px}
+.clip{position:absolute;inset:0;overflow:hidden;color:#fff;background:linear-gradient(120deg,var(--a),var(--b),var(--a));background-size:300% 300%;animation:hue 5s ease-in-out infinite}
+.clip::before{content:"";position:absolute;inset:-96px;background:var(--star);background-size:66px;animation:drift 2.5s linear infinite}
+@keyframes hue{50%{background-position:100% 50%}}
+@keyframes drift{to{transform:translate(66px,66px)}}
+.clip .art-stage{position:absolute;inset:0}
+.clip .b{position:absolute;border-radius:50%;background:rgba(255,255,255,.9);box-shadow:0 8px 0 rgba(0,0,0,.14);animation:bob 1.25s ease-in-out infinite}
+.clip .b1{width:60px;height:60px;top:27%;inset-inline-start:16%}
+.clip .b2{width:46px;height:46px;top:29%;inset-inline-end:18%;animation-delay:-.4s;background:rgba(255,255,255,.72)}
+.clip .b3{width:32px;height:32px;top:31%;inset-inline-start:46%;animation-delay:-.8s;background:rgba(255,255,255,.55)}
+@keyframes bob{50%{transform:translateY(-16px)}}
+.clip .finger{position:absolute;top:29%;inset-inline-start:34%;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.95);animation:hop 2.5s ease-in-out infinite}
+.clip .finger::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #fff;animation:tap 2.5s ease-out infinite}
+@keyframes hop{0%{transform:translate(0,0)}40%{transform:translate(50px,-16px)}70%{transform:translate(50px,-16px) scale(.85)}100%{transform:translate(0,0)}}
+@keyframes tap{0%,55%{transform:scale(.6);opacity:0}60%{opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.clip .tag{position:absolute;z-index:3;top:100px;inset-inline-start:14px;display:flex;align-items:center;gap:6px;font:700 11px/1 ui-monospace,Menlo,monospace;background:rgba(0,0,0,.5);padding:5px 9px;border-radius:999px;direction:ltr}
+.clip .tag i{width:8px;height:8px;border-radius:50%;background:#ff5d5d;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.loopbar{position:absolute;z-index:3;top:88px;inset-inline:14px;height:4px;border-radius:4px;background:rgba(255,255,255,.3);overflow:hidden}
+.loopbar i{display:block;height:100%;background:#fff;transform-origin:left;animation:loopbar 2.5s linear infinite}
+.explore[dir=rtl] .loopbar i{transform-origin:right}
+@keyframes loopbar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.clip .cname{position:absolute;z-index:3;top:19%;inset-inline:0;text-align:center;font-weight:800;font-size:28px;text-shadow:0 3px 0 rgba(0,0,0,.2);pointer-events:none}
+.clip.poster{animation:none;background:linear-gradient(150deg,var(--a),var(--b))}
+.clip.poster::before{animation:none;opacity:.6}
+.clip.poster .pglyph{position:absolute;inset:0;display:grid;place-items:center;top:-12%;font-family:var(--f-ar);font-weight:800;font-size:170px;opacity:.9;color:rgba(255,255,255,.35)}
+.clip.poster .pmsg{position:absolute;top:100px;inset-inline:0;text-align:center;font-weight:800;font-size:14px;background:none}
+.clip.poster .pmsg span{background:rgba(0,0,0,.48);padding:6px 14px;border-radius:999px;display:inline-block}
+
+.sheet{position:absolute;z-index:10;inset-inline:0;bottom:0;max-height:64%;display:flex;flex-direction:column;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -14px 34px rgba(0,0,0,.28);transition:transform .5s cubic-bezier(.2,.9,.25,1);color:var(--ink)}
+.sheet[data-state=hidden]{transform:translateY(105%)}
+.sheet[data-state=peek]{transform:translateY(calc(100% - 96px))}
+.handle{flex:none;border:0;background:none;padding:10px 0 4px;display:grid;place-items:center;width:100%;min-height:26px}
+.handle i{width:44px;height:5px;border-radius:5px;background:#d7ccb9}
+.sheet-in{overflow-y:auto;padding:0 18px 22px;scrollbar-width:thin}
+.s-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.s-head h2{margin:0;font-size:24px;line-height:1.15;font-weight:800}
+.s-head small{display:block;color:var(--muted);font-weight:700;font-size:14px;margin-top:2px}
+.sheet h3{margin:16px 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);font-weight:800}
+.explore[lang=ar] .sheet h3{letter-spacing:0;font-size:14px}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:8px}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;font-size:15px;font-weight:600;line-height:1.4}
+.steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--coral-d);color:#fff;font-weight:800;display:grid;place-items:center;font-size:14px}
+.explore[lang=ar] .steps li::before{content:counter(s,arabic-indic)}
+.lens-box{border-radius:14px;padding:12px 14px;font-size:14.5px}
+.lens-box p{margin:0 0 8px}.lens-box p:last-child{margin:0}
+.lens-box .lbl{font-weight:800}
+.lens-parent{background:#FFF0E9;border-inline-start:5px solid var(--coral)}
+.lens-teacher{background:#ECEFFB;border-inline-start:5px solid var(--indigo)}
+.lens-teacher .who{display:inline-block;background:var(--indigo);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.tag-line{margin:0 0 10px;font-size:14.5px;line-height:1.45;color:#4a443c}
+.explore[lang=ar] .tag-line{line-height:1.7}
+.word-row{margin:0 0 4px}
+.word{display:inline-flex;align-items:center;gap:10px;background:#FFF3D6;border:1px solid #efd79c;border-radius:14px;padding:2px 14px}
+.word small{font-size:11.5px;font-weight:800;color:#7a5a12;letter-spacing:.04em}
+.word b{font-family:var(--f-ar);font-size:24px;line-height:1.5;font-weight:800}
+.also{display:flex;flex-wrap:wrap;gap:8px}
+.also button{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:6px 12px;font-weight:700;font-size:14px}
+.cta{margin-top:16px;padding-top:14px;border-top:1px dashed #dccdb1}
+.cta p{margin:0 0 10px;font-weight:700;font-size:14px}
+.stores{display:flex;gap:8px;flex-wrap:wrap}
+.store{flex:1 1 130px;text-decoration:none;background:var(--charcoal);color:#fff;border-radius:12px;padding:8px 12px;display:flex;flex-direction:column;line-height:1.15;min-height:48px;justify-content:center;transition:transform .2s,background .2s}
+.store:hover{background:#000;transform:translateY(-2px)}
+.store small{font-size:10.5px;opacity:.8;font-weight:600}
+.store b{font-size:16px;font-weight:800}
+
+/* Info-card variant B: card replaces the screen (clip becomes a header strip) */
+.explore[data-card=page] .clip{position:relative;flex:none;height:34%;inset:auto}
+.explore[data-card=page] .clip .cname{display:none}
+.explore[data-card=page] .clip .b1,.explore[data-card=page] .clip .b2,.explore[data-card=page] .clip .b3,.explore[data-card=page] .clip .finger{top:62%}
+.explore[data-card=page] .clip .tag{top:84px}
+.explore[data-card=page] .sheet{position:relative;flex:1;min-height:0;max-height:none;transform:none!important;border-radius:26px 26px 0 0;margin-top:-20px}
+.explore[data-card=page] .handle{display:none}
+.explore[data-card=page] .sheet-in{padding-top:16px}
+.explore[data-card=page] .loopbar{top:72px}
+
+/* ───────────── Overview ───────────── */
+.overview{position:absolute;inset:0;z-index:40;background:var(--warm);border:1px solid var(--line);box-shadow:0 20px 50px -30px rgba(36,36,36,.5);overflow:auto;padding:26px 24px 40px;border-radius:14px;animation:ovin .3s ease-out}
+.overview[hidden]{display:none}
+@keyframes ovin{from{opacity:0;transform:translateY(10px)}}
+.ov-head{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;margin-bottom:6px}
+.ov-head h2{font-family:var(--f-head);font-size:32px;margin:0;flex:1 1 260px}
+.explore[lang=ar] .ov-head h2{font-family:var(--f-ar);font-weight:800}
+.ov-sub{margin:0 0 16px;color:var(--muted);font-size:15px}
+.close-x{border:2px solid var(--charcoal);background:#fff;border-radius:10px;padding:6px 14px;font-weight:700;min-height:38px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:700;min-height:34px}
+.filters button[aria-pressed=true]{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+.ov-grid{columns:280px;column-gap:18px}
+.ov-card{break-inside:avoid;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:18px}
+.ov-card>h3{margin:0 0 10px;font-size:18px;display:flex;align-items:center;gap:10px}
+.ov-card>h3 button{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;flex:1}
+.ov-card>h3 button:hover{color:var(--coral-d)}
+.ov-card>h3 button:focus-visible{outline:3px solid var(--coral)}
+.ov-card>h3::before{content:"";flex:none;width:18px;height:18px;background:var(--coral) var(--star);background-size:22px;border-radius:5px}
+.ov-grp{margin:12px 0 0;padding-top:10px;border-top:1px dashed #e4d7bf}
+.ov-grp h4{margin:0 0 8px;font-size:14.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ov-grp h4 button{all:unset;cursor:pointer;font-weight:700}
+.ov-grp h4 button:hover{color:var(--coral-d);text-decoration:underline}
+.ov-grp h4 button:focus-visible{outline:3px solid var(--coral)}
+.mirror{font-size:13px;color:var(--muted);margin:0}
+.mirror button{all:unset;cursor:pointer;color:var(--coral-d);text-decoration:underline;font-weight:700}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:5px 9px;font-size:13.5px;font-weight:700;transition:opacity .2s,transform .15s;min-height:32px}
+.pill:hover{border-color:var(--coral);transform:translateY(-1px)}
+.pill.dim{opacity:.22}
+.pill .chip{font-size:10.5px;padding:3px 7px}
+.sup{color:var(--coral-d);font-weight:800;margin-inline-start:1px}
+.legend{margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* ───────────── Mobile layout (container query, so it also works inside the preview frame) ───────────── */
+@container ex (max-width:760px){
+  .explore{grid-template-columns:1fr;gap:0;padding:0}
+  .explore .panel{order:-1}
+  .panel{max-width:none;padding:12px 16px 10px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+  .crumbs,.p-eyebrow,.sibs{display:none}
+  .p-title{font-size:22px;margin:0;grid-row:1;grid-column:1}
+  .explore[lang=ar] .p-title{font-size:21px;line-height:1.5}
+  .p-explain{grid-row:2;grid-column:1/-1;font-size:13.5px;margin:0;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .p-stat{grid-row:4;grid-column:1/-1;margin:2px 0 0;font-size:13px;padding:4px 10px;justify-self:start}
+  .ctrls{display:contents}
+  .btn-all{grid-row:1;grid-column:2;min-height:34px;padding:4px 10px;font-size:13px;border-width:1.5px}
+  .ctrls .seg{grid-row:3}
+  .ctrls .seg[data-opt=lens]{grid-column:1;justify-self:start}
+  .ctrls .seg[data-opt=lang]{grid-column:2}
+  .ctrls .seg button{padding:4px 11px;font-size:12.5px;min-height:30px}
+  .device{position:relative;top:0;height:var(--dev-h,calc(100dvh - 240px));min-height:520px;aspect-ratio:auto;width:100%;border-radius:0;padding:0;box-shadow:none;background:none}
+  .device::before{display:none}
+  .screen{border-radius:0}
+  .bar{padding-top:14px;min-height:64px}
+  .bar.overlay{padding-top:14px}
+  .clip .tag{top:70px}.loopbar{top:60px}
+  .clip.poster .pmsg{top:70px}
+  .explore[data-card=page] .clip .tag{top:56px}
+  .explore[data-card=page] .loopbar{top:48px}
+  .ph-chip{top:12px}
+  .overview{border-radius:0;padding:18px 14px 30px}
+  .ov-head h2{font-size:24px}
+}
+@media (max-width:760px){
+  .page-head{padding:22px 16px 0}.page-head p{font-size:14.5px}.dots{margin-top:14px}
+  .shell{padding:8px 0 40px}
+  .site-bar .in,.opts .in,.notes{padding-inline:16px}
+  .site-bar .in a.hide-m{display:none}
+}
+@container ex (min-width:761px) and (max-width:980px){
+  .explore{grid-template-columns:352px minmax(0,1fr);gap:32px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .pulse{box-shadow:0 0 0 6px rgba(255,255,255,.65)!important}
+  .loopbar i{transform:scaleX(1)!important}
+  .scrollcue{animation:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="site-bar" aria-label="Site (imitation)">
+  <div class="in">
+    <b>Native Melon</b>
+    <a class="hide-m" href="#" onclick="return false">About</a>
+    <a class="hide-m" href="#" onclick="return false">Services</a>
+    <a class="on" href="#" onclick="return false">Products</a>
+    <a class="hide-m" href="#" onclick="return false">Contact</a>
+    <span class="mock-tag">Mockup</span>
+  </div>
+</nav>
+
+<section class="opts" aria-label="Mockup options">
+  <div class="in">
+    <h2>Design options</h2>
+    <label><span class="k">Info card</span>
+      <span class="seg" data-opt="card"><button data-v="sheet">Bottom sheet ★</button><button data-v="page">Replaces screen</button></span></label>
+    <label><span class="k">Narration</span>
+      <span class="seg" data-opt="panel"><button data-v="end">After phone ★</button><button data-v="start">Before phone</button></span></label>
+    <label><span class="k">Home screen</span>
+      <span class="seg" data-opt="home"><button data-v="shot">Screenshot + hotspots</button><button data-v="grid">Fallback grid</button></span></label>
+    <label><span class="k">Leaf media</span>
+      <span class="seg" data-opt="media"><button data-v="clip">Clip (placeholder)</button><button data-v="none">No media yet</button></span></label>
+    <label><span class="k">Viewport</span>
+      <span class="seg" data-opt="view"><button data-v="auto">Auto</button><button data-v="desktop">Desktop</button><button data-v="mobile">Mobile</button></span></label>
+    <button class="link" id="replay">Replay hints</button>
+    <button class="link" id="notes-btn" aria-expanded="false" aria-controls="notes">Data notes</button>
+  </div>
+  <div class="notes" id="notes" hidden></div>
+</section>
+
+<header class="page-head">
+  <p class="eyebrow-top">Abjad · Explore</p>
+  <h1>Explore the Abjad app</h1>
+  <p>Tap through the app the way your child would. Every activity has a short preview and a plain-language note on what it teaches.</p>
+  <div class="dots" aria-hidden="true"></div>
+</header>
+
+<div class="wrap">
+<main class="shell" id="shell" data-view="auto">
+  <p class="frame-label">Mobile browser preview · 390 px wide</p>
+  <div class="explore" id="explore" dir="ltr" lang="en" data-card="sheet" data-panel="end" data-hints="on">
+    <div class="device" id="device">
+      <div class="screen" id="screen"></div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+    <section class="overview" id="overview" hidden aria-label="Everything in Abjad"></section>
+  </div>
+</main>
+</div>
+
+<script>
+(() => {
+'use strict';
+/* ═════════ REAL DATA: parts of src/data/abjad/app-manifest.json (embedded by the build step; do not edit here) ═════════ */
+const MANIFEST = {"appBuild":"26092002","nodes":[
+    {"id":"home","parent":null,"kind":"root","route":"Home","title":{"en":"Abjad Home","ar":"أبجد"},"summary":{"en":"The child's home base: jump into Adventure, Songs, Exercises or Arcade, check today's Daily Quest, or open the parent dashboard.","ar":"الصفحة الرئيسية للطفل: تنقّل بين خريطة المغامرة والأناشيد والتمارين والألعاب، وتابع تحدي اليوم، وافتح صفحة الإنجازات."}},
+    {"id":"daily-quest","parent":"home","kind":"feature","route":"DailyQuest","title":{"en":"Daily Quest","ar":"تحدي اليوم"},"summary":{"en":"A fresh set of short exercises every day, with a bonus reward wheel when they are all done.","ar":"مجموعة جديدة من التمارين القصيرة كل يوم، مع عجلة جوائز إضافية عند إنهائها جميعًا."},"howToPlay":{"en":["Tap the Daily Quest banner on Home.","Play each exercise on today's list.","Finish them all to spin the reward wheel for bonus coins."],"ar":["اضغط على لافتة «تحدي اليوم» في الصفحة الرئيسية.","العب كل تمرين في قائمة اليوم.","أنهِها كلها لتدير عجلة الجوائز وتربح عملات إضافية."]},"teaches":{"en":"Builds a daily learning habit. Premium quests adapt to the letters a child has practiced least.","ar":"يبني عادة تعلّم يومية. وفي النسخة الكاملة يتكيّف التحدي مع الحروف الأقل تدريبًا عند الطفل."},"tier":"mixed"},
+    {"id":"adventure","parent":"home","kind":"hub","route":"AdventureWorldSelect","title":{"en":"Adventure Map","ar":"خريطة المغامرة"},"summary":{"en":"The world map: four free worlds that together cover all 28 Arabic letters, plus four extra worlds (Countries, Colors, Numbers, Careers) to unlock with coins.","ar":"خريطة العوالم: أربعة عوالم مجانية تغطي معًا الحروف العربية الثمانية والعشرين، وأربعة عوالم إضافية (البلدان والألوان والأرقام والمهن) تُفتح بالعملات."}},
+    {"id":"songs","parent":"home","kind":"hub","route":"Songs","title":{"en":"Songs","ar":"أناشيد"},"summary":{"en":"Video songs: an alphabet song, plus one song per world that unlocks as the child completes that world.","ar":"أناشيد مصوّرة: أنشودة للحروف، وأغنية لكل عالم تُفتح عند إكمال ذلك العالم."}},
+    {"id":"games","parent":"home","kind":"hub","route":"Games","title":{"en":"Exercises","ar":"تمارين"},"summary":{"en":"Every learning exercise in one place, grouped into Letters, Colors, Numbers, Arab Countries and Careers.","ar":"كل التمارين التعليمية في مكان واحد، مقسّمة إلى الحروف والألوان والأرقام والبلدان العربية والمهن."}},
+    {"id":"arcade","parent":"home","kind":"hub","route":"Arcade","title":{"en":"Games","ar":"ألعاب"},"summary":{"en":"Just-for-fun games played with tokens. Children exchange the coins they earn from learning for tokens.","ar":"ألعاب للمرح فقط تُلعب بالتذاكر، ويستبدل الطفل العملات التي يجمعها من التعلّم بتذاكر."}},
+    {"id":"progress","parent":"home","kind":"parents","route":"Progress","title":{"en":"My Progress","ar":"إنجازاتي"},"summary":{"en":"A parent dashboard: progress per letter, stars, streaks, coins collected and a certificate to celebrate milestones.","ar":"صفحة متابعة للأهل: التقدّم في كل حرف، والنجوم، والأيام المتتالية، والعملات المجموعة، وشهادة للاحتفال بالإنجازات."},"tier":"premium"},
+    {"id":"settings","parent":"home","kind":"parents","route":"Settings","title":{"en":"Settings","ar":"الإعدادات"},"summary":{"en":"Sound, language, reminders, child profiles and restoring purchases. Adding extra child profiles is a premium feature.","ar":"الصوت واللغة والتذكيرات وملفات الأطفال واستعادة المشتريات. إضافة ملفات أطفال أخرى من ميزات النسخة الكاملة."},"tier":"free"},
+    {"id":"alphabet-grid","parent":"home","kind":"feature","route":"AlphabetGrid","title":{"en":"The Alphabet","ar":"الحروف"},"summary":{"en":"All 28 letters in one grid. Tap a letter to see it up close with its example word and vowel marks.","ar":"الحروف الثمانية والعشرون في شبكة واحدة. اضغط على أي حرف لتراه عن قرب مع كلمته وحركاته."},"howToPlay":{"en":["Tap the Arabic letters on Home to open the grid.","Tap any letter to hear its name and example word.","Try the three vowel marks, or jump to tracing the letter."],"ar":["اضغط على الحروف العربية في الصفحة الرئيسية لفتح الشبكة.","اضغط على أي حرف لتسمع اسمه وكلمته.","جرّب الحركات الثلاث، أو انتقل إلى تتبّع الحرف."]},"teaches":{"en":"Letter names, sounds and example words, and how the short vowel marks change a letter's sound.","ar":"أسماء الحروف وأصواتها وكلماتها، وكيف تغيّر الحركات القصيرة صوت الحرف."},"tier":"free"},
+    {"id":"explorer","parent":"home","kind":"hub","title":{"en":"Explorer","ar":"المستكشف"},"summary":{"en":"The child's explorer character. Tap it on Home to open stickers, the drawing board and the wardrobe.","ar":"شخصية المستكشف. اضغط عليها في الصفحة الرئيسية لتفتح الملصقات ولوحة الرسم وخزانة الملابس."}},
+    {"id":"sticker-album","parent":"explorer","kind":"feature","route":"AdventureAlbum","title":{"en":"My Stickers","ar":"ملصقاتي"},"summary":{"en":"Every sticker the child has earned, plus a store to spend coins on more stickers and backdrops.","ar":"كل الملصقات التي جمعها الطفل، ومتجر لإنفاق العملات على ملصقات وخلفيات جديدة."},"howToPlay":{"en":["Earn stickers by finishing letter stations and worlds.","Spend coins in the sticker store.","Unlock backdrops to use on the drawing board."],"ar":["اكسب الملصقات بإكمال محطات الحروف والعوالم.","أنفق عملاتك في متجر الملصقات.","افتح خلفيات جديدة لاستخدامها في لوحة الرسم."]},"teaches":{"en":"Motivation to keep learning; each sticker shows an animal or object from the letter words.","ar":"الحافز على مواصلة التعلّم؛ كل ملصق يُظهر حيوانًا أو شيئًا من كلمات الحروف."},"tier":"mixed"},
+    {"id":"drawing-board","parent":"explorer","kind":"feature","route":"StickerCanvas","title":{"en":"Drawing Board","ar":"لوحة الرسم"},"summary":{"en":"A free-play canvas: pick a backdrop, place stickers, and save or share the picture.","ar":"مساحة رسم حرّة: اختر خلفية، وضع الملصقات، ثم احفظ الصورة أو شاركها."},"howToPlay":{"en":["Choose a background scene.","Drag stickers from the tray onto the board.","Save the picture to Photos or share it."],"ar":["اختر مشهدًا للخلفية.","اسحب الملصقات من الصندوق إلى اللوحة.","احفظ الصورة في الصور أو شاركها."]},"teaches":{"en":"Creativity, storytelling and fine motor control.","ar":"الإبداع وسرد القصص والتحكّم الحركي الدقيق."},"tier":"free"},
+    {"id":"wardrobe","parent":"explorer","kind":"feature","route":"AdventureWardrobe","title":{"en":"Wardrobe","ar":"خزانة الملابس"},"summary":{"en":"Dress the explorer in hats, outfits and accessories earned or bought along the way.","ar":"ألبس المستكشف قبعات وأزياء وإكسسوارات يكسبها الطفل أو يشتريها أثناء رحلته."},"howToPlay":{"en":["Open the Wardrobe from the Explorer.","Pick a hat, outfit or accessory you own.","Your explorer wears it in every world."],"ar":["افتح خزانة الملابس من المستكشف.","اختر قبعة أو زيًّا أو إكسسوارًا تملكه.","يرتديه المستكشف في كل العوالم."]},"teaches":{"en":"Motivation and ownership; some careers have matching outfits.","ar":"الحافز والشعور بالملكية؛ وبعض المهن لها أزياء تناسبها."},"tier":"mixed"},
+    {"id":"world-desert","parent":"adventure","kind":"world","route":"AdventureMap","title":{"en":"Desert World","ar":"عالم الصحراء"},"summary":{"en":"First world: seven letters on a winding path. Each letter is a station with Meet, Trace and Find challenges. Finish the world for a sticker, a reward spin and a song.","ar":"العالم الأول: سبعة حروف على مسار متعرّج. كل حرف محطة فيها ثلاثة تحديات: تعرّف وتتبّع وجِد. أكمل العالم لتنال ملصقًا وعجلة جوائز وأغنية."},"tier":"free"},
+    {"id":"world-oasis","parent":"adventure","kind":"world","route":"AdventureMap","title":{"en":"Oasis World","ar":"عالم الواحة"},"summary":{"en":"Second world: seven more letters, with words themed to the oasis. Same three challenges per station, plus chests along the path.","ar":"العالم الثاني: سبعة حروف أخرى بكلمات من عالم الواحة. التحديات الثلاثة نفسها في كل محطة، مع صناديق على المسار."},"tier":"free"},
+    {"id":"world-mountain","parent":"adventure","kind":"world","route":"AdventureMap","title":{"en":"Mountain World","ar":"عالم الجبال"},"summary":{"en":"Third world: seven more letters, with words themed to the mountains. Finish it to earn the world sticker and unlock its song.","ar":"العالم الثالث: سبعة حروف أخرى بكلمات من عالم الجبال. أكمله لتنال ملصق العالم وتفتح أغنيته."},"tier":"free"},
+    {"id":"world-sea","parent":"adventure","kind":"world","route":"AdventureMap","title":{"en":"Sea World","ar":"عالم البحر"},"summary":{"en":"Fourth world: the final seven letters, with words themed to the sea. Completing it finishes the whole alphabet.","ar":"العالم الرابع: آخر سبعة حروف بكلمات من عالم البحر. إكماله يعني إنهاء الأبجدية كاملة."},"tier":"free"},
+    {"id":"bonus-challenge","parent":"world-desert","kind":"activity","route":"BonusChallenge","title":{"en":"Bonus Challenge","ar":"تحدي إضافي"},"summary":{"en":"An extra listening round on a letter station. Premium feature.","ar":"جولة استماع إضافية في محطة الحرف، من ميزات النسخة الكاملة."},"howToPlay":{"en":["Open a letter station on the Adventure map.","Tap Bonus Challenge and listen to the letter.","Pick the letter you heard to earn a bonus reward."],"ar":["افتح محطة حرف على خريطة المغامرة.","اضغط «تحدي إضافي» واستمع إلى الحرف.","اختر الحرف الذي سمعته لتنال مكافأة إضافية."]},"teaches":{"en":"Listening discrimination and letter-sound recognition.","ar":"التمييز السمعي والربط بين الحرف وصوته."},"tier":"premium"},
+    {"id":"treasure-chests","parent":"world-desert","kind":"feature","title":{"en":"Treasure Chests","ar":"صناديق الكنز"},"summary":{"en":"Chests along each Adventure path hold coins. Coins buy stickers, arcade tokens and extra worlds.","ar":"تحمل الصناديق على مسارات المغامرة عملات. تشتري بالعملات ملصقات وتذاكر ألعاب وعوالم إضافية."},"howToPlay":{"en":["Progress along the path to unlock a chest.","Tap the chest to open it and collect the coins.","Spend coins on stickers, arcade tokens or a new world."],"ar":["تقدّم على المسار لتُفتح الصناديق.","اضغط على الصندوق لتفتحه وتجمع العملات.","أنفق العملات على ملصقات أو تذاكر ألعاب أو عالم جديد."]},"tier":"mixed"},
+    {"id":"world-countries","parent":"adventure","kind":"world","route":"CountriesMap","title":{"en":"Arab Countries World","ar":"عالم البلدان العربية"},"summary":{"en":"22 Arab countries. Each station introduces a country's flag, capital, landmark and map, then asks the child to identify and remember them.","ar":"٢٢ دولة عربية. كل محطة تقدّم علم الدولة وعاصمتها ومعلمها وخريطتها، ثم يُطلب من الطفل أن يعرّفها ويتذكّرها."},"tier":"world","coinCost":300},
+    {"id":"countries-quiz","parent":"world-countries","kind":"activity","route":"CountriesQuiz","title":{"en":"Countries Quiz","ar":"اختبار الدول"},"summary":{"en":"A nine-question review of the countries the child has met: flags, names and capitals. Unlocks after meeting five countries.","ar":"مراجعة من تسعة أسئلة عن الدول التي تعرّف عليها الطفل: الأعلام والأسماء والعواصم. تُفتح بعد التعرّف على خمس دول."},"howToPlay":{"en":["Meet at least five countries on the map.","Listen or look, then pick the right country name, flag or capital.","Finish all nine questions to earn stars and coins."],"ar":["تعرّف على خمس دول على الأقل من الخريطة.","استمع أو شاهد، ثم اختر اسم الدولة أو علمها أو عاصمتها.","أجب عن الأسئلة التسعة لتنال النجوم والعملات."]},"teaches":{"en":"Geography: flags, country names and capital cities, reinforced with spoken audio.","ar":"الجغرافيا: الأعلام وأسماء الدول والعواصم، مع دعم بالصوت."},"tier":"world"},
+    {"id":"countries-wheel","parent":"world-countries","kind":"activity","route":"SpinWheelGame","title":{"en":"Country Wheel","ar":"عجلة الدول"},"summary":{"en":"Spin a wheel of country pictures, then pick the Arabic word that matches where it lands.","ar":"أدر عجلة صور الدول، ثم اختر الكلمة العربية المطابقة لما تتوقف عنده."},"howToPlay":{"en":["Tap to spin the wheel.","See which picture it lands on.","Pick the matching Arabic word from the five options."],"ar":["اضغط لتدير العجلة.","شاهد الصورة التي تتوقف عندها.","اختر الكلمة العربية المطابقة من الخيارات الخمسة."]},"teaches":{"en":"Country names and reading Arabic words.","ar":"أسماء الدول وقراءة الكلمات العربية."},"tier":"world"},
+    {"id":"world-colors","parent":"adventure","kind":"world","route":"ColorsWorld","title":{"en":"Colors World","ar":"عالم الألوان"},"summary":{"en":"An art-studio hub with seven activities that teach color names and how colors mix.","ar":"مرسم فنّي بسبعة أنشطة تعلّم أسماء الألوان وكيف تمتزج."},"tier":"world","coinCost":300},
+    {"id":"colors-match","parent":"world-colors","kind":"activity","route":"ColorsMatchGame","title":{"en":"Match the Color","ar":"طابق اللون"},"summary":{"en":"Match each color to the word that names it.","ar":"طابق كل لون بالكلمة التي تسمّيه."},"howToPlay":{"en":["Tap a color.","Tap the word that names it.","Match every pair to finish."],"ar":["اضغط على لون.","اضغط على الكلمة التي تسمّيه.","طابق كل الأزواج لتنهي اللعبة."]},"teaches":{"en":"Color names and matching colors to Arabic words.","ar":"أسماء الألوان وربط اللون بالكلمة العربية."},"tier":"world"},
+    {"id":"colors-find","parent":"world-colors","kind":"activity","route":"ColorsFindGame","title":{"en":"Find the Color","ar":"أوجد اللون"},"summary":{"en":"Spot the right color for a word, or the right word for a color.","ar":"اعثر على اللون المناسب لكلمة، أو الكلمة المناسبة للون."},"howToPlay":{"en":["Read the prompt: a color word or a color.","Tap the matching color swatch or word.","Answer every round to finish."],"ar":["اقرأ السؤال: كلمة لون أو لون.","اضغط على اللون أو الكلمة المطابقة.","أجب عن كل الجولات لتنهي اللعبة."]},"teaches":{"en":"Recognizing color names in Arabic.","ar":"التعرّف على أسماء الألوان بالعربية."},"tier":"world"},
+    {"id":"colors-tap","parent":"world-colors","kind":"activity","route":"ColorsTapGallery","title":{"en":"Tap to Color","ar":"لوّن باللمس"},"summary":{"en":"Color in fun pictures: pick a color, then tap a shape to fill it. Ten scenes from a fruit bowl to a snowman.","ar":"لوّن صورًا ممتعة: اختر لونًا ثم المس شكلًا ليمتلئ به. عشرة مشاهد من سلّة الفاكهة إلى رجل الثلج."},"howToPlay":{"en":["Choose a picture from the gallery.","Pick a color.","Tap a shape to color it."],"ar":["اختر صورة من المعرض.","اختر لونًا.","المس شكلًا لتلوّنه."]},"teaches":{"en":"Color names, creativity and fine motor control.","ar":"أسماء الألوان والإبداع والتحكّم الحركي الدقيق."},"tier":"world"},
+    {"id":"colors-recall","parent":"world-colors","kind":"activity","route":"ColorsRecallGame","title":{"en":"Color Recall","ar":"تذكّر الألوان"},"summary":{"en":"Memorize a sequence of colors, then tap them back in the same order.","ar":"احفظ تسلسلًا من الألوان ثم اضغط عليها بالترتيب نفسه."},"howToPlay":{"en":["Watch the colors light up.","Remember the order.","Tap the colors back in the same order."],"ar":["شاهد الألوان وهي تضيء.","تذكّر ترتيبها.","اضغط على الألوان بالترتيب نفسه."]},"teaches":{"en":"Working memory and color names.","ar":"الذاكرة العاملة وأسماء الألوان."},"tier":"world"},
+    {"id":"colors-sort","parent":"world-colors","kind":"activity","route":"ColorsSortGame","title":{"en":"Sort by Color","ar":"رتّب حسب اللون"},"summary":{"en":"Drag each ball into the bin that matches its color.","ar":"اسحب كل كرة إلى الصندوق المطابق للونها."},"howToPlay":{"en":["See the balls scattered on screen.","Drag a ball toward its matching bin.","Sort them all to finish."],"ar":["شاهد الكرات المبعثرة على الشاشة.","اسحب كل كرة نحو صندوقها.","رتّبها كلها لتنهي اللعبة."]},"teaches":{"en":"Sorting and classifying by color.","ar":"التصنيف والفرز حسب اللون."},"tier":"world"},
+    {"id":"colors-mix","parent":"world-colors","kind":"activity","route":"ColorsMixGame","title":{"en":"Mix Colors","ar":"امزج الألوان"},"summary":{"en":"Drag two colors together to mix a new one, then make target colors on request.","ar":"اسحب لونين معًا لتصنع لونًا جديدًا، ثم اصنع اللون المطلوب."},"howToPlay":{"en":["Drag one primary color onto another.","Watch them blend into a new color.","After some free mixing, make the target color you are shown."],"ar":["اسحب لونًا أساسيًا فوق لون آخر.","شاهدهما يمتزجان في لون جديد.","بعد بعض المزج الحر، اصنع اللون المطلوب."]},"teaches":{"en":"How primary colors combine into secondary colors.","ar":"كيف تتحد الألوان الأساسية لتكوّن ألوانًا ثانوية."},"tier":"world"},
+    {"id":"colors-quiz","parent":"world-colors","kind":"activity","route":"ColorsQuiz","title":{"en":"Colors Quiz","ar":"اختبار الألوان"},"summary":{"en":"A review quiz on everything learned in the Colors world.","ar":"اختبار مراجعة لكل ما تعلّمه الطفل في عالم الألوان."},"howToPlay":{"en":["Read or listen to the question.","Pick the right word, color, or mix result.","Finish all rounds for stars and coins."],"ar":["اقرأ السؤال أو استمع إليه.","اختر الكلمة أو اللون أو ناتج المزج الصحيح.","أنهِ كل الجولات لتنال النجوم والعملات."]},"teaches":{"en":"Reviewing color words and color mixing.","ar":"مراجعة كلمات الألوان ومزجها."},"tier":"world"},
+    {"id":"world-numbers","parent":"adventure","kind":"world","route":"NumbersWorld","title":{"en":"Numbers World","ar":"عالم الأرقام"},"summary":{"en":"Seven activities for counting, comparing and recognizing numbers. Numerals can be switched between Western and Arabic-Indic.","ar":"سبعة أنشطة للعدّ والمقارنة والتعرّف على الأرقام. يمكن تبديل الأرقام بين الغربية والهندية."},"tier":"world","coinCost":300},
+    {"id":"numbers-sort","parent":"world-numbers","kind":"activity","route":"DominoSortGame","title":{"en":"Domino Sort","ar":"رتّب الدومينو"},"summary":{"en":"Drag each domino into the bin that matches its dot total.","ar":"اسحب كل قطعة دومينو إلى الصندوق المطابق لمجموع نقاطها."},"howToPlay":{"en":["Look at the dots on the domino.","Count them all together.","Drag it into the bin with that total."],"ar":["انظر إلى النقاط على القطعة.","عُدّها كلها معًا.","اسحبها إلى الصندوق الذي يحمل هذا المجموع."]},"teaches":{"en":"Counting dots at a glance and early addition.","ar":"عدّ النقاط بنظرة سريعة والجمع المبكر."},"tier":"world"},
+    {"id":"numbers-find","parent":"world-numbers","kind":"activity","route":"FindNumberGame","title":{"en":"Find the Number","ar":"أوجد الرقم"},"summary":{"en":"See a number and tap the card that matches it.","ar":"شاهد رقمًا واضغط على البطاقة المطابقة له."},"howToPlay":{"en":["Look at the number shown.","Find the matching card.","Tap it to answer."],"ar":["انظر إلى الرقم المعروض.","ابحث عن البطاقة المطابقة.","اضغط عليها للإجابة."]},"teaches":{"en":"Recognizing numerals.","ar":"التعرّف على الأرقام."},"tier":"world"},
+    {"id":"numbers-count","parent":"world-numbers","kind":"activity","route":"CountTapGame","title":{"en":"Count & Tap","ar":"عدّ والمس"},"summary":{"en":"Tap each object to count it, then choose how many there were.","ar":"المس كل غرض لتعدّه، ثم اختر كم عددها."},"howToPlay":{"en":["Tap each object once, one by one.","Watch the count go up.","Pick the numeral that says how many."],"ar":["المس كل غرض مرة واحدة، واحدًا تلو الآخر.","شاهد العدّاد يزيد.","اختر الرقم الذي يبيّن العدد."]},"teaches":{"en":"One-to-one counting.","ar":"العدّ بمقابلة كل غرض برقم واحد."},"tier":"world"},
+    {"id":"numbers-more-or-less","parent":"world-numbers","kind":"activity","route":"MoreOrLessGame","title":{"en":"More or Less","ar":"أكثر أم أقل"},"summary":{"en":"Two piles of objects: tap the one with more, or the one with less.","ar":"كومتان من الأغراض: اضغط على الأكثر أو الأقل."},"howToPlay":{"en":["Read the prompt: more or less.","Compare the two piles.","Tap the right pile."],"ar":["اقرأ المطلوب: أكثر أم أقل.","قارن بين الكومتين.","اضغط على الكومة الصحيحة."]},"teaches":{"en":"Comparing quantities.","ar":"مقارنة الكميات."},"tier":"world"},
+    {"id":"numbers-pattern","parent":"world-numbers","kind":"activity","route":"PatternGame","title":{"en":"Continue the Pattern","ar":"أكمل النمط"},"summary":{"en":"Continue a bead pattern by picking what comes next.","ar":"أكمل نمطًا من الخرز باختيار ما يأتي بعده."},"howToPlay":{"en":["Study the row of beads.","Spot the repeating pattern.","Pick what goes in the empty spot."],"ar":["تأمّل صف الخرز.","اكتشف النمط المتكرر.","اختر ما يوضع في المكان الفارغ."]},"teaches":{"en":"Pattern recognition.","ar":"التعرّف على الأنماط."},"tier":"world"},
+    {"id":"numbers-recall","parent":"world-numbers","kind":"activity","route":"NumbersRecallGame","title":{"en":"Number Recall","ar":"تذكّر الأرقام"},"summary":{"en":"Memorize a sequence of numbers, then tap them back in order.","ar":"احفظ تسلسلًا من الأرقام ثم اضغط عليها بالترتيب."},"howToPlay":{"en":["Watch the numbers appear.","Remember the order.","Tap them back in the same order."],"ar":["شاهد الأرقام وهي تظهر.","تذكّر ترتيبها.","اضغط عليها بالترتيب نفسه."]},"teaches":{"en":"Working memory and number recognition.","ar":"الذاكرة العاملة والتعرّف على الأرقام."},"tier":"world"},
+    {"id":"numbers-trace","parent":"world-numbers","kind":"activity","route":"NumeralTraceGame","title":{"en":"Trace the Numeral","ar":"تتبّع الرقم"},"summary":{"en":"Trace each numeral with a finger, in Western or Arabic-Indic style.","ar":"تتبّع كل رقم بإصبعك، بالأرقام الغربية أو الهندية."},"howToPlay":{"en":["Pick a numeral.","Follow the guide with a finger.","Finish the stroke to complete it."],"ar":["اختر رقمًا.","اتبع الخط الإرشادي بإصبعك.","أكمل الرسم لتنهي الرقم."]},"teaches":{"en":"Writing numerals and fine motor control.","ar":"كتابة الأرقام والتحكّم الحركي الدقيق."},"tier":"world"},
+    {"id":"world-careers","parent":"adventure","kind":"world","route":"CareersMap","title":{"en":"Careers World","ar":"عالم المهن"},"summary":{"en":"A toy town of seven workplaces. Tap a building to hear the profession's Arabic word and play its activity.","ar":"مدينة صغيرة بسبعة أماكن عمل. اضغط على مبنى لتسمع كلمة المهنة بالعربية وتلعب نشاطها."},"tier":"world","coinCost":300},
+    {"id":"careers-chef","parent":"world-careers","kind":"activity","route":"CareersChefGame","title":{"en":"Cook a Meal","ar":"اطبخ وجبة"},"summary":{"en":"Take a customer's order, gather the ingredients, cook the dish and serve it. The diner reacts to how well you did.","ar":"استقبل طلب الزبون، اجمع المكوّنات، اطبخ الطبق وقدّمه. يتفاعل الزبون بحسب إتقانك."},"howToPlay":{"en":["A customer orders a dish, such as pizza or kabsa.","Fill the basket with the right ingredients.","Cook, season and serve. The diner reacts to your accuracy."],"ar":["يطلب زبون طبقًا، مثل البيتزا أو الكبسة.","املأ السلّة بالمكوّنات الصحيحة.","اطبخ وتبّل وقدّم؛ يتفاعل الزبون مع دقّتك."]},"teaches":{"en":"Food vocabulary, following a recipe and paying attention to detail.","ar":"مفردات الطعام واتباع الوصفة والانتباه للتفاصيل."},"wordAr":"طاهي","tier":"world"},
+    {"id":"careers-doctor","parent":"world-careers","kind":"activity","route":"CareersDoctorGame","title":{"en":"Fix the Patient","ar":"عالج المريض"},"summary":{"en":"Examine the patient, find where it hurts, then choose the right tool to treat them. Seven cases from a scraped knee to vaccine day.","ar":"افحص المريض، حدّد موضع الألم، ثم اختر الأداة المناسبة لعلاجه. سبع حالات من خدش الركبة إلى يوم التطعيم."},"howToPlay":{"en":["Tap where it hurts on the patient.","Choose the right tool from the tray.","Treat the patient until they feel better."],"ar":["اضغط على موضع الألم عند المريض.","اختر الأداة المناسبة من الصينية.","عالج المريض حتى يشعر بالتحسّن."]},"teaches":{"en":"Body parts, health vocabulary and caring for others.","ar":"أجزاء الجسم ومفردات الصحة ورعاية الآخرين."},"wordAr":"طبيبة","tier":"world"},
+    {"id":"careers-builder","parent":"world-careers","kind":"activity","route":"CareersPlaceGame","title":{"en":"Build Something","ar":"ابنِ شيئًا"},"summary":{"en":"Put on the safety gear, pick a project, then drag each piece onto its outline to build it.","ar":"ارتدِ معدات السلامة، اختر مشروعًا، ثم اسحب كل قطعة إلى مكانها لتبنيه."},"howToPlay":{"en":["Drag safety gear onto the right body part; wrong items bounce off.","Pick a project: a house, playground or treehouse.","Drag each piece onto its outline until the build is finished."],"ar":["اسحب معدات السلامة إلى الجزء الصحيح من الجسم؛ والأغراض الخاطئة ترتدّ.","اختر مشروعًا: بيتًا أو ملعبًا أو بيتًا على الشجرة.","اسحب كل قطعة إلى مكانها حتى يكتمل البناء."]},"teaches":{"en":"Safety gear and body-part words, shape matching and fine motor skills.","ar":"مفردات معدات السلامة وأجزاء الجسم، ومطابقة الأشكال والمهارات الحركية الدقيقة."},"wordAr":"بنّاء","tier":"world"},
+    {"id":"careers-farmer","parent":"world-careers","kind":"activity","route":"CareersSortGame","title":{"en":"Sort the Farm","ar":"رتّب المزرعة"},"summary":{"en":"Sort farm items into the right place: animals to the barn, produce to the garden, tools to the shed.","ar":"رتّب أغراض المزرعة في أماكنها: الحيوانات في الحظيرة، والخضار في الحديقة، والأدوات في المخزن."},"howToPlay":{"en":["Look at each item.","Drag it to where it belongs on the farm.","Sort everything to finish."],"ar":["انظر إلى كل غرض.","اسحبه إلى مكانه في المزرعة.","رتّب كل شيء لتنهي النشاط."]},"teaches":{"en":"Categorizing and farm vocabulary.","ar":"التصنيف ومفردات المزرعة."},"wordAr":"مزارع","tier":"world"},
+    {"id":"careers-pilot","parent":"world-careers","kind":"activity","route":"CareersMazeLevelSelect","title":{"en":"Fly the plane!","ar":"طيّر الطائرة!"},"summary":{"en":"The control tower names an airport. Steer the plane through the maze to land there. Thirty levels.","ar":"يذكر البرج اسم مطار. قُد الطائرة عبر المتاهة لتهبط فيه. ثلاثون مستوى."},"howToPlay":{"en":["Listen to the tower's request.","Steer the plane through the maze.","Land at the airport it asked for."],"ar":["استمع إلى طلب البرج.","قُد الطائرة عبر المتاهة.","اهبط في المطار المطلوب."]},"teaches":{"en":"Following directions, planning a route and spatial reasoning.","ar":"اتباع التوجيهات وتخطيط المسار والتفكير المكاني."},"wordAr":"طيّار","tier":"world"},
+    {"id":"careers-teacher","parent":"world-careers","kind":"activity","route":"CareersJudgeGame","title":{"en":"Grade the Tests","ar":"تصحيح الاختبارات"},"summary":{"en":"Grade a class's tests: decide whether each answer is right or wrong, then see the class results.","ar":"صحّح اختبارات الصف: قرّر هل كل إجابة صحيحة أم خاطئة، ثم شاهد نتائج الصف."},"howToPlay":{"en":["A student hands in a paper.","Decide whether the answer is correct or wrong.","See the class results and how well you graded."],"ar":["يسلّمك طالب ورقته.","قرّر هل الإجابة صحيحة أم خاطئة.","شاهد نتائج الصف ومدى جودة تصحيحك."]},"teaches":{"en":"Checking answers, early math and critical thinking.","ar":"مراجعة الإجابات والحساب المبكر والتفكير الناقد."},"wordAr":"معلّمة","tier":"world"},
+    {"id":"careers-police","parent":"world-careers","kind":"activity","route":"CareersLineupGame","title":{"en":"Catch the Culprit","ar":"أمسك المجرم"},"summary":{"en":"Catch the culprit: listen to the witness clues, rule out suspects who don't match, then arrest the right one.","ar":"أمسك المجرم: استمع إلى أدلة الشاهد، واستبعد المشتبه بهم الذين لا ينطبق عليهم الوصف، ثم ألقِ القبض على الفاعل."},"howToPlay":{"en":["Listen to the witness's clues one at a time.","Tap the suspects who don't match to rule them out.","When one is left, tap Arrest."],"ar":["استمع إلى أدلة الشاهد واحدًا تلو الآخر.","اضغط على من لا ينطبق عليه الوصف لتستبعده.","عندما يبقى مشتبه واحد، اضغط «ألقِ القبض!»."]},"teaches":{"en":"Descriptive words, attention to detail and process of elimination.","ar":"كلمات الوصف والانتباه للتفاصيل والاستبعاد المنطقي."},"wordAr":"شرطية","tier":"world"},
+    {"id":"games-letters","parent":"games","kind":"section","title":{"en":"Letter Games","ar":"ألعاب الحروف"},"summary":{"en":"The Letters section of the Exercises menu: fourteen letter games, from tracing and matching to listening and memory.","ar":"قسم الحروف في التمارين: أربعة عشر تمرينًا، من التتبّع والمطابقة إلى الاستماع والذاكرة."}},
+    {"id":"trace","parent":"games-letters","kind":"activity","route":"TracePicker","title":{"en":"Drawing Corner","ar":"ركن الرسم"},"summary":{"en":"Practice writing letters by tracing them with a finger, following guided dots.","ar":"تدرّب على كتابة الحروف بتتبّعها بإصبعك على نقاط إرشادية."},"howToPlay":{"en":["Pick a letter in the Drawing Corner.","Follow the guide dots with a finger.","Trace the whole letter to finish."],"ar":["اختر حرفًا في ركن الرسم.","اتبع النقاط الإرشادية بإصبعك.","تتبّع الحرف كاملًا لتنهي التمرين."]},"teaches":{"en":"Letter shapes and fine motor control.","ar":"أشكال الحروف والتحكّم الحركي الدقيق."},"tier":"free"},
+    {"id":"find","parent":"games-letters","kind":"activity","route":"FindGame","title":{"en":"Find the Letter","ar":"ابحث عن الحرف"},"summary":{"en":"Find the right letter: first letters of words, images that start with a letter, or a missing letter shape.","ar":"اعثر على الحرف الصحيح: الحرف الأول في الكلمة، أو صورة تبدأ بحرف، أو شكل حرف ناقص."},"howToPlay":{"en":["Read the question.","Look at the choices.","Tap the correct letter or image."],"ar":["اقرأ السؤال.","انظر إلى الخيارات.","اضغط على الحرف أو الصورة الصحيحة."]},"teaches":{"en":"Letter-sound association and first letters of words.","ar":"الربط بين الحرف وصوته والحروف الأولى من الكلمات."},"tier":"free"},
+    {"id":"connect","parent":"games-letters","kind":"activity","route":"ConnectGame","title":{"en":"Match the Word","ar":"صل بالكلمة"},"summary":{"en":"Match each word to the letter it starts with.","ar":"صل كل كلمة بالحرف الذي تبدأ به."},"howToPlay":{"en":["Tap a letter.","Tap the word that starts with it.","Match every pair."],"ar":["اضغط على حرف.","اضغط على الكلمة التي تبدأ به.","صل كل الأزواج."]},"teaches":{"en":"Initial sounds and connecting letters to words.","ar":"الأصوات الأولى وربط الحروف بالكلمات."},"tier":"free"},
+    {"id":"assemble","parent":"games-letters","kind":"activity","route":"AssembleGame","title":{"en":"Build the Word","ar":"رتّب الكلمة"},"summary":{"en":"Arrange scattered letters to build a word.","ar":"رتّب حروفًا مبعثرة لتكوّن كلمة."},"howToPlay":{"en":["See the picture and word.","Tap the letters in the right order.","Complete the word."],"ar":["شاهد الصورة والكلمة.","اضغط على الحروف بالترتيب الصحيح.","أكمل الكلمة."]},"teaches":{"en":"Spelling, letter order and word building.","ar":"التهجئة وترتيب الحروف وبناء الكلمات."},"tier":"free"},
+    {"id":"memory","parent":"games-letters","kind":"activity","route":"MemoryGame","title":{"en":"Memory Game","ar":"لعبة الذاكرة"},"summary":{"en":"A memory-card game: match each letter to the picture of a word that starts with it.","ar":"لعبة ذاكرة: طابق كل حرف بصورة كلمة تبدأ به."},"howToPlay":{"en":["Flip a card.","Flip another to find its match.","Match every letter to its picture."],"ar":["اقلب بطاقة.","اقلب بطاقة أخرى لتجد ما يطابقها.","طابق كل حرف بصورته."]},"teaches":{"en":"Letter-word association and memory.","ar":"ربط الحرف بالكلمة والذاكرة."},"tier":"free"},
+    {"id":"memory-flip","parent":"games-letters","kind":"activity","route":"MemoryFlipGame","title":{"en":"Memory Flip","ar":"اقلب واحفظ"},"summary":{"en":"Memorize where each letter sits, then listen and tap where the letter you heard was. Needs sound.","ar":"احفظ أماكن الحروف، ثم استمع واضغط على مكان الحرف الذي سمعته. تحتاج إلى الصوت."},"howToPlay":{"en":["Memorize where each letter is.","Listen to a letter's sound.","Tap where that letter was."],"ar":["احفظ مكان كل حرف.","استمع إلى صوت حرف.","اضغط على المكان الذي كان فيه ذلك الحرف."]},"teaches":{"en":"Letter sounds and spatial memory.","ar":"أصوات الحروف والذاكرة المكانية."},"tier":"premium"},
+    {"id":"letter-form","parent":"games-letters","kind":"activity","route":"LetterFormGame","title":{"en":"Letter Shape","ar":"شكل الحرف"},"summary":{"en":"Spot the missing letter shape in a word.","ar":"اعثر على شكل الحرف الناقص في الكلمة."},"howToPlay":{"en":["Read the word with a gap.","Look at the shape choices.","Tap the shape that fits."],"ar":["اقرأ الكلمة التي فيها فراغ.","انظر إلى أشكال الحروف المقترحة.","اضغط على الشكل المناسب."]},"teaches":{"en":"How letters look when they join in a word.","ar":"كيف تبدو الحروف عندما تتصل داخل الكلمة."},"tier":"premium"},
+    {"id":"forms-matcher","parent":"games-letters","kind":"activity","route":"LetterFormsMatcher","title":{"en":"Shape Matcher","ar":"مُطابق الأشكال"},"summary":{"en":"One letter, four shapes: recognize it in its isolated, initial, medial and final forms.","ar":"حرف واحد بأربعة أشكال: تعرّف عليه منفصلًا وفي أول الكلمة ووسطها وآخرها."},"howToPlay":{"en":["See the shapes of one letter.","Work out which one is asked for.","Tap it."],"ar":["شاهد أشكال حرف واحد.","اكتشف أيّها المطلوب.","اضغط عليه."]},"teaches":{"en":"The four positional forms of Arabic letters.","ar":"الأشكال الأربعة للحرف العربي بحسب موضعه."},"tier":"premium"},
+    {"id":"recall","parent":"games-letters","kind":"activity","route":"RecallGame","title":{"en":"Letter Recall","ar":"تذكّر الحروف"},"summary":{"en":"Memorize a set of letters, then recreate them from memory.","ar":"احفظ مجموعة من الحروف ثم أعد تكوينها من الذاكرة."},"howToPlay":{"en":["Watch the letters appear.","Remember them.","Write or recreate them from memory."],"ar":["شاهد الحروف وهي تظهر.","تذكّرها.","اكتبها أو أعد تكوينها من الذاكرة."]},"teaches":{"en":"Visual memory and writing letters.","ar":"الذاكرة البصرية وكتابة الحروف."},"tier":"premium"},
+    {"id":"echo","parent":"games-letters","kind":"activity","route":"EchoGame","title":{"en":"Echo","ar":"صدى الصوت"},"summary":{"en":"Listen to a letter's sound and pick the letter you heard. Needs sound.","ar":"استمع إلى صوت حرف واختر الحرف الذي سمعته. تحتاج إلى الصوت."},"howToPlay":{"en":["Listen to the sound.","Look at the letter choices.","Tap the letter you heard."],"ar":["استمع إلى الصوت.","انظر إلى خيارات الحروف.","اضغط على الحرف الذي سمعته."]},"teaches":{"en":"Letter sounds and listening discrimination.","ar":"أصوات الحروف والتمييز السمعي."},"tier":"premium"},
+    {"id":"mirror-match","parent":"games-letters","kind":"activity","route":"MirrorMatch","title":{"en":"The Mirror","ar":"المرآة"},"summary":{"en":"A letter is flipped or twisted. Is it still the same letter, or a different one?","ar":"حرف مقلوب أو ملتوٍ. هل هو الحرف نفسه أم حرف آخر؟"},"howToPlay":{"en":["See the original letter.","See the distorted letter that follows.","Tap Same letter or Different letter."],"ar":["شاهد الحرف الأصلي.","شاهد الحرف المشوَّه الذي يليه.","اضغط «نفس الحرف» أو «حرف مختلف»."]},"teaches":{"en":"Visual discrimination between similar letter shapes.","ar":"التمييز البصري بين أشكال الحروف المتشابهة."},"tier":"premium"},
+    {"id":"letter-hunt","parent":"games-letters","kind":"activity","route":"LetterHunt","title":{"en":"Letter Hunter","ar":"صياد الحرف"},"summary":{"en":"Hunt for a letter hidden inside a word; harder rounds hide several.","ar":"ابحث عن حرف مختبئ داخل كلمة؛ وفي الجولات الأصعب يختبئ أكثر من واحد."},"howToPlay":{"en":["See which letter to find.","Look through the word.","Tap each place the letter appears."],"ar":["شاهد أي حرف عليك أن تجده.","تفحّص الكلمة.","اضغط على كل موضع يظهر فيه الحرف."]},"teaches":{"en":"Recognizing letters in different positions and shapes.","ar":"التعرّف على الحروف في مواضع وأشكال مختلفة."},"tier":"premium"},
+    {"id":"short-vowel","parent":"games-letters","kind":"activity","route":"ShortVowelGame","title":{"en":"Vowel Marks","ar":"حركات الحروف"},"summary":{"en":"Match the short vowel marks (fatha, damma, kasra) to their sound and shape. Needs sound.","ar":"اربط الحركات القصيرة (الفتحة والضمة والكسرة) بصوتها وشكلها. تحتاج إلى الصوت."},"howToPlay":{"en":["Listen to a vowel sound.","Look at the mark choices.","Pick the right sound or shape."],"ar":["استمع إلى صوت حركة.","انظر إلى خيارات الحركات.","اختر الصوت أو الشكل الصحيح."]},"teaches":{"en":"Short vowel sounds and shapes.","ar":"أصوات الحركات القصيرة وأشكالها."},"tier":"premium"},
+    {"id":"letters-wheel","parent":"games-letters","kind":"activity","route":"SpinWheelGame","title":{"en":"Letter Wheel","ar":"عجلة الحروف"},"summary":{"en":"Spin a wheel of picture words, then pick the Arabic word that matches where it lands.","ar":"أدر عجلة من صور الكلمات، ثم اختر الكلمة العربية المطابقة لما تتوقف عنده."},"howToPlay":{"en":["Tap to spin the wheel.","See which picture it lands on.","Pick the matching Arabic word from five options."],"ar":["اضغط لتدير العجلة.","شاهد الصورة التي تتوقف عندها.","اختر الكلمة العربية المطابقة من خمسة خيارات."]},"teaches":{"en":"Vocabulary and reading Arabic words.","ar":"المفردات وقراءة الكلمات العربية."},"tier":"premium"},
+    {"id":"speed-round","parent":"daily-quest","kind":"activity","route":"SpeedRound","title":{"en":"Speed Round","ar":"جولة السرعة"},"summary":{"en":"Speed Round: a quick round against the clock on first letters. Appears in the premium daily quest.","ar":"جولة السرعة: أسئلة سريعة ضد الوقت عن الحروف الأولى. تظهر في تحدي اليوم للنسخة الكاملة."},"howToPlay":{"en":["Read the question: the first letter of a word, or a word for a letter.","Tap the right answer fast.","Answer as many as you can before time is up."],"ar":["اقرأ السؤال: الحرف الأول من كلمة، أو كلمة تبدأ بحرف.","اضغط على الإجابة الصحيحة بسرعة.","أجب عن أكبر عدد ممكن قبل انتهاء الوقت."]},"teaches":{"en":"Fast recall of letter-sound pairs.","ar":"الاسترجاع السريع للحروف وأصواتها."},"tier":"premium"},
+    {"id":"games-colors","parent":"games","kind":"section","title":{"en":"Colors World","ar":"عالم الألوان"},"mirrors":"world-colors"},
+    {"id":"games-numbers","parent":"games","kind":"section","title":{"en":"Numbers World","ar":"عالم الأرقام"},"mirrors":"world-numbers"},
+    {"id":"games-countries","parent":"games","kind":"section","title":{"en":"Arab Countries","ar":"الدول العربية"},"mirrors":"world-countries"},
+    {"id":"games-careers","parent":"games","kind":"section","title":{"en":"Careers World","ar":"عالم المهن"},"mirrors":"world-careers"},
+    {"id":"whack-a-mole","parent":"arcade","kind":"activity","route":"WhackAMole","title":{"en":"Whack-a-Mole","ar":"اضرب الخلد"},"summary":{"en":"Tap the moles as they pop up. Faster taps score more. Costs 1 token.","ar":"اضغط على الخلد عندما يخرج؛ كلما كنت أسرع نلت نقاطًا أكثر. تكلّف تذكرة واحدة."},"howToPlay":{"en":["Spend a token to start.","Tap each mole as it pops up.","Beat your best score."],"ar":["أنفق تذكرة لتبدأ.","اضغط على كل خلد عندما يخرج.","حطّم رقمك القياسي."]},"teaches":{"en":"Hand-eye coordination and reaction time. A reward for learning time.","ar":"التنسيق بين العين واليد وسرعة الاستجابة. مكافأة على وقت التعلّم."},"tier":"tokens","tokenCost":1},
+    {"id":"sliding-puzzle","parent":"arcade","kind":"activity","route":"SlidingPuzzle","title":{"en":"Sliding Puzzle","ar":"لغز التحريك"},"summary":{"en":"Slide the tiles to reveal the picture in as few moves as you can. Costs 1 token.","ar":"حرّك القطع لتكشف الصورة بأقل عدد من الحركات. تكلّف تذكرة واحدة."},"howToPlay":{"en":["Spend a token to start.","Slide the tiles into the empty space.","Rebuild the picture in the fewest moves."],"ar":["أنفق تذكرة لتبدأ.","حرّك القطع إلى المكان الفارغ.","أعد بناء الصورة بأقل عدد من الحركات."]},"teaches":{"en":"Planning ahead and spatial reasoning.","ar":"التخطيط المسبق والتفكير المكاني."},"tier":"tokens","tokenCost":1},
+    {"id":"memory-match","parent":"arcade","kind":"activity","route":"MemoryMatch","title":{"en":"Memory Match","ar":"لعبة الذاكرة"},"summary":{"en":"Find the matching pairs of cards in as few moves as you can. Costs 1 token.","ar":"اعثر على أزواج البطاقات المتطابقة بأقل عدد من الحركات. تكلّف تذكرة واحدة."},"howToPlay":{"en":["Spend a token to start.","Flip two cards at a time.","Match every pair in the fewest moves."],"ar":["أنفق تذكرة لتبدأ.","اقلب بطاقتين في كل مرة.","طابق كل الأزواج بأقل عدد من الحركات."]},"teaches":{"en":"Visual memory.","ar":"الذاكرة البصرية."},"tier":"tokens","tokenCost":1},
+    {"id":"match3","parent":"arcade","kind":"activity","route":"Match3","title":{"en":"Match 3","ar":"طابق 3"},"summary":{"en":"Swipe to line up three matching tiles before time runs out. Costs 2 tokens.","ar":"اسحب لتصفّ ثلاث قطع متطابقة قبل انتهاء الوقت. تكلّف تذكرتين."},"howToPlay":{"en":["Spend two tokens to start.","Swipe tiles to line up three in a row.","Score as much as you can before the timer ends."],"ar":["أنفق تذكرتين لتبدأ.","اسحب القطع لتصفّ ثلاثًا في صف واحد.","اجمع أكبر عدد من النقاط قبل انتهاء المؤقّت."]},"teaches":{"en":"Pattern spotting and planning.","ar":"اكتشاف الأنماط والتخطيط."},"tier":"tokens","tokenCost":2},
+    {"id":"arcade-leaderboard","parent":"arcade","kind":"feature","route":"ArcadeLeaderboard","title":{"en":"Global High Scores","ar":"أفضل النتائج العالمية"},"summary":{"en":"Global high scores for each arcade game. Needs an internet connection.","ar":"أعلى النتائج في العالم لكل لعبة. يحتاج إلى اتصال بالإنترنت."},"howToPlay":{"en":["Play an arcade game to set a score.","Tap High Scores.","Compare your best with players around the world."],"ar":["العب لعبة لتحقق نتيجة.","اضغط «أعلى النتائج».","قارن نتيجتك بلاعبين من حول العالم."]},"tier":"free"},
+    {"id":"song-alphabet","parent":"songs","kind":"song","route":"AlphaSong","title":{"en":"Alphabet Song","ar":"أغنية الحروف"},"summary":{"en":"A video song that sings through the Arabic alphabet.","ar":"أنشودة مصوّرة تغنّي الحروف العربية بالترتيب."},"howToPlay":{"en":["Open Songs.","Tap the Alphabet Song.","Watch and sing along."],"ar":["افتح الأناشيد.","اضغط على أغنية الحروف.","شاهد وغنِّ معها."]},"teaches":{"en":"Alphabet order and letter names through music.","ar":"ترتيب الحروف وأسماؤها من خلال الموسيقى."},"tier":"free"},
+    {"id":"song-desert","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Desert World Song","ar":"أغنية عالم الصحراء"},"summary":{"en":"The Desert world's song. Unlocks when the child completes the world.","ar":"أغنية عالم الصحراء. تُفتح عندما يكمل الطفل العالم."},"howToPlay":{"en":["Complete the Desert world.","Open Songs and tap its song.","Watch and sing along."],"ar":["أكمل عالم الصحراء.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"The world's letters and words through music.","ar":"حروف العالم وكلماته من خلال الموسيقى."},"tier":"free"},
+    {"id":"song-oasis","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Oasis World Song","ar":"أغنية عالم الواحة"},"summary":{"en":"The Oasis world's song. Unlocks when the child completes the world.","ar":"أغنية عالم الواحة. تُفتح عندما يكمل الطفل العالم."},"howToPlay":{"en":["Complete the Oasis world.","Open Songs and tap its song.","Watch and sing along."],"ar":["أكمل عالم الواحة.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"The world's letters and words through music.","ar":"حروف العالم وكلماته من خلال الموسيقى."},"tier":"free"},
+    {"id":"song-mountain","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Mountain World Song","ar":"أغنية عالم الجبال"},"summary":{"en":"The Mountain world's song. Unlocks when the child completes the world.","ar":"أغنية عالم الجبال. تُفتح عندما يكمل الطفل العالم."},"howToPlay":{"en":["Complete the Mountain world.","Open Songs and tap its song.","Watch and sing along."],"ar":["أكمل عالم الجبال.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"The world's letters and words through music.","ar":"حروف العالم وكلماته من خلال الموسيقى."},"tier":"free"},
+    {"id":"song-sea","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Sea World Song","ar":"أغنية عالم البحر"},"summary":{"en":"The Sea world's song. Unlocks when the child completes the world.","ar":"أغنية عالم البحر. تُفتح عندما يكمل الطفل العالم."},"howToPlay":{"en":["Complete the Sea world.","Open Songs and tap its song.","Watch and sing along."],"ar":["أكمل عالم البحر.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"The world's letters and words through music.","ar":"حروف العالم وكلماته من خلال الموسيقى."},"tier":"free"},
+    {"id":"song-countries","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Arab Countries World Song","ar":"أغنية عالم البلدان العربية"},"summary":{"en":"The Arab Countries song. Unlocks when the world is owned and completed.","ar":"أغنية البلدان العربية. تُفتح عندما يملك الطفل العالم ويكمله."},"howToPlay":{"en":["Unlock and complete the Arab Countries world.","Open Songs and tap its song.","Watch and sing along."],"ar":["افتح عالم البلدان العربية وأكمله.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"Country names through music.","ar":"أسماء الدول من خلال الموسيقى."},"tier":"world"},
+    {"id":"song-colors","parent":"songs","kind":"song","route":"WorldSong","title":{"en":"Colors World Song","ar":"أغنية عالم الألوان"},"summary":{"en":"The Colors song. Unlocks once the Colors world is owned.","ar":"أغنية الألوان. تُفتح بمجرد امتلاك عالم الألوان."},"howToPlay":{"en":["Unlock the Colors world.","Open Songs and tap its song.","Watch and sing along."],"ar":["افتح عالم الألوان.","افتح الأناشيد واضغط على أغنيته.","شاهد وغنِّ معها."]},"teaches":{"en":"Color names through music.","ar":"أسماء الألوان من خلال الموسيقى."},"tier":"world"},
+    {"id":"reward-spin-wheel","parent":"daily-quest","kind":"feature","title":{"en":"Reward Wheel","ar":"عجلة الجوائز"},"summary":{"en":"A skill-based reward game after finishing a world or the daily quest: stop the wheel on the target sticker to win coins.","ar":"لعبة جوائز تعتمد على المهارة بعد إكمال عالم أو تحدي اليوم: أوقف العجلة عند الملصق المطلوب لتربح عملات."},"howToPlay":{"en":["See the target sticker shown beside the wheel.","Tap to start the wheel, then tap to stop it on the target.","You get 3 attempts, each faster than the last; more hits mean more coins."],"ar":["شاهد الملصق المطلوب بجانب العجلة.","اضغط لتبدأ العجلة، ثم اضغط لإيقافها عند الملصق.","لديك ثلاث محاولات، كل واحدة أسرع من التي قبلها؛ وكلما أصبت أكثر ربحت عملات أكثر."]},"teaches":{"en":"Timing and focus. The mechanic is the same for everyone; only the coin amounts differ for premium.","ar":"التوقيت والتركيز. الآلية نفسها للجميع، وتختلف كمية العملات فقط في النسخة الكاملة."},"tier":"free"}
+  ]};
+
+/* ═════════ SITE CONTENT LAYER (mock of src/data/abjad/content/<id>.json) ═════════
+   App copy (summary, howToPlay, teaches, wordAr, titles) now comes from the manifest above.
+   The site only adds what the manifest lacks. In this mockup that is a sample teacherNote for a few nodes;
+   media and hotspots are drawn as placeholders. Invented sample text: replace with real teacher notes. */
+const TEACHER = {
+  'careers-chef':{en:'Try it as a pair task: one child listens to the order, the other fills the basket. Afterwards, ask everyone to name a favorite dish in Arabic.',ar:'جرّبوه بالأزواج: طفل يستمع إلى الطلب وآخر يملأ السلة. وبعده اطلبوا من الجميع تسمية طبق مفضّل بالعربية.'},
+  trace:{en:'Use it as a handwriting center after the letter of the week. Children trace with a finger before moving to paper.',ar:'استخدموه كمحطة كتابة بعد حرف الأسبوع. يتتبّع الأطفال الحرف بأصابعهم قبل الانتقال إلى الورق.'},
+  find:{en:'A good whole-class warm-up on a projected screen: children call out the answer before anyone taps.',ar:'تسخين مناسب للصف كله على شاشة العرض: ينادي الأطفال بالإجابة قبل أن يلمس أحد الشاشة.'},
+  'colors-mix':{en:'Pair it with real paint or colored water: predict the mix first, then check it in the app.',ar:'اجمعوه مع ألوان حقيقية أو ماء ملوّن: توقّعوا الناتج أولًا ثم تحقّقوا منه في التطبيق.'},
+  'colors-sort':{en:'A quick center for early-years groups. Ask children to name each color aloud as they sort.',ar:'محطة سريعة للصغار. اطلبوا منهم تسمية كل لون بصوت عالٍ أثناء الفرز.'},
+  'numbers-count':{en:'Have children count aloud with you, then check with the app. A good bridge to counting real objects.',ar:'دعوا الأطفال يعدّون معكم بصوت عالٍ ثم يتحقّقوا في التطبيق. جسر جيد إلى عدّ الأغراض الحقيقية.'},
+  memory:{en:'Play in pairs and take turns. Children say the letter and the picture word together.',ar:'العبوا بالأزواج وتناوبوا. يقول الطفلان الحرف وكلمة الصورة معًا.'},
+  'song-alphabet':{en:'Use it to open morning circle or as a transition between lessons.',ar:'استخدموها لافتتاح حلقة الصباح أو للانتقال بين الدروس.'},
+  'whack-a-mole':{en:'Best as a reward station. Each play costs a token, so plan turns in advance.',ar:'الأنسب كمحطة مكافأة. كل لعبة تكلّف تذكرة، فخطّطوا للأدوار مسبقًا.'},
+  'daily-quest':{en:'A natural start-of-day routine for a shared screen or a rotating center.',ar:'روتين مناسب لبداية اليوم على شاشة مشتركة أو كمحطة متناوبة.'}
+};
+
+/* ═════════ UI strings ═════════ */
+const T = {
+  en:{back:'Back',close:'Close',parent:'Parent',teacher:'Teacher',all:'See everything',how:'How to play',learnP:'What your child learns',learnT:'In the classroom',
+      note:'Teacher note',word:'Arabic word',also:'Also inside',more:'More in',tryThese:'Try one',hint:'Tap a glowing dot to explore',
+      loop:'LOOP · 2.5 s · muted',soon:'Clip coming soon',phShot:'placeholder screenshot',get:'Get Abjad',dl:'Download on the',gp:'Get it on',scroll:'Scroll for more',
+      teacherView:'Teacher view',ovTitle:'Everything in Abjad',ovSub:'Every screen and activity, straight from the app’s structure.',same:'Same activities as',
+      f_all:'All',f_free:'Free',f_premium:'Premium',f_world:'Extra worlds',f_tokens:'Arcade (tokens)',f_mixed:'Mixed',f_none:'Not set',
+      kind:{root:'Home',hub:'Section',section:'Section',world:'World',activity:'Activity',song:'Song',feature:'Feature',parents:'For grown-ups'}},
+  ar:{back:'رجوع',close:'إغلاق',parent:'ولي الأمر',teacher:'معلّم',all:'عرض الكل',how:'طريقة اللعب',learnP:'ماذا يتعلّم طفلك',learnT:'في الصف',
+      note:'ملاحظة للمعلّم',word:'الكلمة العربية',also:'بداخله أيضًا',more:'المزيد في',tryThese:'جرّب واحدًا',hint:'المس النقطة المضيئة للاستكشاف',
+      loop:'مقطع متكرّر · ٢٫٥ ث · بلا صوت',soon:'المقطع قادم قريبًا',phShot:'لقطة شاشة مؤقتة',get:'حمّل أبجد',dl:'حمّل من',gp:'احصل عليه من',scroll:'مرّر للمزيد',
+      teacherView:'عرض المعلّم',ovTitle:'كل ما في أبجد',ovSub:'كل شاشة وكل نشاط، كما هي في بنية التطبيق.',same:'الأنشطة نفسها في',
+      f_all:'الكل',f_free:'مجاني',f_premium:'النسخة الكاملة',f_world:'عوالم إضافية',f_tokens:'ألعاب التذاكر',f_mixed:'متنوّع',f_none:'غير محدّد',
+      kind:{root:'الرئيسية',hub:'قسم',section:'قسم',world:'عالم',activity:'نشاط',song:'أغنية',feature:'ميزة',parents:'لأولياء الأمور'}}
+};
+
+/* ═════════ Tree helpers ═════════ */
+const N = MANIFEST.nodes, byId = Object.fromEntries(N.map(n => [n.id, n]));
+const kidsMap = {}; N.forEach(n => { if (n.parent) (kidsMap[n.parent] = kidsMap[n.parent] || []).push(n.id); });
+const realKids = id => kidsMap[id] || [];
+const effKids  = id => byId[id].mirrors ? realKids(byId[id].mirrors) : realKids(id);   // mirrors show the mirrored node's leaves
+const SCREEN_KINDS = new Set(['root','hub','section','world']);
+// Core (free) worlds are one leaf each: one clip + card, with their features listed under "Also inside". Extra worlds are screens.
+const isScreen = id => SCREEN_KINDS.has(byId[id].kind) && effKids(id).length > 0 && !(byId[id].kind === 'world' && byId[id].tier === 'free');
+const isModal  = id => byId[id].kind === 'hub' && !byId[id].route;
+const chain = id => { const c = []; for (let n = byId[id]; n; n = n.parent ? byId[n.parent] : null) c.unshift(n.id); return c; };
+
+/* ═════════ State ═════════ */
+const DEF = {lang:'en',lens:'parent',card:'sheet',panel:'end',home:'shot',media:'clip',view:'auto'};
+const S = Object.assign({}, DEF, {stack:[{id:'home',scroll:0}], hints:true, taps:0, overview:false, filter:'all'});
+const $ = s => document.querySelector(s);
+const explore = $('#explore'), screenEl = $('#screen'), panelEl = $('#panel'), overviewEl = $('#overview'), shell = $('#shell');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+let paneEl = null, busy = false;
+const cur = () => S.stack[S.stack.length - 1];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const d = n => S.lang === 'ar' ? Number(n).toLocaleString('ar-EG') : String(n);
+const L = o => o[S.lang];
+
+/* ═════════ Titles, tiers, counts ═════════ */
+function title(id, l = S.lang) {
+  const n = byId[id];
+  return (n.title && n.title[l]) || id;
+}
+const other = id => title(id, S.lang === 'en' ? 'ar' : 'en');
+function tierOf(id) {
+  for (let n = byId[id]; n; n = n.parent ? byId[n.parent] : null) {
+    if (!n.tier || (n.id !== id && n.tier !== 'world')) continue;   // only "extra world" is shared with the world's leaves
+    if (n.tier === 'world' && n.coinCost == null) {                   // leaves say "world"; the coin cost is on the world node
+      for (let a = n.parent && byId[n.parent]; a; a = a.parent ? byId[a.parent] : null) if (a.coinCost != null) return Object.assign({}, n, {coinCost: a.coinCost});
+    }
+    return n;
+  }
+  return null;
+}
+function tierInfo(id) {
+  const t = tierOf(id); const k = t ? t.tier : 'none';
+  const ar = S.lang === 'ar';
+  const plural = (n, one, two, many) => ar ? (n === 1 ? one : n === 2 ? two : `${d(n)} ${many}`) : `${n} ${n === 1 ? one : many}`;
+  const M = {
+    free:{label:ar?'مجاني':'Free', short:ar?'مجاني':'Free'},
+    premium:{label:ar?'النسخة الكاملة':'Premium', short:ar?'النسخة الكاملة':'Premium'},
+    mixed:{label:ar?'مجاني والنسخة الكاملة':'Free & premium', short:ar?'متنوّع':'Mixed'},
+    none:{label:'', short:'—'}
+  };
+  if (k === 'world' && t.coinCost == null) return {k, label: ar ? 'عالم إضافي' : 'Extra world', short: ar ? 'عالم إضافي' : 'Extra world'};
+  if (k === 'world') { const c = t.coinCost; const co = ar ? `${d(c)} عملة` : `${c} coins`; return {k, label: ar ? `عالم إضافي · ${co}` : `Extra world · ${co}`, short: co}; }
+  if (k === 'tokens') { const n = t.tokenCost; const tk = ar ? (n === 1 ? 'تذكرة واحدة' : n === 2 ? 'تذكرتان' : `${d(n)} تذاكر`) : `${n} token${n === 1 ? '' : 's'}`; return {k, label: ar ? `ألعاب · ${tk} لكل لعبة` : `Arcade · ${tk} per play`, short: tk}; }
+  return Object.assign({k}, M[k]);
+}
+const chip = (id, {short = false, lg = false} = {}) => { const t = tierInfo(id); if (t.k === 'none' && !short) return ''; return `<span class="chip ${t.k}${lg ? ' lg' : ''}"${t.k === 'none' ? ' title="No tier set in the manifest"' : ''}><i class="ic"></i>${esc(short ? t.short : t.label)}</span>`; };
+
+function leavesOf(id, set = new Set()) {
+  for (const k of effKids(id)) { if (!isScreen(k) && byId[k].kind !== 'parents') set.add(k); leavesOf(k, set); }
+  return set;
+}
+const actNoun = c => S.lang === 'ar' ? (c === 1 ? 'نشاط واحد' : c === 2 ? 'نشاطان' : c <= 10 ? `${d(c)} أنشطة` : `${d(c)} نشاطًا`) : `${c} ${c === 1 ? 'activity' : 'activities'}`;
+function countPhrase(id) {
+  const c = leavesOf(id).size, n = byId[id]; if (!c) return '';
+  const noun = actNoun(c);
+  if (S.lang === 'ar') return `${noun} ${n.kind === 'root' ? 'في التطبيق كله' : n.kind === 'world' ? 'في هذا العالم' : 'في هذا القسم'}`;
+  return n.kind === 'root' ? `${noun} across the app` : n.kind === 'world' ? `${noun} in this world` : n.kind === 'section' ? `${noun} in this section` : `${noun} inside`;
+}
+const firstLetter = id => { const w = title(id, 'ar').trim().split(/\s+/).pop().replace(/^ال/, ''); return [...w][0] || 'أ'; };
+
+/* palette: deterministic by position among siblings, so a node keeps its color everywhere */
+const PAL = [{a:'#E8694A',b:'#C4492A',fg:'#fff'},{a:'#2FA89A',b:'#1B7268',fg:'#fff'},{a:'#F5B44A',b:'#E08F1F',fg:'#2a1c05',scrim:'transparent'},
+             {a:'#5563C1',b:'#37448F',fg:'#fff'},{a:'#A4599F',b:'#763B78',fg:'#fff'},{a:'#74936A',b:'#496543',fg:'#fff'}];
+const palOf = id => { const p = byId[id].parent, i = p ? Math.max(0, realKids(p).indexOf(id)) : 0; return PAL[i % PAL.length]; };
+const palStyle = id => { const p = palOf(id); return `--a:${p.a};--b:${p.b};--fg:${p.fg};${p.scrim ? `--scrim:${p.scrim};` : ''}`; };
+
+/* narration text: the manifest's own summary (mirror sections borrow the mirrored node's). Fallbacks are site UI text. */
+const summaryOf = id => { const n = byId[id]; return (n.summary || (n.mirrors && byId[n.mirrors].summary)) || null; };
+const explainer = id => {
+  const n = byId[id], sm = summaryOf(id);
+  if (sm && isScreen(id)) return L(sm);
+  if (isScreen(id)) return S.lang === 'ar' ? 'المس أي عنصر لتفتحه.' : 'Tap anything to open it.';
+  const p = n.parent && byId[n.parent];
+  return S.lang === 'ar' ? `جزء من «${title(p.id)}». اختر نشاطًا آخر لتقارن.` : `Part of ${title(p.id)}. Pick another one to compare.`;
+};
+
+/* ═════════ Icons ═════════ */
+const ICON = {
+  chev:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  chevR:'<svg class="chev" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  x:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>'
+};
+const pulse = '<i class="pulse"></i>';
+
+/* ═════════ Pane builders ═════════ */
+function barHTML(id) {
+  const modal = isModal(id), root = S.stack.length < 2 && id === 'home';
+  if (root) return `<header class="bar home-bar"><div class="logo"><i></i>${S.lang === 'ar' ? 'أبجد' : 'Abjad'}</div></header>`;
+  return `<header class="bar"><button class="back" data-back aria-label="${T[S.lang].back}">${modal ? ICON.x : ICON.chev}</button><div class="bar-title">${esc(title(id))}</div>${byId[id].tier ? chip(id, {short: true}) : ''}</header>`;
+}
+const tile = (id, wide) => {
+  const n = byId[id], c = leavesOf(id).size, sub = other(id);
+  const meta = isScreen(id) && c ? actNoun(c) : '';
+  return `<button class="tile${wide ? ' wide' : ''}" data-go="${id}" style="${palStyle(id)}">
+    <span class="glyph" aria-hidden="true">${esc(firstLetter(id))}</span>${pulse}
+    <span class="t-title">${esc(title(id))}</span>
+    ${S.lang === 'en' ? `<span class="t-sub ar" lang="ar">${esc(sub)}</span>` : ''}
+    ${meta ? `<span class="t-meta">${esc(meta)}</span>` : ''}${tierOf(id) ? chip(id, {short: true}) : ''}</button>`;
+};
+const row = id => `<button class="row" data-go="${id}" style="${palStyle(id)}"><span class="dotc"></span>
+  <span class="r-txt"><b>${esc(title(id))}</b>${S.lang === 'en' ? `<small class="ar" lang="ar">${esc(other(id))}</small>` : ''}</span>${pulse}${tierOf(id) ? chip(id, {short: true}) : ''}${ICON.chevR}</button>`;
+
+const HOME_RECTS = [['alphabet-grid',10,10,80,13],['explorer',5,26,30,22],['daily-quest',38,26,57,22],['adventure',5,51,90,12],['songs',5,65,43,10],
+                    ['games',52,65,43,10],['arcade',5,77,90,9],['progress',5,89,43,7],['settings',52,89,43,7]];
+const ART = {adventure:'#E8694A,#B8401F',songs:'#2FA89A,#1B7268',games:'#F5B44A,#E08F1F','arcade':'#5563C1,#37448F',progress:'#74936A,#496543',settings:'#B49670,#8A6C46','daily-quest':'#A4599F,#763B78'};
+function homeShotHTML() {
+  const ar = S.lang === 'ar', bits = [];
+  HOME_RECTS.forEach(([id, x, y, w, h]) => {
+    const X = ar ? 100 - x - w : x, pos = `left:${X}%;top:${y}%;width:${w}%;height:${h}%`;
+    if (id === 'alphabet-grid') bits.push(`<div class="art letters" style="${pos}">${['أ','ب','ج','د'].map((c, i) => `<span style="background:${PAL[[0,1,2,3][i]].b}">${c}</span>`).join('')}</div>`);
+    else if (id === 'explorer') bits.push(`<div class="art explorer" style="${pos}"><i></i><em></em></div>`);
+    else { const [a, b] = ART[id].split(','); bits.push(`<div class="art plain" style="${pos};--a:${a};--b:${b};${id === 'games' ? 'color:#2a1c05' : ''}">${esc(title(id))}</div>`); }
+  });
+  const hots = HOME_RECTS.map(([id, x, y, w, h]) => `<button class="hot${ar ? ' flip' : ''}" data-go="${id}" aria-label="${esc(title(id))}" style="left:${ar ? 100 - x - w : x}%;top:${y}%;width:${w}%;height:${h}%">${pulse}</button>`).join('');
+  return `<div class="shot"><div class="sun"></div><div class="dune b"></div><div class="dune"></div>${bits.join('')}${hots}</div>
+    <div class="ph-chip">screens/home.${S.lang}.webp · ${T[S.lang].phShot}</div><div class="coach">${T[S.lang].hint}</div>`;
+}
+function screenHTML(id) {
+  if (id === 'home' && S.home === 'shot') return homeShotHTML();
+  const ks = effKids(id), sectioned = ks.some(k => byId[k].kind === 'section');
+  let body, extra = '';
+  if (sectioned) {
+    body = ks.map(k => byId[k].kind !== 'section' ? row(k) : `<h3 class="sec">${esc(title(k))}</h3>${effKids(k).map(row).join('')}`).join('');
+    extra = `<div class="fade"></div><div class="scrollcue">${T[S.lang].scroll} ↓</div>`;
+  } else {
+    const odd = ks.length % 2 === 1;
+    body = ks.map((k, i) => tile(k, odd && i === 0)).join('');
+  }
+  return `${barHTML(id)}<div class="scroll ${sectioned ? 'list' : 'grid'}">${body}</div>${extra}<div class="coach">${T[S.lang].hint}</div>`;
+}
+function sheetHTML(id) {
+  const n = byId[id], t = tierInfo(id), tt = T[S.lang], parent = S.lens === 'parent';
+  const kids = realKids(id);
+  const coins = tierOf(id) && tierOf(id).coinCost;
+  const ctaLine = {
+    free:S.lang === 'ar' ? 'مجاني داخل أبجد' : 'Free to play in Abjad',
+    premium:S.lang === 'ar' ? 'يتطلّب النسخة الكاملة من أبجد' : 'Needs an Abjad subscription',
+    world:coins == null ? (S.lang === 'ar' ? 'افتح العالم الإضافي داخل التطبيق' : 'Unlock the extra world in the app') : S.lang === 'ar' ? `افتح هذا العالم بـ ${d(coins)} عملة داخل التطبيق` : `Unlock this world with ${coins} coins in the app`,
+    tokens:S.lang === 'ar' ? 'تُلعب بالتذاكر' : 'Played with tokens',
+    mixed:S.lang === 'ar' ? 'بعضها مجاني وبعضها في النسخة الكاملة' : 'Some free, some premium',
+    none:S.lang === 'ar' ? 'العبها في تطبيق أبجد' : 'Play it in the Abjad app'
+  }[t.k];
+  // Manifest copy: hide a block when its field is missing (never invent text).
+  const summary = n.summary ? L(n.summary) : '', steps = n.howToPlay ? L(n.howToPlay) : [], teaches = n.teaches ? L(n.teaches) : '';
+  const tn = TEACHER[id] ? L(TEACHER[id]) : '';
+  let lens = '';
+  if (parent && teaches) lens = `<h3>${tt.learnP}</h3><div class="lens-box lens-parent"><p>${esc(teaches)}</p></div>`;
+  if (!parent && (teaches || tn)) lens = `<h3>${tt.learnT}</h3><div class="lens-box lens-teacher"><span class="who">${tt.teacherView}</span>${teaches ? `<p>${esc(teaches)}</p>` : ''}${tn ? `<p><span class="lbl">${tt.note}:</span> ${esc(tn)}</p>` : ''}</div>`;
+  return `<button class="handle" data-handle aria-label="Toggle details"><i></i></button>
+  <div class="sheet-in">
+    <div class="s-head"><div><h2>${esc(title(id))}</h2><small class="ar" lang="${S.lang === 'en' ? 'ar' : 'en'}">${esc(other(id))}</small></div>${chip(id, {lg: true})}</div>
+    ${summary ? `<p class="tag-line">${esc(summary)}</p>` : ''}
+    ${n.wordAr ? `<p class="word-row"><span class="word"><small>${tt.word}</small><b lang="ar">${esc(n.wordAr)}</b></span></p>` : ''}
+    ${steps.length ? `<h3>${tt.how}</h3><ol class="steps">${steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}
+    ${lens}
+    ${kids.length ? `<h3>${tt.also}</h3><div class="also">${kids.map(k => `<button data-go="${k}">${esc(title(k))}</button>`).join('')}</div>` : ''}
+    <div class="cta"><p>${esc(ctaLine)}</p><div class="stores">
+      <a class="store" href="#" onclick="return false"><small>${tt.dl}</small><b>App Store</b></a>
+      <a class="store" href="#" onclick="return false"><small>${tt.gp}</small><b>Google Play</b></a></div></div>
+  </div>`;
+}
+function leafHTML(id, intro) {
+  const tt = T[S.lang], state = intro && S.card === 'sheet' ? 'hidden' : 'open';
+  const media = S.media === 'clip'
+    ? `<div class="clip"><div class="art-stage"><i class="b b1"></i><i class="b b2"></i><i class="b b3"></i><i class="finger"></i></div><div class="loopbar"><i></i></div><div class="tag"><i></i>${tt.loop}</div><div class="cname">${esc(title(id))}</div></div>`
+    : `<div class="clip poster"><div class="pglyph" aria-hidden="true">${esc(firstLetter(id))}</div><div class="pmsg"><span>${tt.soon}</span></div><div class="cname">${esc(title(id))}</div></div>`;
+  return `<div class="leaf" style="${palStyle(id)}"><header class="bar overlay"><button class="back" data-back aria-label="${tt.back}">${ICON.chev}</button></header>${media}<div class="sheet" data-state="${state}">${sheetHTML(id)}</div></div>`;
+}
+function buildPane(id, intro) {
+  const el = document.createElement('section');
+  el.className = 'pane'; el.dataset.id = id;
+  el.innerHTML = isScreen(id) ? screenHTML(id) : leafHTML(id, intro);
+  if (el.querySelector('.scrollcue')) el.classList.add('has-scrollcue');
+  el._intro = intro;
+  return el;
+}
+function afterShow(el) {
+  const sheet = el.querySelector('.sheet');
+  if (sheet && sheet.dataset.state === 'hidden') setTimeout(() => { if (sheet.isConnected) sheet.dataset.state = 'open'; }, reduced.matches ? 0 : (S.media === 'clip' ? 1400 : 350));
+}
+const scrollOf = el => (el && el.querySelector('.scroll, .sheet-in')) ? (el.querySelector('.scroll, .sheet-in').scrollTop) : 0;
+const restoreScroll = (el, y) => { const s = el.querySelector('.scroll'); if (s && y) s.scrollTop = y; };
+
+/* ═════════ Transitions ═════════ */
+function slide(newEl, oldEl, type) {
+  const sx = S.lang === 'ar' ? -1 : 1, dur = reduced.matches ? 0 : 340, ease = 'cubic-bezier(.22,.8,.24,1)';
+  // never let a stalled animation (e.g. background tab) leave navigation locked
+  const A = (el, kf, z) => { el.style.zIndex = z; return Promise.race([el.animate(kf, {duration: dur, easing: ease, fill: 'both'}).finished, new Promise(r => setTimeout(r, dur + 250))]); };
+  const tf = v => ({transform: v});
+  if (type === 'push') return Promise.all([A(newEl, [tf(`translateX(${sx * 100}%)`), tf('none')], 2), A(oldEl, [tf('none'), tf(`translateX(${-sx * 26}%)`)], 1)]);
+  if (type === 'pop')  return Promise.all([A(newEl, [tf(`translateX(${-sx * 26}%)`), tf('none')], 1), A(oldEl, [tf('none'), tf(`translateX(${sx * 100}%)`)], 2)]);
+  if (type === 'up')   return Promise.all([A(newEl, [tf('translateY(100%)'), tf('none')], 2), A(oldEl, [tf('none'), tf('scale(.96)')], 1)]);
+  return Promise.all([A(newEl, [tf('scale(.96)'), tf('none')], 1), A(oldEl, [tf('none'), tf('translateY(100%)')], 2)]);
+}
+async function push(id) {
+  if (busy || !byId[id]) return; busy = true;
+  S.taps++; if (S.taps >= 4) S.hints = false;
+  const old = paneEl; cur().scroll = scrollOf(old);
+  S.stack.push({id, scroll: 0});
+  const el = buildPane(id, true); el.classList.add('over'); screenEl.appendChild(el);
+  await slide(el, old, isModal(id) ? 'up' : 'push');
+  old.remove(); el.classList.remove('over'); el.style.zIndex = ''; paneEl = el;
+  afterShow(el); busy = false; sync();
+}
+async function pop(to) {
+  if (busy || S.stack.length < 2) return;
+  to = to == null ? S.stack.length - 2 : to; busy = true;
+  const old = paneEl, leaving = cur().id;
+  S.stack.length = to + 1;
+  const el = buildPane(cur().id, false); screenEl.appendChild(el); restoreScroll(el, cur().scroll);
+  old.classList.add('over');
+  await slide(el, old, isModal(leaving) ? 'down' : 'pop');
+  old.remove(); el.style.zIndex = ''; paneEl = el; busy = false; sync();
+}
+function jump(id) {           // no slide: rebuild stack from the tree (used by overview, sibling chips, deep links)
+  S.stack = chain(id).map(x => ({id: x, scroll: 0}));
+  S.overview = false; refresh({intro: true});
+}
+function swapTop(id) { S.stack[S.stack.length - 1] = {id, scroll: 0}; refresh({intro: true}); }
+
+/* ═════════ Panel / options / overview ═════════ */
+function renderPanel() {
+  const id = cur().id, n = byId[id], tt = T[S.lang];
+  const crumbs = S.stack.map((e, i) => i === S.stack.length - 1 ? `<span class="cur">${esc(title(e.id))}</span>` : `<button data-pop="${i}">${esc(title(e.id))}</button><i>›</i>`).join('');
+  const screen = isScreen(id);
+  const stat = screen ? countPhrase(id) : (byId[n.parent] && countPhrase(n.parent) ? `${tt.more} ${title(n.parent)}` : '');
+  let sibs = '';
+  if (screen) { const ks = effKids(id).filter(k => byId[k].kind !== 'section').slice(0, 6); if (ks.length) sibs = `<h4>${tt.tryThese}</h4><div>${ks.map(k => `<button data-go="${k}">${esc(title(k))}</button>`).join('')}</div>`; }
+  else { const ks = realKids(n.parent).filter(k => k !== id).slice(0, 8); if (ks.length) sibs = `<h4>${tt.more} ${esc(title(n.parent))}</h4><div>${ks.map(k => `<button data-swap="${k}">${esc(title(k))}</button>`).join('')}</div>`; }
+  panelEl.innerHTML = `<nav class="crumbs" aria-label="Breadcrumb">${crumbs}</nav>
+    <p class="p-eyebrow">${tt.kind[n.kind]}</p>
+    <h2 class="p-title">${esc(title(id))}</h2>
+    <p class="p-explain">${esc(explainer(id))}</p>
+    <p class="p-stat">${esc(stat)}</p>
+    <div class="ctrls">
+      <span class="seg big" data-opt="lens" role="group" aria-label="Audience"><button data-v="parent">${tt.parent}</button><button data-v="teacher">${tt.teacher}</button></span>
+      <span class="seg big" data-opt="lang" role="group" aria-label="Language"><button data-v="en" lang="en">EN</button><button data-v="ar" lang="ar">عربي</button></span>
+      <button class="btn-all" data-overview>${ICON.grid}${tt.all}</button>
+    </div>
+    <div class="sibs">${sibs}</div>`;
+  syncSegs();
+}
+function syncSegs() {
+  document.querySelectorAll('[data-opt]').forEach(seg => seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(S[seg.dataset.opt] === b.dataset.v))));
+}
+function overviewHTML() {
+  const tt = T[S.lang], f = S.filter;
+  const match = id => f === 'all' || tierInfo(id).k === (f === 'none' ? 'none' : f);
+  const pill = id => `<button class="pill${match(id) ? '' : ' dim'}" data-go="${id}">${esc(title(id))}${chip(id, {short: true})}</button>`;
+  const grp = id => {
+    const n = byId[id], mir = n.mirrors;
+    if (mir) return `<div class="ov-grp"><h4>${esc(title(id))}</h4><p class="mirror">${tt.same} <button data-go="${mir}">${esc(title(mir))} ↗</button></p></div>`;
+    const ks = effKids(id);
+    const head = n.kind === 'section' ? `<h4>${esc(title(id))}</h4>` : `<h4><button data-go="${id}">${esc(title(id))}</button>${chip(id, {short: true})}</h4>`;
+    return `<div class="ov-grp">${head}<div class="pills">${ks.filter(k => !isScreen(k)).map(pill).join('')}</div>${ks.filter(isScreen).map(grp).join('')}</div>`;
+  };
+  const hubs = effKids('home').filter(k => byId[k].kind === 'hub');
+  const plain = effKids('home').filter(k => byId[k].kind !== 'hub');
+  const cards = hubs.map(h => {
+    const inner = effKids(h), leaves = inner.filter(k => !isScreen(k)), subs = inner.filter(isScreen);
+    return `<article class="ov-card"><h3><button data-go="${h}">${esc(title(h))}</button></h3>${leaves.length ? `<div class="pills">${leaves.map(pill).join('')}</div>` : ''}${subs.map(grp).join('')}</article>`;
+  }).join('') + `<article class="ov-card"><h3>${S.lang === 'ar' ? 'من الشاشة الرئيسية' : 'Also on the home screen'}</h3><div class="pills">${plain.map(pill).join('')}</div></article>`;
+  const F = [['all','f_all'],['free','f_free'],['premium','f_premium'],['world','f_world'],['tokens','f_tokens'],['mixed','f_mixed'],['none','f_none']];
+  return `<div class="ov-head"><h2>${tt.ovTitle}</h2><button class="close-x" data-overview-close>${tt.close} ✕</button></div>
+    <p class="ov-sub">${tt.ovSub}</p>
+    <div class="filters" role="group" aria-label="Filter by tier">${F.map(([k, l]) => `<button data-filter="${k}" aria-pressed="${f === k}">${tt[l]}</button>`).join('')}</div>
+    <div class="ov-grid">${cards}</div>`;
+}
+function renderNotes() {
+  const leafish = N.filter(n => ['activity','song','feature'].includes(n.kind));
+  const raw = leafish.filter(n => !n.tier), notier = raw.filter(n => !tierOf(n.id)).map(n => n.id);
+  const bare = N.filter(n => n.kind === 'world' && !realKids(n.id).length).map(n => n.id);
+  const noTeach = leafish.filter(n => !n.teaches).map(n => n.id), noSteps = leafish.filter(n => !n.howToPlay).map(n => n.id);
+  const lenOf = f => Math.max(...[].concat(f.en, f.ar).map(x => x.length));
+  const longSum = N.filter(n => n.summary).sort((a, b) => lenOf(b.summary) - lenOf(a.summary)).slice(0, 3);
+  const longStep = leafish.filter(n => n.howToPlay).flatMap(n => [].concat(n.howToPlay.en, n.howToPlay.ar).map(x => ({id: n.id, x}))).sort((a, b) => b.x.length - a.x.length)[0];
+  const dupTier = N.filter(n => n.summary && /(Costs \d+ tokens?|Premium feature|Needs sound|Needs an internet)/.test(n.summary.en)).map(n => n.id);
+  const J = ids => ids.map(id => `<button class="link" data-jump="${id}">${esc(id)}</button>`).join(', ');
+  $('#notes').innerHTML = `<h3>What in this mockup is real, and what is not</h3><ul>
+    <li><b>Real (from <code>app-manifest.json</code>, build ${esc(MANIFEST.appBuild)}, ${N.length} nodes):</b> structure, tiers, costs, titles, summaries (narration text and card tagline), how-to steps, “what your child learns” and the Arabic word chip, in English and Arabic.</li>
+    <li><b>Invented:</b> the Teacher notes (sample text on ${Object.keys(TEACHER).length} nodes; other nodes show only the manifest’s “teaches” line under the teacher view), the clip animation, the home “screenshot” and hotspot rectangles, and the store buttons (link nowhere). Arabic UI labels are mine, using the app’s terms (تذاكر، عملات، النسخة الكاملة).</li></ul>
+    <h3>Fields that are missing, and how the layout copes (never filled in)</h3><ul>
+    <li><b>No “teaches”:</b> ${J(noTeach)}. The “What your child learns” block is hidden.</li>
+    <li><b>No “howToPlay”:</b> ${noSteps.length ? J(noSteps) : 'none among activities, songs and features'}. Worlds, hubs and sections have none by design; where it is missing the steps block is hidden.</li>
+    <li><b>Arabic word chip:</b> try ${J(['careers-chef','careers-doctor'])}.</li></ul>
+    <h3>Feedback for the app repo</h3><ul>
+    <li><b>Structure:</b> ${raw.length ? `${raw.length} leaves have no tier of their own (${raw.length - notier.length} inherit “extra world” from their world here; still none: ${notier.map(esc).join(', ') || 'none'}).` : 'every leaf now has its own tier.'} Decided: core worlds are one clip + card each (Desert lists two features under “Also inside”; ${bare.map(esc).join(', ')} list none).</li>
+    <li><b>Naming:</b> node <code>games</code> is “Exercises” and <code>arcade</code> is “Games”, but the Home summary calls it “Arcade”. The root title is “Abjad Home” in English and just “أبجد” in Arabic.</li>
+    <li><b>Tier facts repeated in summaries:</b> ${dupTier.length} summaries restate what the badge already says (“Costs 1 token”, “Premium feature”, “Needs sound”): ${dupTier.map(esc).join(', ')}. Next to the tier badge on the card this reads twice.</li>
+    <li><b>Longest summaries (chars, en/ar):</b> ${longSum.map(n => `${esc(n.id)} (${n.summary.en.length}/${n.summary.ar.length})`).join(', ')}. They run to 4-5 lines in the narration panel and get cut at two lines in the mobile header. Longest step: ${esc(longStep.id)}, ${longStep.x.length} chars.</li>
+    <li><b>World songs:</b> the six world songs share identical steps and teaches text (only the world name changes), which looks repetitive in a row of six.</li></ul>`;
+}
+
+/* ═════════ Render orchestration ═════════ */
+function applyAttrs() {
+  explore.dir = S.lang === 'ar' ? 'rtl' : 'ltr'; explore.lang = S.lang;
+  explore.dataset.card = S.card; explore.dataset.panel = S.panel; explore.dataset.hints = S.hints ? 'on' : 'off';
+  shell.dataset.view = S.view;
+}
+function refresh({intro = false} = {}) {
+  applyAttrs();
+  const old = paneEl, y = old ? scrollOf(old) : 0;
+  const el = buildPane(cur().id, intro); if (old) old.replaceWith(el); else screenEl.appendChild(el);
+  paneEl = el; if (!intro) restoreScroll(el, y); else afterShow(el);
+  overviewEl.hidden = !S.overview; if (S.overview) overviewEl.innerHTML = overviewHTML();
+  sync();
+}
+function sync() {
+  applyAttrs(); renderPanel(); syncSegs();
+  try {
+    const q = new URLSearchParams(); Object.keys(DEF).forEach(k => { if (S[k] !== DEF[k]) q.set(k, S[k]); });
+    history.replaceState(null, '', `#/${cur().id}${q.toString() ? '?' + q : ''}`);
+  } catch (e) { /* file:// contexts may refuse */ }
+}
+function fromHash() {
+  const m = location.hash.match(/^#\/([^?]*)(?:\?(.*))?$/); if (!m) return;
+  const q = new URLSearchParams(m[2] || '');
+  Object.keys(DEF).forEach(k => { const v = q.get(k); if (v) S[k] = v; });
+  if (m[1] && byId[m[1]]) S.stack = chain(m[1]).map(x => ({id: x, scroll: 0}));
+  if (q.get('ov')) S.overview = true;
+  if (q.get('hints') === 'off') { S.hints = false; }
+}
+
+/* ═════════ Events ═════════ */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button, a'); if (!t) return;
+  if (t.closest('[data-opt]') && t.dataset.v) {
+    const opt = t.closest('[data-opt]').dataset.opt; if (S[opt] === t.dataset.v) return;
+    S[opt] = t.dataset.v; refresh({intro: opt === 'media' || opt === 'card' || opt === 'home'}); return;
+  }
+  if (t.id === 'replay') { S.hints = true; S.taps = 0; refresh(); return; }
+  if (t.id === 'notes-btn') { const n = $('#notes'); n.hidden = !n.hidden; t.setAttribute('aria-expanded', String(!n.hidden)); return; }
+  if (t.dataset.filter) { S.filter = t.dataset.filter; overviewEl.innerHTML = overviewHTML(); return; }
+  if (t.hasAttribute('data-overview')) { S.overview = true; overviewEl.hidden = false; overviewEl.innerHTML = overviewHTML(); overviewEl.scrollTop = 0; return; }
+  if (t.hasAttribute('data-overview-close')) { S.overview = false; overviewEl.hidden = true; return; }
+  if (t.hasAttribute('data-back')) { pop(); return; }
+  if (t.hasAttribute('data-handle')) { const s = t.closest('.sheet'); s.dataset.state = s.dataset.state === 'open' ? 'peek' : 'open'; return; }
+  if (t.dataset.pop) { pop(+t.dataset.pop); return; }
+  if (t.dataset.swap) { swapTop(t.dataset.swap); return; }
+  if (t.dataset.jump) { jump(t.dataset.jump); window.scrollTo({top: 0, behavior: 'smooth'}); return; }
+  if (t.dataset.go) { if (t.closest('#overview')) jump(t.dataset.go); else push(t.dataset.go); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (S.overview) { S.overview = false; overviewEl.hidden = true; } else pop();
+});
+screenEl.addEventListener('scroll', e => { if (e.target.classList && e.target.classList.contains('scroll')) e.target.closest('.pane').classList.add('scrolled'); }, true);
+
+/* ═════════ Boot ═════════ */
+fromHash(); renderNotes();
+refresh({intro: true});
+})();
+</script>
+</body>
+</html>

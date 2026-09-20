@@ -6,7 +6,7 @@ import logo from "../images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 
-const Layout = ({ location, title, children }) => {
+const Layout = ({ location, title, bare, children }) => {
   const headerModes = {
     top: {
       bg: 'transparent',
@@ -65,7 +65,7 @@ const Layout = ({ location, title, children }) => {
       </Container>
     </Navbar>
     {/* Content */}
-    <div className={location.pathname === "/" ? '' : 'generic-page-content'}>
+    <div className={location.pathname === "/" ? '' : (bare ? 'abx-page' : 'generic-page-content')}>
       {children}
     </div>
     {/* Footer */}

@@ -1,0 +1,61 @@
+{
+  "startAtBottom": true,
+  "hotspots": [
+    {
+      "childId": "world-desert",
+      "x": 10,
+      "y": 81.43,
+      "w": 37.5,
+      "h": 10.27
+    },
+    {
+      "childId": "world-oasis",
+      "x": 56.25,
+      "y": 68.22,
+      "w": 33.75,
+      "h": 11
+    },
+    {
+      "childId": "world-mountain",
+      "x": 15,
+      "y": 56,
+      "w": 32.5,
+      "h": 9.54
+    },
+    {
+      "childId": "world-sea",
+      "x": 60,
+      "y": 43.53,
+      "w": 31.25,
+      "h": 9.29
+    },
+    {
+      "childId": "world-countries",
+      "x": 5,
+      "y": 25.68,
+      "w": 38.75,
+      "h": 8.8
+    },
+    {
+      "childId": "world-colors",
+      "x": 63.75,
+      "y": 20.05,
+      "w": 26.25,
+      "h": 8.31
+    },
+    {
+      "childId": "world-numbers",
+      "x": 6.25,
+      "y": 13.94,
+      "w": 36.25,
+      "h": 8.31
+    },
+    {
+      "childId": "world-careers",
+      "x": 58.75,
+      "y": 7.82,
+      "w": 32.5,
+      "h": 8.56
+    }
+  ]
+}

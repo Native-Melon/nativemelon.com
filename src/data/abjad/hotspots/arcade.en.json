@@ -1,0 +1,33 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "whack-a-mole",
+      "x": 5.15,
+      "y": 28.58,
+      "w": 42.88,
+      "h": 32.98
+    },
+    {
+      "childId": "sliding-puzzle",
+      "x": 51.97,
+      "y": 28.58,
+      "w": 42.88,
+      "h": 32.98
+    },
+    {
+      "childId": "memory-match",
+      "x": 5.15,
+      "y": 64.03,
+      "w": 42.88,
+      "h": 32.98
+    },
+    {
+      "childId": "match3",
+      "x": 51.97,
+      "y": 64.03,
+      "w": 42.88,
+      "h": 32.98
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import Overview from "./Overview";
 import { LeafPane, ScreenPane } from "./panes";
 import { AbxContext, useIsoLayoutEffect, useReducedMotion } from "./context";
 import { T } from "../../lib/abjad/ui";
+import { STORE_FALLBACK } from "../../config/abjad";
 import { createTree } from "../../lib/abjad/tree";
 // The webpack loader in config/abjad/manifest-loader.js ships only the public fields of the manifest.
 import manifest from "../../data/abjad/app-manifest.json";
@@ -138,10 +139,16 @@ export default function ExploreShell({ pageContext, location }) {
     <Layout location={location} title="Abjad" bare>
       <div className="abx">
         <header className="abx-page-head" dir={dir} lang={lang}>
-          <p className="abx-eyebrow-top">{tt.eyebrow}</p>
-          <h1>{tt.pageTitle}</h1>
-          <p>{tt.pageIntro}</p>
-          <div className="abx-dots" aria-hidden="true" />
+          <div className="abx-head-text">
+            <p className="abx-eyebrow-top">{tt.eyebrow}</p>
+            <h1>{tt.pageTitle}</h1>
+            <p>{tt.pageIntro}</p>
+            <div className="abx-dots" aria-hidden="true" />
+          </div>
+          <div className="abx-stores abx-head-stores">
+            <a className="abx-store" href={stores.appStore || STORE_FALLBACK.appStore} target="_blank" rel="noopener noreferrer"><small>{tt.dl}</small><b>App Store</b></a>
+            <a className="abx-store" href={stores.playStore || STORE_FALLBACK.playStore} target="_blank" rel="noopener noreferrer"><small>{tt.gp}</small><b>Google Play</b></a>
+          </div>
         </header>
         <main className="abx-shell">
           <AbxContext.Provider value={ctx}>

@@ -24,7 +24,10 @@
 .abx .abx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* Page header */
-.abx .abx-page-head{max-width:1120px;margin:0 auto;padding:22px 24px 0}
+.abx .abx-page-head{max-width:1120px;margin:0 auto;padding:22px 24px 0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 24px}
+.abx .abx-head-text{flex:1 1 420px;min-width:0}
+.abx .abx-head-stores{flex:0 0 auto}
+.abx .abx-head-stores .abx-store{flex:0 0 auto;min-width:150px}
 .abx .abx-eyebrow-top{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral-d);font-weight:700;margin:0 0 6px}
 .abx .abx-page-head[dir=rtl] .abx-eyebrow-top{letter-spacing:0;font-size:14px}
 .abx .abx-page-head h1{font-family:var(--f-head);font-style:normal;font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 6px;padding:0;border:0;display:block;color:var(--charcoal)}
@@ -305,5 +308,10 @@
   .abx .abx-page-head h1{font-size:22px;margin:0}
   .abx .abx-page-head p,.abx .abx-dots{display:none}
   .abx .abx-eyebrow-top{margin:0 0 2px}
+  /* one compact row of store buttons, so the phone still sits near the fold */
+  .abx .abx-head-stores{flex:1 1 100%}
+  .abx .abx-head-stores .abx-store{flex:1 1 0;min-width:0;min-height:40px;padding:5px 10px}
+  .abx .abx-head-stores .abx-store small{display:none}
+  .abx .abx-head-stores .abx-store b{font-size:14px;text-align:center}
   .abx-page{padding-top:4.2rem}
 }

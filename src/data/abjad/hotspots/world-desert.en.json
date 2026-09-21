@@ -1,0 +1,19 @@
+{
+  "startAtBottom": true,
+  "hotspots": [
+    {
+      "childId": "treasure-chests",
+      "x": 24.88,
+      "y": 73.03,
+      "w": 16.42,
+      "h": 5.7
+    },
+    {
+      "childId": "treasure-chests",
+      "x": 23.88,
+      "y": 40.79,
+      "w": 13.93,
+      "h": 4.22
+    }
+  ]
+}

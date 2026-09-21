@@ -21,15 +21,9 @@ function createTree(manifest) {
   // A section that mirrors a world shows that world's leaves (no duplicated content).
   const effKids = (id) => (byId[id].mirrors ? realKids(byId[id].mirrors) : realKids(id));
 
-  // Screens show a grid/list of children. Core (free) worlds are one leaf each: one clip + card.
-  const isScreen = (id) => {
-    const n = byId[id];
-    return (
-      SCREEN_KINDS.has(n.kind) &&
-      effKids(id).length > 0 &&
-      !(n.kind === "world" && n.tier === "free")
-    );
-  };
+  // Screens show a grid/list of children. Core (free) worlds with no children are one leaf each: one clip + card.
+  // A core world that has children (the desert: chests, bonus challenge) is a screen so they can be hotspots.
+  const isScreen = (id) => SCREEN_KINDS.has(byId[id].kind) && effKids(id).length > 0;
   // Modal sheets (e.g. the explorer) have no navigator route in the app.
   const isModal = (id) => byId[id].kind === "hub" && !byId[id].route;
   // Section nodes are headings inside the Games list, not screens of their own.

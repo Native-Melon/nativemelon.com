@@ -1,5 +1,5 @@
 {
-  "startAtBottom": false,
+  "startAtBottom": true,
   "hotspots": [
     {
       "childId": "countries-quiz",

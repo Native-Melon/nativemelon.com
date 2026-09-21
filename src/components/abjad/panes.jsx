@@ -62,9 +62,9 @@ function ShotScreen({ id, src, hotspots, startAtBottom, backHref }) {
       <div className="abx-shot" ref={scrollerRef}>
         <div className="abx-shot-in">
           <img src={src} alt="" decoding="async" onLoad={onLoad} />
-          {hotspots.map((h) => (
+          {hotspots.map((h, i) => (
             <NavLink
-              key={h.childId}
+              key={`${h.childId}-${i}`}
               id={h.childId}
               className={`abx-hot${lang === "ar" ? " abx-flip" : ""}`}
               aria-label={title(tree, h.childId, lang)}

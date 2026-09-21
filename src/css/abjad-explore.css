@@ -193,7 +193,9 @@
 .abx .abx-hot.abx-flip .abx-pulse{left:8px}
 .abx .abx-leaf{position:absolute;inset:0;display:flex;flex-direction:column;background:#111}
 .abx .abx-bar.abx-overlay{position:absolute;z-index:12;inset-inline:0;top:0;background:none;border:0;min-height:0;padding-top:38px}
-.abx .abx-bar.abx-overlay .abx-back{background:rgba(255,255,255,.92)}
+/* the bar spans the whole width above the hotspots: let clicks through to anything near the top of a screenshot */
+.abx .abx-bar.abx-overlay{pointer-events:none}
+.abx .abx-bar.abx-overlay .abx-back{background:rgba(255,255,255,.92);pointer-events:auto}
 .abx .abx-bar.abx-overlay .abx-bar-title{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);font-size:18px}
 .abx .abx-explore[dir=rtl] .abx-loopbar i{transform-origin:right}
 .abx .abx-clip .abx-cname{position:absolute;z-index:3;top:19%;inset-inline:0;text-align:center;font-weight:800;font-size:28px;text-shadow:0 3px 0 rgba(0,0,0,.2);pointer-events:none}

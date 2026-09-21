@@ -175,9 +175,6 @@
       "parent": "home",
       "kind": "feature",
       "route": "AlphabetGrid",
-      "alsoRoutes": [
-        "LetterDetail"
-      ],
       "title": {
         "en": "The Alphabet",
         "ar": "الحروف"
@@ -204,6 +201,42 @@
         "ar": "أسماء الحروف وأصواتها وكلماتها، وكيف تغيّر الحركات القصيرة صوت الحرف."
       },
       "note": "Reached via the tiled title on Home"
+    },
+    {
+      "id": "letter-detail",
+      "parent": "alphabet-grid",
+      "kind": "activity",
+      "route": "LetterDetail",
+      "params": {
+        "index": 0
+      },
+      "titleKey": "adventure.nodeSheet.meetTitle",
+      "tier": "free",
+      "summary": {
+        "en": "One letter up close: its big glyph, an example word with a picture, and the three short vowel marks. Everything is tappable and talks.",
+        "ar": "حرف واحد عن قرب: شكله الكبير، وكلمة مثال مع صورة، والحركات القصيرة الثلاث. كل شيء يمكن الضغط عليه وينطق."
+      },
+      "howToPlay": {
+        "en": [
+          "Tap the big letter to hear its name.",
+          "Tap the picture card to hear the example word.",
+          "Tap each vowel mark to hear the letter with fatha, damma and kasra."
+        ],
+        "ar": [
+          "اضغط على الحرف الكبير لتسمع اسمه.",
+          "اضغط على بطاقة الصورة لتسمع كلمة المثال.",
+          "اضغط على كل حركة لتسمع الحرف بالفتحة والضمة والكسرة."
+        ]
+      },
+      "teaches": {
+        "en": "Letter name and sound, a word that starts with the letter, and how the short vowels change its sound.",
+        "ar": "اسم الحرف وصوته، وكلمة تبدأ به، وكيف تغيّر الحركات القصيرة صوته."
+      },
+      "note": "Reached from a letter tile in the Alphabet grid, or from the Meet button on an Adventure letter station. Has Trace/Play buttons and next/previous letter arrows.",
+      "title": {
+        "en": "Meet the Letter",
+        "ar": "تعرّف على الحرف"
+      }
     },
     {
       "id": "explorer",
@@ -326,6 +359,25 @@
       }
     },
     {
+      "id": "desert-station",
+      "parent": "world-desert",
+      "kind": "hub",
+      "title": {
+        "en": "Letter Station",
+        "ar": "محطة الحرف"
+      },
+      "summary": {
+        "en": "Tap a letter on the map to open its station: meet the letter, trace it and find it. Finish all three to earn the letter's sticker, then try the premium bonus challenge.",
+        "ar": "اضغط على حرف في الخريطة لتفتح محطته: تعرّف على الحرف وتتبّعه وجِده. أكمل الثلاثة لتنال ملصق الحرف، ثم جرّب التحدي الإضافي."
+      },
+      "links": [
+        "letter-detail",
+        "trace",
+        "find"
+      ],
+      "note": "Modal sheet (AdventureNodeSheet) opened from a letter node on any Adventure world map; no navigator route. The desert stands in for all four core worlds. `links` are existing nodes reached from the sheet's buttons (Meet, Trace, Find); the sheet also offers Connect and Assemble under 'try another game'."
+    },
+    {
       "id": "world-desert",
       "parent": "adventure",
       "kind": "world",
@@ -407,9 +459,22 @@
     },
     {
       "id": "bonus-challenge",
-      "parent": "world-desert",
+      "parent": "desert-station",
       "kind": "activity",
       "route": "BonusChallenge",
+      "params": {
+        "focusLetter": 0,
+        "worldId": "desert",
+        "worldLetterArs": [
+          "أ",
+          "ب",
+          "ت",
+          "ث",
+          "ج",
+          "ح",
+          "خ"
+        ]
+      },
       "titleKey": "adventure.nodeSheet.bonusTitle",
       "tier": "premium",
       "summary": {
@@ -432,7 +497,7 @@
         "en": "Listening discrimination and letter-sound recognition.",
         "ar": "التمييز السمعي والربط بين الحرف وصوته."
       },
-      "note": "Premium-gated; reached from the letter station card on the Adventure map",
+      "note": "Premium-gated; reached from the Bonus Challenge button on the letter station sheet (any core world). Free users are sent to the Paywall. Params show the desert: focusLetter is the letter's index in LETTERS, worldLetterArs the world's letters.",
       "title": {
         "en": "Bonus Challenge",
         "ar": "تحدي إضافي"

@@ -117,6 +117,8 @@ export function ScreenPane({ id, content, backHref, scrollRef }) {
 
   const kids = tree.effKids(id);
   const sectioned = kids.some((k) => tree.byId[k].kind === "section");
+  // the tile grid also lists the node's `links` (a modal sheet's buttons to nodes it does not own)
+  const tileKids = tree.navigableKids(id);
   return (
     <>
       {id === "home" && !backHref ? (
@@ -138,7 +140,7 @@ export function ScreenPane({ id, content, backHref, scrollRef }) {
                 </React.Fragment>
               )
             )
-          : kids.map((k, i) => <Tile key={k} id={k} wide={kids.length % 2 === 1 && i === 0} />)}
+          : tileKids.map((k, i) => <Tile key={k} id={k} wide={tileKids.length % 2 === 1 && i === 0} />)}
       </div>
       {sectioned && (
         <div className={scrolled ? "abx-scrolled" : ""}>

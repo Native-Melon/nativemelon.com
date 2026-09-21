@@ -29,9 +29,12 @@ function createTree(manifest) {
   // Section nodes are headings inside the Games list, not screens of their own.
   const isRoutable = (id) => byId[id].kind !== "section";
 
-  // Children a visitor can tap from a screen (sections are flattened into their rows).
-  const navigableKids = (id) =>
-    effKids(id).flatMap((k) => (byId[k].kind === "section" ? effKids(k) : [k]));
+  // Children a visitor can tap from a screen (sections are flattened into their rows), then the node's `links`:
+  // existing nodes it can open but does not own (their parent, page and breadcrumb are unchanged).
+  const navigableKids = (id) => {
+    const kids = effKids(id).flatMap((k) => (byId[k].kind === "section" ? effKids(k) : [k]));
+    return [...new Set([...kids, ...(byId[id].links || []).filter((l) => byId[l])])];
+  };
 
   const chain = (id) => {
     const c = [];

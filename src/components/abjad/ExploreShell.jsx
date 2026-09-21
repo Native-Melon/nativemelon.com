@@ -87,6 +87,8 @@ export default function ExploreShell({ pageContext, location }) {
     if (mode === "jump") { stack = tree.chain(nodeId); type = "none"; }
     else if (mode === "swap") { stack = [...prev.stack.slice(0, -1), nodeId]; type = "none"; }
     else if (at >= 0 && at < prev.stack.length - 1) { stack = prev.stack.slice(0, at + 1); type = tree.isModal(top) ? "down" : "pop"; }
+    // a linked node is not owned by the screen it was opened from: its Back / breadcrumb use its own parent chain
+    else if ((tree.byId[top].links || []).includes(nodeId)) { stack = tree.chain(nodeId); type = "push"; }
     else { stack = [...prev.stack, nodeId]; type = tree.isModal(nodeId) ? "up" : "push"; }
 
     if (type === "push" || type === "up") {

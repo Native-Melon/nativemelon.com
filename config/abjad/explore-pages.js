@@ -10,7 +10,7 @@
  * Coverage rules (the manifest owns app copy; "has content" here means media):
  *   - WARN  on manifest nodes with no media (they render as fallback screens / placeholder leaves).
  *   - FAIL  on site content whose id is not in the manifest (content file, hotspot file or image name), on
- *           malformed content files, and on hotspots that point at a node that is not a child of that screen.
+ *           malformed content files, and on hotspots that point at a node that is not a child (or a `links` target) of that screen.
  */
 const fs = require("fs");
 const path = require("path");
@@ -139,7 +139,7 @@ exports.createExplorePages = async ({ graphql, actions, reporter }) => {
       const okChildren = new Set(screen ? tree.navigableKids(id) : []);
       raw.forEach((h) => {
         if (!screen) errors.push(`${id}: ${source} set on a node that is not a screen`);
-        else if (!okChildren.has(h.childId)) errors.push(`${id}: ${source} child "${h.childId}" is not a child of this screen`);
+        else if (!okChildren.has(h.childId)) errors.push(`${id}: ${source} child "${h.childId}" is not a child (or a link) of this screen`);
         else if (!rectOk(h)) errors.push(`${id}: ${source} rectangle for "${h.childId}" must be percentages inside 0-100`);
         else valid.push({ childId: h.childId, x: h.x, y: h.y, w: h.w, h: h.h });
       });

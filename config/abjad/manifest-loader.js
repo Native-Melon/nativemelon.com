@@ -4,7 +4,7 @@
  */
 const KEEP = [
   "id", "parent", "kind", "route", "title", "summary", "howToPlay", "teaches",
-  "wordAr", "tier", "coinCost", "tokenCost", "mirrors",
+  "wordAr", "tier", "coinCost", "tokenCost", "mirrors", "links",
 ];
 
 module.exports = function manifestLoader(source) {

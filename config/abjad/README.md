@@ -16,6 +16,19 @@ slides to the child screen, tapping a leaf plays a short clip and slides up an i
 
 Everything for the explorer is in this repo except the store links. There is no Prismic type for it.
 
+### `links` (a node that opens nodes it does not own)
+
+A manifest node may carry `"links": ["<node-id>", ...]`: "this screen can navigate to these existing nodes, but
+does not own them". The Letter Station sheet (`desert-station`) uses it for `letter-detail`, `trace` and `find`,
+which each have their own single parent elsewhere in the tree. `links` never duplicates a node or a page, and it does
+not change any `parent`, page URL or breadcrumb. It only widens what a screen may point at:
+
+- `tree.navigableKids(id)` returns the real children (sections flattened), then the `links` targets, de-duplicated.
+  Hotspots and the fallback tile grid use that set. Everything that counts or lists things (`leavesOf`, "N inside",
+  the overview, page generation) still walks the real children only, so a linked node is counted and generated once.
+- Tapping a linked node opens that node's own page (`/abjad/trace/`). **Back from a linked node returns to its real
+  parent** (`games-letters`), not to the screen that linked to it; its breadcrumb is its own parent chain.
+
 The site never writes English or Arabic *app* copy. Arabic *UI* labels (buttons, badges) live in `src/lib/abjad/ui.js`.
 
 ## Media conventions
@@ -58,7 +71,7 @@ Everything works with zero media: screens fall back to a themed grid, leaves to 
 
 - **Fails the build:** a content file, hotspot file or image name that is not a manifest node id (the app renamed
   or removed it), a section heading used as a page, a content file with unknown fields or wrong types, a hotspot
-  whose child is not a child of that screen, a hotspot rectangle outside 0-100.
+  whose child is not a real child of that screen or a `links` target of it, a hotspot rectangle outside 0-100.
 - **Warns:** nodes with no media yet, a screenshot without hotspots (or the reverse), a screen child with no
   hotspot, a clip without a poster, clips flagged while the Bunny base URL is still the placeholder.
 

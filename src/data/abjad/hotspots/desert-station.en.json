@@ -1,0 +1,9 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    { "childId": "letter-detail", "x": 5, "y": 49.27, "w": 90, "h": 7.02 },
+    { "childId": "trace", "x": 5, "y": 57.97, "w": 90, "h": 7.02 },
+    { "childId": "find", "x": 5, "y": 66.67, "w": 90, "h": 7.02 },
+    { "childId": "bonus-challenge", "x": 5, "y": 77.42, "w": 90, "h": 7.02 }
+  ]
+}

@@ -298,7 +298,7 @@ export function LeafPane({ id, content, intro, backHref }) {
   }, []);
 
   return (
-    <div className="abx-leaf" style={palStyle(tree, id)}>
+    <div className="abx-leaf" data-sheet={state} style={palStyle(tree, id)}>
       <header className="abx-bar abx-overlay">
         <BackLink backHref={backHref} modal={tree.isModal(id)} />
       </header>

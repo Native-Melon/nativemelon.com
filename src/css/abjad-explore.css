@@ -318,3 +318,45 @@
   .abx .abx-head-stores .abx-store b{font-size:14px;text-align:center}
   .abx-page{padding-top:4.2rem}
 }
+
+/* Landscape leaf (content file `orientation: "landscape"`, e.g. the drawing board).
+   Wide layout: the phone is turned on its side and the info card sits beside the clip instead of over it.
+   Narrow layout (the phone is the page): the frame stays portrait and the clip is letterboxed above the card. */
+.abx .abx-pane[data-orient=landscape] .abx-clip.abx-media{background:#0d0d0d}
+.abx .abx-pane[data-orient=landscape] .abx-clip video,.abx .abx-pane[data-orient=landscape] .abx-clip img{object-fit:contain}
+@container abx (min-width:761px){
+  .abx .abx-explore[data-orient=landscape]{grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:40px}
+  .abx .abx-explore[data-orient=landscape] .abx-device{width:100%;height:auto;min-height:0;aspect-ratio:2.06;border-radius:38px;padding:10px}
+  /* the island shrinks to a slit inside the bezel, so it never covers the clip */
+  .abx .abx-explore[data-orient=landscape] .abx-device::before{top:50%;left:1px;transform:translateY(-50%);width:8px;height:64px}
+  .abx .abx-explore[data-orient=landscape] .abx-screen{position:absolute;inset:10px;height:auto;border-radius:28px}
+  /* the frame changes shape at the start of the slide, so an outgoing pane of the other shape would be squashed: hide it */
+  .abx .abx-explore[data-orient=landscape] .abx-pane[data-orient=portrait][data-anim$="-out"],
+  .abx .abx-explore[data-orient=portrait] .abx-pane[data-orient=landscape][data-anim$="-out"]{visibility:hidden}
+
+  .abx .abx-pane[data-orient=landscape] .abx-bar.abx-overlay{padding-top:14px}
+  .abx .abx-pane[data-orient=landscape] .abx-clip{inset-inline-end:0;transition:inset-inline-end .5s cubic-bezier(.2,.9,.25,1)}
+  .abx .abx-pane[data-orient=landscape] .abx-leaf[data-sheet=open] .abx-clip{inset-inline-end:42%}
+  .abx .abx-pane[data-orient=landscape] .abx-pglyph{font-size:110px;top:0}
+  .abx .abx-pane[data-orient=landscape] .abx-pmsg{top:auto;bottom:16px}
+  .abx .abx-pane[data-orient=landscape] .abx-playbtn{top:auto;bottom:14px;inset-inline-end:auto;inset-inline-start:14px}
+
+  /* the card slides in from the end edge; its handle becomes a vertical grip on the card's start edge */
+  .abx .abx-pane[data-orient=landscape] .abx-sheet{inset-inline-start:auto;inset-inline-end:0;top:0;width:42%;max-height:none;border-radius:0;border-start-start-radius:22px;border-end-start-radius:22px;box-shadow:calc(var(--abx-sx) * -14px) 0 34px rgba(0,0,0,.28)}
+  .abx .abx-pane[data-orient=landscape] .abx-sheet[data-state=hidden]{transform:translateX(calc(var(--abx-sx) * 105%))}
+  .abx .abx-pane[data-orient=landscape] .abx-sheet[data-state=peek]{transform:translateX(calc(var(--abx-sx) * (100% - 30px)))}
+  .abx .abx-pane[data-orient=landscape] .abx-handle{position:absolute;inset-block:0;inset-inline-start:0;width:30px;min-height:0;padding:0}
+  .abx .abx-pane[data-orient=landscape] .abx-handle i{width:5px;height:44px}
+  .abx .abx-pane[data-orient=landscape] .abx-sheet-in{flex:1;min-height:0;margin-inline-start:26px;padding-top:16px}
+}
+/* not enough room for the wide frame beside the narration panel: stack them */
+@container abx (min-width:761px) and (max-width:1039px){
+  .abx .abx-explore[data-orient=landscape]{grid-template-columns:minmax(0,1fr);gap:20px}
+  .abx .abx-explore[data-orient=landscape] .abx-device{max-width:640px}
+  .abx .abx-explore[data-orient=landscape] .abx-panel{width:100%;max-width:640px;justify-self:center}
+}
+@container abx (max-width:760px){
+  /* clip fills the middle of the portrait frame while the card is away, then moves up above the card */
+  .abx .abx-pane[data-orient=landscape] .abx-clip{inset:0 0 auto 0;height:100%;transition:inset .5s cubic-bezier(.2,.9,.25,1),height .5s cubic-bezier(.2,.9,.25,1)}
+  .abx .abx-pane[data-orient=landscape] .abx-leaf[data-sheet=open] .abx-clip{inset:56px 0 auto 0;height:calc(36% - 56px)}
+}

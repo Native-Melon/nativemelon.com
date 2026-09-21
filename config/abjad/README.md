@@ -8,7 +8,7 @@ slides to the child screen, tapping a leaf plays a short clip and slides up an i
 | What | Source | Edited where |
 | --- | --- | --- |
 | Structure, tiers, costs, titles, summaries, how-to steps, "what your child learns", Arabic word | `src/data/abjad/app-manifest.json` | **the app repo** (`growth/site/app-manifest.json`, then `npm run site:sync`). Never edit it here. |
-| Teacher notes, "has clip" flag | `src/data/abjad/content/<id>.json` | git |
+| Teacher notes, "has clip" flag, landscape flag | `src/data/abjad/content/<id>.json` | git |
 | Hotspot rectangles, "opens scrolled to the bottom" | `src/data/abjad/hotspots/<id>.<lang>.json`, measured on the screenshot it sits next to | git |
 | Posters, screenshots | `static/abjad/` | git |
 | Clips | Bunny (`GATSBY_ABJAD_MEDIA_BASE_URL`, see `.env.example`) | Bunny |
@@ -36,13 +36,19 @@ The site never writes English or Arabic *app* copy. Arabic *UI* labels (buttons,
   are mirrored). Set `startAtBottom` for screens that open scrolled to the end in the app (the world map).
   A screen uses the screenshot look only when it has both the image and at least one hotspot for that language;
   otherwise it shows the fallback grid of child nodes.
-- **Content file** `src/data/abjad/content/<id>.json`, both fields optional:
+- **Content file** `src/data/abjad/content/<id>.json`, all fields optional:
   ```json
   { "teacherNote": { "en": "Try it as a pair task.", "ar": "جرّبوه بالأزواج." },
-    "hasClip": true }
+    "hasClip": true,
+    "orientation": "landscape" }
   ```
   `teacherNote` is what the Teacher view adds under the manifest's "teaches" line (a node without one shows just
-  "teaches"). App copy never goes here.
+  "teaches"). App copy never goes here. `orientation` is `"portrait"` (the default) or `"landscape"`, for a leaf
+  whose app screen is landscape (only the drawing board so far). Screens are always portrait.
+- **Landscape leaves:** record the clip natively in landscape, full screen, without rotating it or adding bars
+  afterwards, and export the poster with the same aspect ratio. On a wide layout the phone frame is turned on its
+  side (about 2:1) and the info card sits beside the clip; on a narrow layout the frame stays portrait and the clip is
+  letterboxed above the card. The clip is never cropped in either case.
 - **Leaf posters:** leaves show a poster (or the clip) rather than a screenshot. Make it the phone's aspect (about
   660x1416) with the app header shifted down about 190 px so it clears the frame's notch and the back button.
 

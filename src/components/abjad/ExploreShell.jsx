@@ -15,6 +15,8 @@ import "../../css/abjad-explore.css";
 
 const tree = createTree(manifest);
 const ANIM_MS = 380;
+// Screens are portrait screenshots; only a leaf can be flagged landscape (content file `orientation`).
+const orientOf = (p) => (!tree.isScreen(p.id) && p.content && p.content.orientation === "landscape" ? "landscape" : "portrait");
 const LS = { lang: "abx-lang", lens: "abx-lens", hints: "abx-hints-done" };
 
 const store = {
@@ -155,7 +157,7 @@ export default function ExploreShell({ pageContext, location }) {
         </header>
         <main className="abx-shell">
           <AbxContext.Provider value={ctx}>
-            <div className="abx-explore" dir={dir} lang={lang} data-panel="end" data-hints={hints ? "on" : "off"}>
+            <div className="abx-explore" dir={dir} lang={lang} data-panel="end" data-orient={orientOf(topPane)} data-hints={hints ? "on" : "off"}>
               <div className="abx-device">
                 <div className="abx-screen" ref={screenRef}>
                   {nav.panes.map((p) => {
@@ -167,6 +169,7 @@ export default function ExploreShell({ pageContext, location }) {
                         className="abx-pane"
                         data-anim={p.anim || undefined}
                         data-id={p.id}
+                        data-orient={orientOf(p)}
                         tabIndex={-1}
                         {...props}
                       >

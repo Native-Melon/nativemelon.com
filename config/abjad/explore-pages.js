@@ -3,7 +3,7 @@
  * repo), validates the join, and creates one page per screen/leaf.
  *
  *   src/data/abjad/app-manifest.json       app facts + copy (generated in the app repo; never edited here)
- *   src/data/abjad/content/<id>.json       teacherNote {en, ar} and hasClip for one node
+ *   src/data/abjad/content/<id>.json       teacherNote {en, ar}, hasClip and orientation ("landscape" for the rare landscape leaf) for one node
  *   src/data/abjad/hotspots/<id>.<lang>.json   hotspot rectangles (+ startAtBottom), measured on that screenshot
  *   static/abjad/screens/<id>.<lang>.*     screenshots     static/abjad/posters/<id>.*   posters
  *
@@ -63,7 +63,7 @@ function loadHotspotFiles(errors) {
   return out;
 }
 
-// { "<id>": { teacherNote: {en, ar}, hasClip } }
+// { "<id>": { teacherNote: {en, ar}, hasClip, orientation } }
 function loadContentFiles(errors) {
   const out = {};
   if (!fs.existsSync(CONTENT_DIR)) return out;
@@ -75,8 +75,9 @@ function loadContentFiles(errors) {
     let j;
     try { j = JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, f), "utf8")); }
     catch (e) { errors.push(`${where}: invalid JSON (${e.message})`); return; }
-    Object.keys(j).filter((k) => !["teacherNote", "hasClip"].includes(k)).forEach((k) => errors.push(`${where}: unknown field "${k}" (allowed: teacherNote, hasClip)`));
+    Object.keys(j).filter((k) => !["teacherNote", "hasClip", "orientation"].includes(k)).forEach((k) => errors.push(`${where}: unknown field "${k}" (allowed: teacherNote, hasClip, orientation)`));
     if ("hasClip" in j && typeof j.hasClip !== "boolean") errors.push(`${where}: hasClip must be true or false`);
+    if ("orientation" in j && !["portrait", "landscape"].includes(j.orientation)) errors.push(`${where}: orientation must be "portrait" or "landscape"`);
     if ("teacherNote" in j) {
       const t = j.teacherNote;
       if (!t || typeof t !== "object" || Object.keys(t).some((k) => !LANGS.includes(k) || (t[k] != null && typeof t[k] !== "string"))) {
@@ -160,12 +161,17 @@ exports.createExplorePages = async ({ graphql, actions, reporter }) => {
       if (!poster) warnings.push(`${id}: clip without a poster image (static/abjad/posters/${id}.webp)`);
     }
 
+    // only leaves can be landscape: screens are captured screenshots of the portrait app
+    if (doc.orientation === "landscape" && screen) warnings.push(`${id}: orientation is set on a screen; only leaves can be landscape`);
+    const orientation = doc.orientation === "landscape" && !screen ? "landscape" : "portrait";
+
     const hasMedia = screen ? !!(screens.en || screens.ar) : hasClip || !!poster;
     if (!hasMedia) (screen ? noMedia.screens : noMedia.leaves).push(id);
 
     const content = {
       teacherNote: { en: (doc.teacherNote && doc.teacherNote.en) || null, ar: (doc.teacherNote && doc.teacherNote.ar) || null },
       hasClip,
+      orientation,
       poster,
       screens,
       hotspots,

@@ -143,7 +143,10 @@ export default function ExploreShell({ pageContext, location }) {
             <p className="abx-eyebrow-top">{tt.eyebrow}</p>
             <h1>{tt.pageTitle}</h1>
             <p>{tt.pageIntro}</p>
-            <div className="abx-dots" aria-hidden="true" />
+            <div className="abx-head-meta">
+              <div className="abx-dots" aria-hidden="true" />
+              <span className="abx-head-pill"><span aria-hidden="true">✦</span> {tt.growthPill}</span>
+            </div>
           </div>
           <div className="abx-stores abx-head-stores">
             <a className="abx-store" href={stores.appStore || STORE_FALLBACK.appStore} target="_blank" rel="noopener noreferrer"><small>{tt.dl}</small><b>App Store</b></a>

@@ -33,7 +33,10 @@
 .abx .abx-page-head h1{font-family:var(--f-head);font-style:normal;font-size:clamp(26px,4vw,36px);line-height:1.15;margin:0 0 6px;padding:0;border:0;display:block;color:var(--charcoal)}
 .abx .abx-page-head[dir=rtl] h1{font-family:var(--f-ar);font-weight:800;line-height:1.5}
 .abx .abx-page-head p{margin:0;max-width:820px;color:var(--muted);font-size:15px}
-.abx .abx-dots{height:14px;margin:12px 0 0;background-image:radial-gradient(circle,var(--tan) 1.5px,transparent 1.5px);background-size:14px 14px;opacity:.7;max-width:210px}
+.abx .abx-head-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:12px}
+.abx .abx-head-meta .abx-dots{margin:0;width:210px;max-width:100%}
+.abx .abx-head-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(196,168,130,.22);color:var(--charcoal);font-size:13px;font-weight:600;line-height:1.4}
+.abx .abx-head-pill span{color:var(--coral-d)}
 .abx .abx-shell{container:abx/inline-size;max-width:1120px;margin:0 auto;padding:8px 24px 72px}
 .abx .abx-explore{--abx-sx:1}
 .abx .abx-explore[dir=rtl]{--abx-sx:-1}

@@ -10,6 +10,7 @@ export const T = {
     pageTitle: "Explore the Abjad app",
     pageIntro:
       "Tap through the app the way your child would. Every activity has a short preview and a plain-language note on what it teaches.",
+    growthPill: "New activities added regularly",
     back: "Back", close: "Close", parent: "Parent", teacher: "Teacher", all: "See everything",
     audience: "Audience", language: "Language",
     how: "How to play", learnP: "What your child learns", learnT: "In the classroom",
@@ -27,6 +28,7 @@ export const T = {
     eyebrow: "أبجد · استكشف",
     pageTitle: "استكشف تطبيق أبجد",
     pageIntro: "تجوّل في التطبيق كما يفعل طفلك. لكل نشاط مقطع قصير وشرح مبسّط لما يتعلّمه الطفل.",
+    growthPill: "أنشطة جديدة تُضاف بانتظام",
     back: "رجوع", close: "إغلاق", parent: "ولي الأمر", teacher: "معلّم", all: "عرض الكل",
     audience: "الجمهور", language: "اللغة",
     how: "طريقة اللعب", learnP: "ماذا يتعلّم طفلك", learnT: "في الصف",

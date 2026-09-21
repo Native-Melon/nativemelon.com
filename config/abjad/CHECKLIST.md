@@ -3,16 +3,18 @@
 Last audited 2026-09-21 against app build 26092002. Structure is complete: every app route is a manifest node (only
 `Paywall` is excluded on purpose). What is left is media. See [README.md](./README.md) for file conventions.
 
-**A leaf is done when all three exist:**
+**A leaf with action is done when all three exist:**
 1. `src/data/abjad/content/<id>.json` containing `{ "hasClip": true }`
-2. `static/abjad/posters/<id>.webp` (660x1416-ish, app header clear of the notch)
+2. `static/abjad/posters/<id>.webp` (660x1416-ish, clear of the frame's notch at the top center)
 3. `<id>.webm` + `<id>.mp4` on Bunny (2-3 s, ~480 px wide, muted)
 
-Tick a leaf only when all three are in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
+A leaf with little action (see section 3) is done with just the poster.
 
-Progress: 30 of 64 leaves and 12 of 12 screens have media. 34 leaves remain, below.
+Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-## 1. Leaves with no media yet (34)
+Progress: 30 of 63 leaves and 13 of 13 screens have media. 33 leaves remain, below.
+
+## 1. Leaves with no media yet (33)
 
 ### Colors world (7) — needs `world:colors` (300 coins)
 Also fills the mirrored Games > Colors section. Do not duplicate clips there.
@@ -58,9 +60,6 @@ Also fills the mirrored Games > Colors section. Do not duplicate clips there.
 - [ ] `match3` Match 3 (2 tokens)
 - [ ] `arcade-leaderboard` Global High Scores (free to view, needs network)
 
-### Other (1)
-- [ ] `letter-detail` Meet the Letter (from the Alphabet grid; has Trace/Play buttons and next/previous arrows)
-
 ## 2. Clips flagged but no poster yet (23)
 
 The content file already says `hasClip`. Each needs `static/abjad/posters/<id>.webp` (the build warns about these).
@@ -91,10 +90,14 @@ Also confirm each clip is actually on Bunny.
   - [ ] `short-vowel` (needs sound)
   - [ ] `letters-wheel`
 
-## 3. Clip flagged and poster in, clip file unverified
+## 3. Poster-only leaves (no clip planned)
 
-- [ ] `treasure-chests`: poster done 2026-09-21. Record the clip from a map position with an unlocked chest
-      (manifest `requires: record-on-a-map-with-unlocked-chest`).
+Little happens on these screens, so a poster is enough: their content files say `"hasClip": false` and nothing is
+left to do. `treasure-chests` and `letter-detail` were moved here on 2026-09-21. Add a clip later only if you want one
+(flip `hasClip` to `true` and upload `<id>.webm` + `<id>.mp4`).
+
+- [x] `treasure-chests`: poster in
+- [x] `letter-detail`: poster in (scaled to 95% and shifted down 30 px so the "1 \ 28" counter clears the frame's notch)
 
 ## 4. Hotspot gaps on screens that have screenshots
 
@@ -105,17 +108,23 @@ Without a hotspot the child is reachable only through links outside the screensh
 - [ ] `desert-station`: hotspots for Connect and Assemble ("try another game", not on the current screenshot). These are
       not manifest children or links, so this needs the app repo's manifest first.
 
+- [ ] `alphabet-grid`: now a screen (manifest `kind` changed from `feature` to `hub` in the app repo, 2026-09-21).
+      Its screenshot is an interim copy of the old poster, which shows only the first 24 letters. Replace
+      `static/abjad/screens/alphabet-grid.en.webp` with a full-length capture (28 letters) and re-measure the alef-tile
+      hotspot in `hotspots/alphabet-grid.en.json`. `alphabet-grid.webp` in `posters/` is now unused by the page (only
+      the share image falls back to the screenshot) and can be deleted.
+
 ## 5. Content that switches things on
 
 - [ ] Teacher notes: none exist, so the Parent | Teacher toggle is hidden. Add `teacherNote {en, ar}` to content files.
 - [ ] Arabic screenshots: none exist, so the EN | عربي toggle is hidden. Add `static/abjad/screens/<id>.ar.webp`
-      plus `hotspots/<id>.ar.json` for each screen (12 screens).
+      plus `hotspots/<id>.ar.json` for each screen (13 screens).
 - [ ] Set `GATSBY_ABJAD_MEDIA_BASE_URL` (placeholder in use).
 
 ## Done so far
 
-Screens (12 of 12): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`, `world-desert`, `desert-station`,
-`world-countries`, `world-colors`, `world-numbers`, `world-careers`.
+Screens (13 of 13): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`, `alphabet-grid` (interim),
+`world-desert`, `desert-station`, `world-countries`, `world-colors`, `world-numbers`, `world-careers`.
 
-Leaves with a poster (7): `daily-quest`, `settings`, `alphabet-grid`, `world-oasis`, `world-mountain`, `world-sea`,
-`treasure-chests`.
+Leaves with a poster and no clip (7): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
+`treasure-chests`, `letter-detail`.

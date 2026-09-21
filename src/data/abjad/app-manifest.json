@@ -173,7 +173,7 @@
     {
       "id": "alphabet-grid",
       "parent": "home",
-      "kind": "feature",
+      "kind": "hub",
       "route": "AlphabetGrid",
       "title": {
         "en": "The Alphabet",

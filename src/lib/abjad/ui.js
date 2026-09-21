@@ -19,9 +19,10 @@ export const T = {
     hint: "Tap a glowing dot to explore", soon: "Clip coming soon", play: "Play clip", pause: "Pause clip",
     scroll: "Scroll for more", dl: "Download on the", gp: "Get it on",
     ovTitle: "Everything in Abjad", ovSub: "Every screen and activity, straight from the app’s structure.",
-    homeExtras: "Also on the home screen", filterBy: "Filter by tier",
+    homeExtras: "Also on the home screen", filterBy: "Show",
     partOf: (p) => `Part of ${p}. Pick another one to compare.`, tapAnything: "Tap anything to open it.",
-    f: { all: "All", free: "Free", premium: "Premium", world: "Extra worlds", tokens: "Arcade (tokens)", mixed: "Mixed" },
+    f: { all: "Everything", free: "Free plan" },
+    freeOf: (n, total) => `${n} of ${total} activities are free. Premium unlocks the rest.`,
     kind: { root: "Home", hub: "Section", section: "Section", world: "World", activity: "Activity", song: "Song", feature: "Feature", parents: "For grown-ups" },
   },
   ar: {
@@ -37,9 +38,10 @@ export const T = {
     hint: "المس النقطة المضيئة للاستكشاف", soon: "المقطع قادم قريبًا", play: "تشغيل المقطع", pause: "إيقاف المقطع",
     scroll: "مرّر للمزيد", dl: "حمّل من", gp: "احصل عليه من",
     ovTitle: "كل ما في أبجد", ovSub: "كل شاشة وكل نشاط، كما هي في بنية التطبيق.",
-    homeExtras: "من الشاشة الرئيسية", filterBy: "تصفية حسب النوع",
+    homeExtras: "من الشاشة الرئيسية", filterBy: "عرض",
     partOf: (p) => `جزء من «${p}». اختر نشاطًا آخر لتقارن.`, tapAnything: "المس أي عنصر لتفتحه.",
-    f: { all: "الكل", free: "مجاني", premium: "النسخة الكاملة", world: "عوالم إضافية", tokens: "ألعاب التذاكر", mixed: "متنوّع" },
+    f: { all: "كل شيء", free: "النسخة المجانية" },
+    freeOf: (n, total) => `${digits(n, "ar")} من ${digits(total, "ar")} نشاطًا مجانية. والنسخة الكاملة تفتح الباقي.`,
     kind: { root: "الرئيسية", hub: "قسم", section: "قسم", world: "عالم", activity: "نشاط", song: "أغنية", feature: "ميزة", parents: "لأولياء الأمور" },
   },
 };
@@ -62,6 +64,9 @@ export const countPhrase = (tree, id, lang) => {
 
 export const title = (tree, id, lang) => (tree.byId[id].title && tree.byId[id].title[lang]) || id;
 export const otherTitle = (tree, id, lang) => title(tree, id, lang === "en" ? "ar" : "en");
+
+/** What a free user can play: free items, arcade games (tokens) and mixed items (part free). Extra worlds and premium are not. */
+export const isFreeTier = (k) => k === "free" || k === "tokens" || k === "mixed";
 
 /** Tier badge: { k, label, short } for a node, or k:'none'. Wording stays conservative: no prices. */
 export const tierInfo = (tree, id, lang) => {

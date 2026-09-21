@@ -1,16 +1,18 @@
 import * as React from "react";
 import { useAbx } from "./context";
 import { Chip, NavLink } from "./parts";
-import { T, tierInfo, title } from "../../lib/abjad/ui";
+import { T, isFreeTier, tierInfo, title } from "../../lib/abjad/ui";
 
-const FILTERS = ["all", "free", "premium", "world", "tokens", "mixed"];
+const FILTERS = ["all", "free"];
 
-/** "See everything": the whole tree from the same data, with tier badges and a tier filter. */
+/** "See everything": the whole tree from the same data, with tier badges. "Free plan" fades out whatever needs Premium. */
 export default function Overview({ onClose }) {
   const { tree, lang } = useAbx();
   const tt = T[lang];
   const [filter, setFilter] = React.useState("all");
-  const match = (id) => filter === "all" || tierInfo(tree, id, lang).k === filter;
+  const match = (id) => filter === "all" || isFreeTier(tierInfo(tree, id, lang).k);
+  const allLeaves = [...tree.leavesOf("home")];
+  const freeCount = allLeaves.filter((id) => isFreeTier(tierInfo(tree, id, lang).k)).length;
 
   const Pill = ({ id }) => (
     <NavLink id={id} mode="jump" className={`abx-pill${match(id) ? "" : " abx-dim"}`}>
@@ -60,6 +62,7 @@ export default function Overview({ onClose }) {
           <button key={f} type="button" aria-pressed={filter === f} onClick={() => setFilter(f)}>{tt.f[f]}</button>
         ))}
       </div>
+      {filter === "free" && <p className="abx-ov-count" aria-live="polite">{tt.freeOf(freeCount, allLeaves.length)}</p>}
       <div className="abx-ov-grid">
         {hubs.map((h) => {
           const inner = tree.effKids(h);

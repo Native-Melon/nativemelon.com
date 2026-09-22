@@ -12,7 +12,7 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 58 of 63 leaves and 13 of 13 screens have media. 5 leaves remain, below.
+Progress: 62 of 63 leaves and 13 of 13 screens have media. 1 leaf remains: `arcade-leaderboard`.
 
 ## 0. Done: Colors world (7) — 2026-09-21
 
@@ -57,14 +57,21 @@ node's own route `CareersMazeLevelSelect` is the level picker before it); both c
 - [x] `careers-teacher` Grade the Tests
 - [x] `careers-police` Catch the Culprit
 
-## 1. Leaves with no media yet (5)
+## 0d. Done: Arcade games (4) — 2026-09-22
 
-### Arcade (5) — games cost tokens per play
-- [ ] `whack-a-mole` Whack-a-Mole (1 token)
-- [ ] `sliding-puzzle` Sliding Puzzle (1 token)
-- [ ] `memory-match` Memory Match (1 token)
-- [ ] `match3` Match 3 (2 tokens)
-- [ ] `arcade-leaderboard` Global High Scores (free to view, needs network)
+Same treatment as the coin worlds. All four clips confirmed live on Bunny (`.mp4` 200 for each; `.webm` 404s for all
+four, same harmless pattern as before).
+
+- [x] `whack-a-mole` Whack-a-Mole (1 token)
+- [x] `sliding-puzzle` Sliding Puzzle (1 token)
+- [x] `memory-match` Memory Match (1 token)
+- [x] `match3` Match 3 (2 tokens)
+
+## 1. Leaves with no media yet (1)
+
+### Arcade
+- [ ] `arcade-leaderboard` Global High Scores (free to view, needs network) — the last leaf with no media at all.
+      Its screen hotspot is also still missing (section 4).
 
 ## 2. Clips flagged but no poster yet (23)
 
@@ -144,5 +151,5 @@ Leaves with a poster and no clip (14): `daily-quest`, `settings`, `world-oasis`,
 `treasure-chests`, `letter-detail`, and the Songs (`song-alphabet`, `song-desert`, `song-oasis`, `song-mountain`,
 `song-sea`, `song-countries`, `song-colors`).
 
-Leaves with a poster and a live clip (20): the Colors, Numbers and Careers worlds (sections 0, 0b, 0c;
-`numbers-find` has a poster but its clip is not live).
+Leaves with a poster and a live clip (24): the Colors, Numbers and Careers worlds and the four arcade games
+(sections 0, 0b, 0c, 0d; `numbers-find` has a poster but its clip is not live).

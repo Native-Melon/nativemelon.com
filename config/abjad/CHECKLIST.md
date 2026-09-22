@@ -12,7 +12,7 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 37 of 63 leaves and 13 of 13 screens have media. 26 leaves remain, below.
+Progress: 44 of 63 leaves and 13 of 13 screens have media. 19 leaves remain, below.
 
 ## 0. Done: Colors world (7) — 2026-09-21
 
@@ -29,16 +29,20 @@ mirrored Games > Colors section; no separate clips needed there.
 - [x] `colors-mix` Mix Colors
 - [x] `colors-quiz` Colors Quiz
 
-## 1. Leaves with no media yet (26)
+## 0b. Done: Numbers world (7) — 2026-09-21
 
-### Numbers world (7) — needs `world:numbers` (300 coins)
-- [ ] `numbers-sort` Domino Sort
-- [ ] `numbers-find` Find the Number
-- [ ] `numbers-count` Count & Tap
-- [ ] `numbers-more-or-less` More or Less
-- [ ] `numbers-pattern` Continue the Pattern
-- [ ] `numbers-recall` Number Recall
-- [ ] `numbers-trace` Trace the Numeral
+Same treatment as Colors. One clip is not actually live yet:
+
+- [x] `numbers-sort` Domino Sort — clip confirmed on Bunny
+- [ ] `numbers-find` Find the Number — poster and content file in, but `numbers-find.mp4` **404s** on Bunny (the other
+      six all return 200). The leaf will show the poster only until this is re-uploaded; nothing to do here otherwise.
+- [x] `numbers-count` Count & Tap — clip confirmed on Bunny
+- [x] `numbers-more-or-less` More or Less — clip confirmed on Bunny
+- [x] `numbers-pattern` Continue the Pattern — clip confirmed on Bunny
+- [x] `numbers-recall` Number Recall — clip confirmed on Bunny
+- [x] `numbers-trace` Trace the Numeral — clip confirmed on Bunny
+
+## 1. Leaves with no media yet (19)
 
 ### Careers world (7) — needs `world:careers` (300 coins)
 - [ ] `careers-chef` Cook a Meal
@@ -134,4 +138,5 @@ Screens (13 of 13): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`,
 Leaves with a poster and no clip (7): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
 `treasure-chests`, `letter-detail`.
 
-Leaves with a poster and a live clip (7): the Colors world, section 0 above.
+Leaves with a poster and a live clip (13): the Colors world (section 0) and six of the Numbers world (section 0b;
+`numbers-find` has a poster but its clip is not live).

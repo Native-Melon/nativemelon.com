@@ -12,7 +12,7 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 51 of 63 leaves and 13 of 13 screens have media. 12 leaves remain, below.
+Progress: 58 of 63 leaves and 13 of 13 screens have media. 5 leaves remain, below.
 
 ## 0. Done: Colors world (7) — 2026-09-21
 
@@ -57,16 +57,7 @@ node's own route `CareersMazeLevelSelect` is the level picker before it); both c
 - [x] `careers-teacher` Grade the Tests
 - [x] `careers-police` Catch the Culprit
 
-## 1. Leaves with no media yet (12)
-
-### Songs (7)
-- [ ] `song-alphabet` Alphabet Song (free)
-- [ ] `song-desert` Desert World Song (free, needs `complete:world-desert`)
-- [ ] `song-oasis` Oasis World Song (free, needs `complete:world-oasis`)
-- [ ] `song-mountain` Mountain World Song (free, needs `complete:world-mountain`)
-- [ ] `song-sea` Sea World Song (free, needs `complete:world-sea`)
-- [ ] `song-countries` Arab Countries World Song (extra world, needs `world:countries` + `complete:world-countries`)
-- [ ] `song-colors` Colors World Song (extra world, needs `world:colors`)
+## 1. Leaves with no media yet (5)
 
 ### Arcade (5) — games cost tokens per play
 - [ ] `whack-a-mole` Whack-a-Mole (1 token)
@@ -113,6 +104,13 @@ left to do. `treasure-chests` and `letter-detail` were moved here on 2026-09-21.
 
 - [x] `treasure-chests`: poster in
 - [x] `letter-detail`: poster in (scaled to 95% and shifted down 30 px so the "1 \ 28" counter clears the frame's notch)
+- [x] `song-alphabet`: poster in — 2026-09-22
+- [x] `song-desert`: poster in — 2026-09-22
+- [x] `song-oasis`: poster in — 2026-09-22
+- [x] `song-mountain`: poster in — 2026-09-22
+- [x] `song-sea`: poster in — 2026-09-22
+- [x] `song-countries`: poster in — 2026-09-22
+- [x] `song-colors`: poster in — 2026-09-22
 
 ## 4. Hotspot gaps on screens that have screenshots
 
@@ -142,8 +140,9 @@ Without a hotspot the child is reachable only through links outside the screensh
 Screens (13 of 13): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`, `alphabet-grid` (interim),
 `world-desert`, `desert-station`, `world-countries`, `world-colors`, `world-numbers`, `world-careers`.
 
-Leaves with a poster and no clip (7): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
-`treasure-chests`, `letter-detail`.
+Leaves with a poster and no clip (14): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
+`treasure-chests`, `letter-detail`, and the Songs (`song-alphabet`, `song-desert`, `song-oasis`, `song-mountain`,
+`song-sea`, `song-countries`, `song-colors`).
 
 Leaves with a poster and a live clip (20): the Colors, Numbers and Careers worlds (sections 0, 0b, 0c;
 `numbers-find` has a poster but its clip is not live).

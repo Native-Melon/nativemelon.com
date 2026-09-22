@@ -12,7 +12,7 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 44 of 63 leaves and 13 of 13 screens have media. 19 leaves remain, below.
+Progress: 51 of 63 leaves and 13 of 13 screens have media. 12 leaves remain, below.
 
 ## 0. Done: Colors world (7) — 2026-09-21
 
@@ -42,16 +42,22 @@ Same treatment as Colors. One clip is not actually live yet:
 - [x] `numbers-recall` Number Recall — clip confirmed on Bunny
 - [x] `numbers-trace` Trace the Numeral — clip confirmed on Bunny
 
-## 1. Leaves with no media yet (19)
+## 0c. Done: Careers world (7) — 2026-09-21
 
-### Careers world (7) — needs `world:careers` (300 coins)
-- [ ] `careers-chef` Cook a Meal
-- [ ] `careers-doctor` Fix the Patient
-- [ ] `careers-builder` Build Something
-- [ ] `careers-farmer` Sort the Farm
-- [ ] `careers-pilot` Fly the plane! (also route `CareersMazeGame`)
-- [ ] `careers-teacher` Grade the Tests
-- [ ] `careers-police` Catch the Culprit
+Same treatment as Colors and Numbers. All seven clips confirmed live on Bunny (`.mp4` 200 for each; `.webm` 404s for
+all seven, same harmless pattern as the other worlds). `careers-builder`'s poster is the "Gear up!" dress-up screen
+(route `CareersPlaceGame`), and `careers-pilot`'s is the maze itself (`CareersMazeGame`, an `alsoRoutes` entry — the
+node's own route `CareersMazeLevelSelect` is the level picker before it); both checked against the manifest.
+
+- [x] `careers-chef` Cook a Meal
+- [x] `careers-doctor` Fix the Patient
+- [x] `careers-builder` Build Something
+- [x] `careers-farmer` Sort the Farm
+- [x] `careers-pilot` Fly the plane!
+- [x] `careers-teacher` Grade the Tests
+- [x] `careers-police` Catch the Culprit
+
+## 1. Leaves with no media yet (12)
 
 ### Songs (7)
 - [ ] `song-alphabet` Alphabet Song (free)
@@ -128,7 +134,8 @@ Without a hotspot the child is reachable only through links outside the screensh
 - [ ] Teacher notes: none exist, so the Parent | Teacher toggle is hidden. Add `teacherNote {en, ar}` to content files.
 - [ ] Arabic screenshots: none exist, so the EN | عربي toggle is hidden. Add `static/abjad/screens/<id>.ar.webp`
       plus `hotspots/<id>.ar.json` for each screen (13 screens).
-- [ ] Set `GATSBY_ABJAD_MEDIA_BASE_URL` (placeholder in use).
+- [x] Set `GATSBY_ABJAD_MEDIA_BASE_URL`: `.env` now has the real Bunny base (`https://cdn.nativemelon.com/explore`);
+      `.env.example` still shows the placeholder, which is correct.
 
 ## Done so far
 
@@ -138,5 +145,5 @@ Screens (13 of 13): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`,
 Leaves with a poster and no clip (7): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
 `treasure-chests`, `letter-detail`.
 
-Leaves with a poster and a live clip (13): the Colors world (section 0) and six of the Numbers world (section 0b;
+Leaves with a poster and a live clip (20): the Colors, Numbers and Careers worlds (sections 0, 0b, 0c;
 `numbers-find` has a poster but its clip is not live).

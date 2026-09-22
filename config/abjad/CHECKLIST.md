@@ -12,19 +12,24 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 30 of 63 leaves and 13 of 13 screens have media. 33 leaves remain, below.
+Progress: 37 of 63 leaves and 13 of 13 screens have media. 26 leaves remain, below.
 
-## 1. Leaves with no media yet (33)
+## 0. Done: Colors world (7) — 2026-09-21
 
-### Colors world (7) — needs `world:colors` (300 coins)
-Also fills the mirrored Games > Colors section. Do not duplicate clips there.
-- [ ] `colors-match` Match the Color
-- [ ] `colors-find` Find the Color
-- [ ] `colors-tap` Tap to Color
-- [ ] `colors-recall` Color Recall
-- [ ] `colors-sort` Sort by Color
-- [ ] `colors-mix` Mix Colors
-- [ ] `colors-quiz` Colors Quiz
+Posters made from the simulator captures, content files set to `hasClip: true`, and all seven clips confirmed live
+on Bunny (`.mp4` returns 200 for each; `.webm` 404s for all seven, so the browser falls back to the `.mp4` `<source>`
+— harmless, but worth recording an actual `.webm` alongside future clips if that matters to you). Also fills the
+mirrored Games > Colors section; no separate clips needed there.
+
+- [x] `colors-match` Match the Color
+- [x] `colors-find` Find the Color
+- [x] `colors-tap` Tap to Color (poster is the picture-gallery screen `ColorsTapGallery`, which is what this node owns)
+- [x] `colors-recall` Color Recall
+- [x] `colors-sort` Sort by Color
+- [x] `colors-mix` Mix Colors
+- [x] `colors-quiz` Colors Quiz
+
+## 1. Leaves with no media yet (26)
 
 ### Numbers world (7) — needs `world:numbers` (300 coins)
 - [ ] `numbers-sort` Domino Sort
@@ -128,3 +133,5 @@ Screens (13 of 13): `home`, `adventure`, `songs`, `games`, `arcade`, `explorer`,
 
 Leaves with a poster and no clip (7): `daily-quest`, `settings`, `world-oasis`, `world-mountain`, `world-sea`,
 `treasure-chests`, `letter-detail`.
+
+Leaves with a poster and a live clip (7): the Colors world, section 0 above.

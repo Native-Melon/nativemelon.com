@@ -12,7 +12,8 @@ A leaf with little action (see section 3) is done with just the poster.
 
 Tick a leaf only when everything it needs is in. Prereq for every clip: `GATSBY_ABJAD_MEDIA_BASE_URL` set to the real Bunny base.
 
-Progress: 62 of 63 leaves and 13 of 13 screens have media. 1 leaf remains: `arcade-leaderboard`.
+Progress: 62 of 63 leaves have media (61 with a poster; `speed-round` is the only one still poster-less even though
+its clip already plays). 13 of 13 screens have media. 1 leaf has none at all: `arcade-leaderboard`.
 
 ## 0. Done: Colors world (7) — 2026-09-21
 
@@ -73,35 +74,51 @@ four, same harmless pattern as before).
 - [ ] `arcade-leaderboard` Global High Scores (free to view, needs network) — the last leaf with no media at all.
       Its screen hotspot is also still missing (section 4).
 
-## 2. Clips flagged but no poster yet (23)
+## 0e. Done: posters for 20 previously-clip-only leaves — 2026-09-22
 
-The content file already says `hasClip`. Each needs `static/abjad/posters/<id>.webp` (the build warns about these).
-Also confirm each clip is actually on Bunny.
+These already said `hasClip: true` (some going back to before this checklist existed) but had no poster, so they
+rendered as the themed placeholder until their clip loaded. Captures came in filenames that don't match the node id
+(app screen/component names), matched to nodes here by route and verified against the manifest and each screenshot's
+content. All 20 clips confirmed live on Bunny. `drawing-board`'s poster is landscape (1200x552), matching its
+`orientation: "landscape"` content field; the rest are the standard 660x1416.
 
-- [ ] `progress`
-- [ ] `sticker-album`
-- [ ] `drawing-board` (landscape: poster must match the landscape aspect ratio)
-- [ ] `wardrobe`
-- [ ] `bonus-challenge` (needs a letter station sheet; premium)
-- [ ] `countries-quiz` (needs `world:countries` and 5+ countries met)
-- [ ] `countries-wheel`
-- [ ] `speed-round`
-- [ ] `reward-spin-wheel` (modal after finishing a world or the daily quest)
+- [x] `progress` (file `progress.en.png`)
+- [x] `sticker-album` (file `adventure-album.en.png`, route `AdventureAlbum`; tall capture, poster is the top of the list)
+- [x] `drawing-board` (file `sticker-canvas.en.png`, route `StickerCanvas`, landscape)
+- [x] `wardrobe` (file `adventure-wardrobe.en.png`, route `AdventureWardrobe`)
+- [x] `bonus-challenge` (file `bonus-challenge.en.png`)
+- [x] `countries-quiz` (file `countries-quiz.en.png`)
+- [x] `reward-spin-wheel` (file `reward-spin-wheel.en.png` — the "Quest Complete! Spin to Win!" sheet)
 - Letter exercises (Games > Letters):
-  - [ ] `trace`
-  - [ ] `find`
-  - [ ] `connect`
-  - [ ] `assemble`
-  - [ ] `memory`
-  - [ ] `memory-flip` (needs sound)
-  - [ ] `letter-form`
-  - [ ] `forms-matcher`
-  - [ ] `recall`
-  - [ ] `echo` (needs sound)
-  - [ ] `mirror-match`
-  - [ ] `letter-hunt`
-  - [ ] `short-vowel` (needs sound)
-  - [ ] `letters-wheel`
+  - [x] `trace` (file `trace-canvas.en.png`, route `TraceCanvas`, an `alsoRoutes` entry — the node's own route
+        `TracePicker` is the letter-picker screen before it)
+  - [x] `find` (file `find-game.en.png`)
+  - [x] `connect` (file `connect-game.en.png`)
+  - [x] `assemble` (file `assemble-game.en.png`)
+  - [x] `memory` (file `memory-game.en.png`)
+  - [x] `memory-flip` (file `memory-flip-game.en.png`)
+  - [x] `letter-form` (file `letter-form-game.en.png`)
+  - [x] `forms-matcher` (file `letter-forms-matcher.en.png`)
+  - [x] `recall` (file `recall-game.en.png`)
+  - [x] `echo` (file `echo-game.en.png`)
+  - [x] `mirror-match` (file `mirror-match.en.png`)
+  - [x] `letter-hunt` (file `letter-hunt.en.png`)
+  - [x] `short-vowel` (file `short-vowel-game.en.png`)
+  - [x] `letters-wheel` (file `spin-wheel-game.en.png`, titled "Letter Wheel" — shares the app route `SpinWheelGame`
+        with `countries-wheel`, which is a different node; its own capture came in 2026-09-22, see section 0f)
+
+## 0f. Done: `countries-wheel` — 2026-09-22
+
+Poster in, from its own capture (file reused the `spin-wheel-game.en.png` name, but content confirmed "Country Wheel"
+with the six-flag wheel, not the letter one). Clip confirmed live on Bunny.
+
+- [x] `countries-wheel` Country Wheel
+
+## 2. Clips flagged but no poster yet (1)
+
+The content file already says `hasClip`. Needs `static/abjad/posters/<id>.webp` (the build warns about this).
+
+- [ ] `speed-round` (not in the Games menu; appears only as a random item in the premium daily quest)
 
 ## 3. Poster-only leaves (no clip planned)
 
@@ -151,5 +168,8 @@ Leaves with a poster and no clip (14): `daily-quest`, `settings`, `world-oasis`,
 `treasure-chests`, `letter-detail`, and the Songs (`song-alphabet`, `song-desert`, `song-oasis`, `song-mountain`,
 `song-sea`, `song-countries`, `song-colors`).
 
-Leaves with a poster and a live clip (24): the Colors, Numbers and Careers worlds and the four arcade games
-(sections 0, 0b, 0c, 0d; `numbers-find` has a poster but its clip is not live).
+Leaves with a poster and a live clip (45): the Colors, Numbers and Careers worlds, the four arcade games, the
+20 leaves postered in section 0e, and `countries-wheel` (sections 0, 0b, 0c, 0d, 0e, 0f; `numbers-find` has a
+poster but its clip is not live).
+
+Leaves with a live clip and no poster yet (1): `speed-round` (section 2).

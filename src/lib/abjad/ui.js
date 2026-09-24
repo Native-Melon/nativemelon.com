@@ -74,8 +74,11 @@ export const tierInfo = (tree, id, lang) => {
   const k = t ? t.tier : "none";
   const ar = lang === "ar";
   if (k === "world") {
-    // some world-tier nodes (e.g. the world songs) have no world ancestor to take a coin cost from: no number then
-    if (t.coinCost == null) return { k, label: ar ? "عالم إضافي" : "Extra world", short: ar ? "عالم إضافي" : "Extra world", coins: null };
+    // The coin cost unlocks the whole world, not the single item, so only the world node itself shows a number —
+    // an item inside it (e.g. an activity or a song) borrows the "world" tier but stays priceless in its own badge,
+    // same wording as world-tier nodes with no world ancestor to take a cost from (e.g. the world songs).
+    const isWorldNode = tree.byId[id].kind === "world";
+    if (!isWorldNode || t.coinCost == null) return { k, label: ar ? "عالم إضافي" : "Extra world", short: ar ? "عالم إضافي" : "Extra world", coins: null };
     const co = ar ? `${digits(t.coinCost, lang)} عملة` : `${t.coinCost} coins`;
     return { k, label: ar ? `عالم إضافي · ${co}` : `Extra world · ${co}`, short: co, coins: t.coinCost };
   }

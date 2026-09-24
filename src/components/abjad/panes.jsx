@@ -37,7 +37,7 @@ function Row({ id }) {
   );
 }
 
-function ShotScreen({ id, src, hotspots, startAtBottom, backHref }) {
+function ShotScreen({ id, src, shotLang, hotspots, startAtBottom, backHref }) {
   const { tree, lang } = useAbx();
   const scrollerRef = React.useRef(null);
   // Some screens open scrolled to the end in the app (e.g. the world map starts at the first world, at the bottom).
@@ -66,7 +66,7 @@ function ShotScreen({ id, src, hotspots, startAtBottom, backHref }) {
             <NavLink
               key={`${h.childId}-${i}`}
               id={h.childId}
-              className={`abx-hot${lang === "ar" ? " abx-flip" : ""}`}
+              className={`abx-hot${shotLang === "ar" ? " abx-flip" : ""}`}
               aria-label={title(tree, h.childId, lang)}
               style={{ left: `${h.x}%`, top: `${h.y}%`, width: `${h.w}%`, height: `${h.h}%` }}
             >
@@ -91,8 +91,11 @@ function ShotScreen({ id, src, hotspots, startAtBottom, backHref }) {
 
 export function ScreenPane({ id, content, backHref, scrollRef }) {
   const { tree, lang } = useAbx();
-  const shotSrc = content.screens[lang];
-  const hotspots = content.hotspots[lang] || [];
+  // The screenshot may come from the other language when this one has none; its hotspots were measured on
+  // that same capture, so they travel with it.
+  const shot = (content.shotLang && content.shotLang[lang]) || null;
+  const shotSrc = shot && content.screens[shot];
+  const hotspots = (shot && content.hotspots[shot]) || [];
   const listRef = React.useRef(null);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -109,7 +112,7 @@ export function ScreenPane({ id, content, backHref, scrollRef }) {
   if (shotSrc && hotspots.length) {
     return (
       <>
-        <ShotScreen id={id} src={shotSrc} hotspots={hotspots} startAtBottom={content.startAtBottom && content.startAtBottom[lang]} backHref={backHref} />
+        <ShotScreen id={id} src={shotSrc} shotLang={shot} hotspots={hotspots} startAtBottom={content.startAtBottom && content.startAtBottom[shot]} backHref={backHref} />
         <div className="abx-coach">{T[lang].hint}</div>
       </>
     );
@@ -162,6 +165,7 @@ function Clip({ id, content }) {
   const [playing, setPlaying] = React.useState(true);
   const [failed, setFailed] = React.useState(false);
   const label = title(tree, id, lang);
+  const poster = content.poster ? content.poster[lang] : null;
 
   // With reduced motion the clip does not autoplay; the visitor can start it.
   React.useEffect(() => {
@@ -184,7 +188,7 @@ function Clip({ id, content }) {
           muted loop playsInline disablePictureInPicture
           autoPlay={!reduced}
           preload="metadata"
-          poster={content.poster || undefined}
+          poster={poster || undefined}
           aria-label={label}
         >
           <source src={clipUrl(id, "webm")} type="video/webm" />
@@ -194,10 +198,10 @@ function Clip({ id, content }) {
       </div>
     );
   }
-  if (content.poster) {
+  if (poster) {
     return (
       <div className="abx-clip abx-media">
-        <img src={content.poster} alt={label} loading="lazy" decoding="async" />
+        <img src={poster} alt={label} loading="lazy" decoding="async" />
       </div>
     );
   }

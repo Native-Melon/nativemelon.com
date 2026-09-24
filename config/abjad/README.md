@@ -37,6 +37,9 @@ The site never writes English or Arabic *app* copy. Arabic *UI* labels (buttons,
   Then set `"hasClip": true` in that node's content file (below). The base URL is `GATSBY_ABJAD_MEDIA_BASE_URL`
   (a placeholder until you set it).
 - **Posters:** `static/abjad/posters/<id>.webp` (`.jpg`/`.png` also work). Shown before/instead of a clip.
+  A poster can be per language, `static/abjad/posters/<id>.<lang>.webp`, for a leaf whose art is full of app UI.
+  Per language the build picks `<id>.<lang>.*`, else the shared `<id>.*`, else the other language's file, so one
+  poster is always enough and an Arabic one can be added for a single leaf without touching the rest.
 - **Screenshots:** `static/abjad/screens/<id>.<lang>.webp` with `<lang>` = `en` or `ar`, about 660 px wide. A tall capture
   is fine: the phone frame scrolls it, and hotspots scroll with it. (A full-length capture from the app: see the
   `snapshotContentContainer` option of `react-native-view-shot`.)
@@ -48,7 +51,9 @@ The site never writes English or Arabic *app* copy. Arabic *UI* labels (buttons,
   `x, y, w, h` are percentages (0-100) of the **whole** image. They are per language on purpose (Arabic screenshots
   are mirrored). Set `startAtBottom` for screens that open scrolled to the end in the app (the world map).
   A screen uses the screenshot look only when it has both the image and at least one hotspot for that language;
-  otherwise it shows the fallback grid of child nodes.
+  otherwise it shows the fallback grid of child nodes. A language with no screenshot of its own borrows the other
+  language's capture together with its hotspots (they were measured on that image), so the Arabic side of the
+  explorer works before any Arabic screenshot exists.
 - **Content file** `src/data/abjad/content/<id>.json`, all fields optional:
   ```json
   { "teacherNote": { "en": "Try it as a pair task.", "ar": "جرّبوه بالأزواج." },
@@ -75,14 +80,14 @@ Everything works with zero media: screens fall back to a themed grid, leaves to 
 - **Warns:** nodes with no media yet, a screenshot without hotspots (or the reverse), a screen child with no
   hotspot, a clip without a poster, clips flagged while the Bunny base URL is still the placeholder.
 
-## Toggles that appear on their own
+## Toggles
 
 - **Parent | Teacher** shows only if at least one content file has a `teacherNote`. Until then everyone sees the
   Parent view.
-- **EN | عربي** shows only when more than one language has media of its own: English is always offered, Arabic
-  once any `static/abjad/screens/*.ar.*` screenshot exists. Until then the whole page is English, and a remembered
-  or requested Arabic (`?lang=ar`) is ignored. All Arabic copy is already in the manifest, so it becomes reachable
-  the moment the first Arabic screenshot is added.
+- **EN | عربي** is always there. It switches the chrome, the manifest copy and the direction (RTL), and it picks
+  the Arabic screenshot or poster for any node that has one. Nodes that do not keep the English art, so adding
+  Arabic media is node-by-node and never leaves a gap. The choice is remembered (`abx-lang` in localStorage) and
+  can be deep-linked with `?lang=ar`; the first paint is English so that SSR and hydration match.
 
 ## Routes
 

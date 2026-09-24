@@ -1,0 +1,54 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "careers-chef",
+      "x": 16.36,
+      "y": 10.35,
+      "w": 21.06,
+      "h": 15.53
+    },
+    {
+      "childId": "careers-teacher",
+      "x": 66.21,
+      "y": 13.35,
+      "w": 17.58,
+      "h": 14.78
+    },
+    {
+      "childId": "careers-pilot",
+      "x": 39.85,
+      "y": 36.53,
+      "w": 20.3,
+      "h": 12.6
+    },
+    {
+      "childId": "careers-farmer",
+      "x": 72.27,
+      "y": 36.91,
+      "w": 19.7,
+      "h": 15.23
+    },
+    {
+      "childId": "careers-builder",
+      "x": 6.82,
+      "y": 42.76,
+      "w": 22.27,
+      "h": 15.38
+    },
+    {
+      "childId": "careers-police",
+      "x": 65.15,
+      "y": 63.02,
+      "w": 19.7,
+      "h": 13.88
+    },
+    {
+      "childId": "careers-doctor",
+      "x": 23.48,
+      "y": 65.87,
+      "w": 22.73,
+      "h": 14.78
+    }
+  ]
+}

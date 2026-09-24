@@ -1,0 +1,12 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "letter-detail",
+      "x": 74.7,
+      "y": 15.6,
+      "w": 21.2,
+      "h": 10.3
+    }
+  ]
+}

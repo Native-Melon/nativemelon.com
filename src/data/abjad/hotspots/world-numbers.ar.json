@@ -1,0 +1,54 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "numbers-trace",
+      "x": 18.94,
+      "y": 26.11,
+      "w": 27.27,
+      "h": 16.65
+    },
+    {
+      "childId": "numbers-sort",
+      "x": 12.12,
+      "y": 54.39,
+      "w": 19.7,
+      "h": 13.13
+    },
+    {
+      "childId": "numbers-find",
+      "x": 47.73,
+      "y": 54.16,
+      "w": 17.73,
+      "h": 12.23
+    },
+    {
+      "childId": "numbers-pattern",
+      "x": 74.24,
+      "y": 55.89,
+      "w": 20.45,
+      "h": 13.5
+    },
+    {
+      "childId": "numbers-more-or-less",
+      "x": 6.82,
+      "y": 71.12,
+      "w": 30.3,
+      "h": 15.53
+    },
+    {
+      "childId": "numbers-count",
+      "x": 44.39,
+      "y": 70.37,
+      "w": 19.24,
+      "h": 12.0
+    },
+    {
+      "childId": "numbers-recall",
+      "x": 70.91,
+      "y": 72.77,
+      "w": 23.03,
+      "h": 14.25
+    }
+  ]
+}

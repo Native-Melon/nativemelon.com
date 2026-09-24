@@ -1,0 +1,54 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "colors-match",
+      "x": 13.18,
+      "y": 27.83,
+      "w": 48.03,
+      "h": 10.95
+    },
+    {
+      "childId": "colors-recall",
+      "x": 64.39,
+      "y": 27.83,
+      "w": 22.27,
+      "h": 10.95
+    },
+    {
+      "childId": "colors-find",
+      "x": 13.18,
+      "y": 40.51,
+      "w": 22.42,
+      "h": 10.95
+    },
+    {
+      "childId": "colors-tap",
+      "x": 13.18,
+      "y": 53.11,
+      "w": 22.42,
+      "h": 11.03
+    },
+    {
+      "childId": "colors-sort",
+      "x": 38.94,
+      "y": 40.51,
+      "w": 22.27,
+      "h": 23.63
+    },
+    {
+      "childId": "colors-mix",
+      "x": 64.39,
+      "y": 40.51,
+      "w": 22.27,
+      "h": 23.63
+    },
+    {
+      "childId": "colors-quiz",
+      "x": 12.12,
+      "y": 86.27,
+      "w": 15.45,
+      "h": 10.73
+    }
+  ]
+}

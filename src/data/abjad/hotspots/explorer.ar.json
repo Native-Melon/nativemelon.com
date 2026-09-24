@@ -1,0 +1,26 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "sticker-album",
+      "x": 67.12,
+      "y": 83.5,
+      "w": 27.58,
+      "h": 11.48
+    },
+    {
+      "childId": "drawing-board",
+      "x": 36.21,
+      "y": 83.5,
+      "w": 27.73,
+      "h": 11.48
+    },
+    {
+      "childId": "wardrobe",
+      "x": 5.15,
+      "y": 83.5,
+      "w": 27.73,
+      "h": 11.48
+    }
+  ]
+}

@@ -5,7 +5,7 @@
  *   src/data/abjad/app-manifest.json       app facts + copy (generated in the app repo; never edited here)
  *   src/data/abjad/content/<id>.json       teacherNote {en, ar}, hasClip and orientation ("landscape" for the rare landscape leaf) for one node
  *   src/data/abjad/hotspots/<id>.<lang>.json   hotspot rectangles (+ startAtBottom), measured on that screenshot
- *   static/abjad/screens/<id>.<lang>.*     screenshots     static/abjad/posters/<id>.*   posters
+ *   static/abjad/screens/<id>.<lang>.*     screenshots     static/abjad/posters/<id>[.<lang>].*   posters
  *
  * Coverage rules (the manifest owns app copy; "has content" here means media):
  *   - WARN  on manifest nodes with no media (they render as fallback screens / placeholder leaves).
@@ -115,9 +115,10 @@ exports.createExplorePages = async ({ graphql, actions, reporter }) => {
   // The Parent | Teacher toggle only exists when there is something to switch to.
   const hasTeacherNotes = Object.values(contentFiles).some((c) => c.teacherNote && (c.teacherNote.en || c.teacherNote.ar));
 
-  // A language is offered only if it has media of its own (a screenshot); English is the base and always offered.
-  // The toggle is hidden while there is just one.
-  const langs = LANGS.filter((l) => l === "en" || tree.nodes.some((n) => tree.isRoutable(n.id) && fileIn("screens", `${n.id}.${l}`)));
+  // Both languages are always offered: every chrome string and every piece of app copy exists in both, so the
+  // toggle never depends on the media. Art that is missing in the chosen language falls back to the language that
+  // has it (`shotLang` and `poster` below), which is why a node with English-only art still reads in Arabic.
+  const langs = LANGS;
 
   const noMedia = { screens: [], leaves: [] };
   let clipCount = 0;
@@ -153,19 +154,38 @@ exports.createExplorePages = async ({ graphql, actions, reporter }) => {
       }
     });
 
-    const poster = fileIn("posters", id);
+    // UI language -> the language whose screenshot is shown (and whose hotspots go with it, since they are
+    // measured on that very capture). A language without a screenshot of its own borrows the other one's.
+    const shotLang = {};
+    LANGS.forEach((lang) => {
+      const other = LANGS.find((l) => l !== lang);
+      shotLang[lang] = screens[lang] ? lang : screens[other] ? other : null;
+    });
+
+    // A poster is either language-specific (`<id>.<lang>.webp`, e.g. a screen full of Arabic UI) or shared
+    // (`<id>.webp`). Per language: its own file, else the shared one, else whatever the other language has.
+    const shared = fileIn("posters", id);
+    const posterFile = {};
+    LANGS.forEach((lang) => { posterFile[lang] = fileIn("posters", `${id}.${lang}`); });
+    const poster = {};
+    LANGS.forEach((lang) => {
+      const other = LANGS.find((l) => l !== lang);
+      poster[lang] = posterFile[lang] || shared || posterFile[other] || null;
+    });
+    const hasPoster = LANGS.some((l) => !!poster[l]);
+
     const hasClip = !!doc.hasClip && !screen;
     if (doc.hasClip && screen) warnings.push(`${id}: hasClip is set on a screen; clips only play on leaves`);
     if (hasClip) {
       clipCount += 1;
-      if (!poster) warnings.push(`${id}: clip without a poster image (static/abjad/posters/${id}.webp)`);
+      if (!hasPoster) warnings.push(`${id}: clip without a poster image (static/abjad/posters/${id}.webp)`);
     }
 
     // only leaves can be landscape: screens are captured screenshots of the portrait app
     if (doc.orientation === "landscape" && screen) warnings.push(`${id}: orientation is set on a screen; only leaves can be landscape`);
     const orientation = doc.orientation === "landscape" && !screen ? "landscape" : "portrait";
 
-    const hasMedia = screen ? !!(screens.en || screens.ar) : hasClip || !!poster;
+    const hasMedia = screen ? !!(screens.en || screens.ar) : hasClip || hasPoster;
     if (!hasMedia) (screen ? noMedia.screens : noMedia.leaves).push(id);
 
     const content = {
@@ -174,10 +194,11 @@ exports.createExplorePages = async ({ graphql, actions, reporter }) => {
       orientation,
       poster,
       screens,
+      shotLang,
       hotspots,
       startAtBottom,
     };
-    const ogImage = poster || screens.en || null;
+    const ogImage = poster.en || screens.en || poster.ar || screens.ar || null;
 
     createPage({
       path: tree.urlOf(id),

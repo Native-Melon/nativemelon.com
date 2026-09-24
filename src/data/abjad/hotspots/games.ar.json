@@ -1,0 +1,264 @@
+{
+  "startAtBottom": false,
+  "hotspots": [
+    {
+      "childId": "trace",
+      "x": 4.98,
+      "y": 4.75,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "find",
+      "x": 4.98,
+      "y": 7.21,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "connect",
+      "x": 4.98,
+      "y": 9.67,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "assemble",
+      "x": 4.98,
+      "y": 12.14,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "memory",
+      "x": 4.98,
+      "y": 14.6,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "memory-flip",
+      "x": 4.98,
+      "y": 17.06,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "letter-form",
+      "x": 4.98,
+      "y": 19.53,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "forms-matcher",
+      "x": 4.98,
+      "y": 21.99,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "recall",
+      "x": 4.98,
+      "y": 24.45,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "echo",
+      "x": 4.98,
+      "y": 26.91,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "mirror-match",
+      "x": 4.98,
+      "y": 29.38,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "letter-hunt",
+      "x": 4.98,
+      "y": 31.84,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "short-vowel",
+      "x": 4.98,
+      "y": 34.3,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "letters-wheel",
+      "x": 4.98,
+      "y": 36.76,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-match",
+      "x": 4.98,
+      "y": 40.55,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-find",
+      "x": 4.98,
+      "y": 43.01,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-tap",
+      "x": 4.98,
+      "y": 45.47,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-recall",
+      "x": 4.98,
+      "y": 47.93,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-sort",
+      "x": 4.98,
+      "y": 50.4,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-mix",
+      "x": 4.98,
+      "y": 52.86,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "colors-quiz",
+      "x": 4.98,
+      "y": 55.32,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "numbers-sort",
+      "x": 4.98,
+      "y": 59.1,
+      "w": 90.05,
+      "h": 2.03
+    },
+    {
+      "childId": "numbers-find",
+      "x": 4.98,
+      "y": 61.48,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "numbers-count",
+      "x": 4.98,
+      "y": 63.85,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "numbers-more-or-less",
+      "x": 4.98,
+      "y": 66.23,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "numbers-pattern",
+      "x": 4.98,
+      "y": 68.6,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "numbers-recall",
+      "x": 4.98,
+      "y": 70.98,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "numbers-trace",
+      "x": 4.98,
+      "y": 73.35,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "countries-quiz",
+      "x": 4.98,
+      "y": 77.04,
+      "w": 90.05,
+      "h": 2.19
+    },
+    {
+      "childId": "countries-wheel",
+      "x": 4.98,
+      "y": 79.51,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-chef",
+      "x": 4.98,
+      "y": 83.2,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-doctor",
+      "x": 4.98,
+      "y": 85.58,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-builder",
+      "x": 4.98,
+      "y": 87.95,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-farmer",
+      "x": 4.98,
+      "y": 90.33,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-pilot",
+      "x": 4.98,
+      "y": 92.7,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-teacher",
+      "x": 4.98,
+      "y": 95.07,
+      "w": 90.05,
+      "h": 2.1
+    },
+    {
+      "childId": "careers-police",
+      "x": 4.98,
+      "y": 97.45,
+      "w": 90.05,
+      "h": 2.1
+    }
+  ]
+}

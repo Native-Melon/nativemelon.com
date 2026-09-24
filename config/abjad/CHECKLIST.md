@@ -140,24 +140,55 @@ left to do. `treasure-chests` and `letter-detail` were moved here on 2026-09-21.
 
 Without a hotspot the child is reachable only through links outside the screenshot.
 
-- [ ] `arcade`: hotspot for `arcade-leaderboard` (the four games are covered)
-- [ ] `world-countries`: hotspot for `countries-wheel`, and check the `countries-quiz` one, which is very small (0.9% tall at the top)
+- [ ] `arcade`: hotspot for `arcade-leaderboard` (the four games are covered) — missing in **both** languages
+- [ ] `world-countries`: hotspot for `countries-wheel`, and check the `countries-quiz` one, which is very small (0.9% tall at the top) — both languages
 - [ ] `desert-station`: hotspots for Connect and Assemble ("try another game", not on the current screenshot). These are
       not manifest children or links, so this needs the app repo's manifest first.
 
 - [ ] `alphabet-grid`: now a screen (manifest `kind` changed from `feature` to `hub` in the app repo, 2026-09-21).
-      Its screenshot is an interim copy of the old poster, which shows only the first 24 letters. Replace
-      `static/abjad/screens/alphabet-grid.en.webp` with a full-length capture (28 letters) and re-measure the alef-tile
-      hotspot in `hotspots/alphabet-grid.en.json`. `alphabet-grid.webp` in `posters/` is now unused by the page (only
+      Its **English** screenshot is still an interim copy of the old poster, showing only the first 24 letters. The
+      Arabic one added 2026-09-24 is a proper full-length 28-letter capture. Replace
+      `static/abjad/screens/alphabet-grid.en.webp` with a full-length capture and re-measure the alef-tile
+      hotspot in `hotspots/alphabet-grid.en.json` (the Arabic file already has the correct one). `alphabet-grid.webp` in `posters/` is now unused by the page (only
       the share image falls back to the screenshot) and can be deleted.
 
 ## 5. Content that switches things on
 
 - [ ] Teacher notes: none exist, so the Parent | Teacher toggle is hidden. Add `teacherNote {en, ar}` to content files.
-- [ ] Arabic screenshots: none exist, so the EN | عربي toggle is hidden. Add `static/abjad/screens/<id>.ar.webp`
-      plus `hotspots/<id>.ar.json` for each screen (13 screens).
+- [x] Arabic art: all 13 screens have an Arabic capture and Arabic hotspots — 2026-09-24. See section 6.
 - [x] Set `GATSBY_ABJAD_MEDIA_BASE_URL`: `.env` now has the real Bunny base (`https://cdn.nativemelon.com/explore`);
       `.env.example` still shows the placeholder, which is correct.
+
+## 6. Done: Arabic screens (13, 98 hotspots) — 2026-09-24
+
+**Decision: clips and leaf posters stay English-only.** Leaves show app footage; the card beside it (title, summary,
+how-to-play, what it teaches) is fully Arabic from the manifest, so an Arabic visitor still reads an Arabic page.
+That retired 48 clips and all 60 poster files, and `clipUrl` never needs a language dimension. Only screens got an
+Arabic version.
+
+All 13 are in: `static/abjad/screens/<id>.ar.webp` (converted from 1206 px simulator captures to 660 px webp,
+`cwebp -q 82 -m 5`, sizes within a few KB of their English counterparts) plus `hotspots/<id>.ar.json`.
+
+### The Arabic layout is NOT a mirror of the English one — do not auto-flip
+
+Measured across all 98 rectangles: **88 are identical to the English ones and only 10 differ.** A blanket mirror
+(`x' = 100 - x - w`) would have been wrong far more often than right, and wrong invisibly.
+
+| Kind of screen | Transform | Why |
+| --- | --- | --- |
+| Illustrated maps — `adventure`, `world-desert`, `world-colors`, `world-numbers`, `world-careers`, `world-countries` (27 rects) | **identical** | The artwork is the same bitmap in both languages; only the header pill's text changes. Mirroring would move every hotspot off its target. |
+| Full-width row lists — `games` (37), `songs` (7), `desert-station` (4), and 7 of `home`'s 9 | **identical** | Rows span `x≈5 w≈90`, so a mirror is a no-op. Row order is also unchanged between languages. |
+| UI chrome that is actually laid out LTR/RTL — `arcade` (4), `explorer` (3), `home`'s gear + avatar (2) | **mirrored** | Grid columns swap, the three buttons reverse, the gear and the avatar cross to the other side. |
+| `alphabet-grid` (1) | **re-measured** | Not a language difference: the Arabic capture is the proper full 28-letter grid, so the alef tile sits at a different y. The alef is top-**right** in both languages (the grid is RTL even in English). |
+
+So the per-language hotspot file earns its keep, but mostly as an explicit copy. If the app ever changes its Arabic
+layout, the build will not warn — the coupling is only enforced by re-checking against the capture, which is why the
+files stay separate rather than being generated.
+
+### Known gaps, unchanged by this work
+
+Both languages are missing the same two hotspots (section 4): `arcade-leaderboard` and `countries-wheel`. The English
+`alphabet-grid` capture is still the interim 24-letter one; the Arabic is the full 28.
 
 ## Done so far
 

@@ -25,6 +25,21 @@ const store = {
 };
 
 /**
+ * The first language the browser asks for that this page actually offers, matched on the primary subtag so
+ * ar-EG / ar-SA all count as Arabic. `navigator.languages` is the visitor's ordered preference list, so someone
+ * set to ["en-GB", "ar"] still gets English.
+ */
+const browserLang = (langs) => {
+  if (typeof navigator === "undefined") return null;
+  const tags = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+  for (const tag of tags) {
+    const base = String(tag || "").toLowerCase().split("-")[0];
+    if (langs.includes(base)) return base;
+  }
+  return null;
+};
+
+/**
  * The phone mirror. It lives in `wrapPageElement`, so it stays mounted while visitors move between the
  * /abjad/<id>/ pages. Every screen and leaf is a real route (crawlable HTML from SSR, working
  * browser history and deep links); this component turns the route change into a push/pop slide.
@@ -56,10 +71,13 @@ export default function ExploreShell({ pageContext, location }) {
     panes: [{ key: 0, id: nodeId, content, anim: null, intro: false }],
   }));
 
-  /* preferences: SSR/first paint is English + Parent; then apply what the visitor chose before */
-  React.useEffect(() => {
+  /* preferences: the SSR HTML is English + Parent; applied in a layout effect so the switch lands before the
+     first paint, rather than flashing English at an Arabic-speaking visitor. */
+  useIsoLayoutEffect(() => {
     const q = new URLSearchParams(location.search || "");
-    const l = q.get("lang") || store.get(LS.lang);
+    // An explicit choice wins: ?lang= first, then a language this visitor picked with the toggle before, and only
+    // then what the browser itself asks for. So toggling to English sticks even on an Arabic device.
+    const l = q.get("lang") || store.get(LS.lang) || browserLang(langs);
     if (langs.includes(l)) setLangState(l);
     const w = store.get(LS.lens);
     if (w === "parent" || w === "teacher") setLensState(w);

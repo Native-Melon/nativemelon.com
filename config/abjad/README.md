@@ -84,10 +84,28 @@ Everything works with zero media: screens fall back to a themed grid, leaves to 
 
 - **Parent | Teacher** shows only if at least one content file has a `teacherNote`. Until then everyone sees the
   Parent view.
-- **EN | عربي** is always there. It switches the chrome, the manifest copy and the direction (RTL), and it picks
-  the Arabic screenshot or poster for any node that has one. Nodes that do not keep the English art, so adding
-  Arabic media is node-by-node and never leaves a gap. The choice is remembered (`abx-lang` in localStorage) and
-  can be deep-linked with `?lang=ar`; the first paint is English so that SSR and hydration match.
+- **EN | عربي** is always there. It switches the explorer's chrome, the manifest copy and the direction (RTL), and
+  picks the Arabic screenshot or poster for any node that has one. Nodes that do not keep the English art, so adding
+  Arabic media is node-by-node and never leaves a gap.
+
+  The starting language is resolved in this order, first hit wins:
+
+  1. `?lang=ar` / `?lang=en` in the URL (deep link; not written to storage)
+  2. `abx-lang` in localStorage — what this visitor last picked with the toggle
+  3. the browser's own preference, `navigator.languages` matched on the primary subtag, so `ar`, `ar-EG` and
+     `ar-SA` all count as Arabic while `["en-GB", "ar"]` still gets English
+  4. English
+
+  An explicit choice therefore always beats the browser: someone on an Arabic device who taps EN stays on English
+  for every later visit. A locale match is never written to storage, so changing the browser's language changes
+  the site's default too.
+
+  The SSR HTML is English — that is what crawlers index and what hydration matches — and the preference is applied
+  in a layout effect, which runs before the browser paints, so an Arabic visitor does not see a frame of English
+  LTR before it flips.
+
+  Note that only the explorer is translated. The site's own navbar and footer (`src/components/layout.js`) stay
+  English in both modes.
 
 ## Routes
 

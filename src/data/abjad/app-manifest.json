@@ -99,6 +99,26 @@
       }
     },
     {
+      "id": "stories",
+      "parent": "home",
+      "kind": "hub",
+      "route": "Stories",
+      "alsoRoutes": [
+        "StoryReader"
+      ],
+      "titleKey": "home.storiesTitle",
+      "tier": "mixed",
+      "summary": {
+        "en": "A library of illustrated, narrated stories. Every page is read aloud, in two reading tiers (read-with-me and read-by-myself, both fully vowelled); some stories branch into different endings. Each story hides one sticker to find on every page and ends with a short quiz. Folk-tale favourites like Juha sit beside original animal stories, and new ones arrive every month. Tap a story to see its page count, reading tier and price before opening it, and filter the library to unread stories or one reading tier.",
+        "ar": "مكتبة من القصص المصوّرة والمروية بصوت مسموع. مستويان للقراءة: نقرأ معًا وأقرأ بنفسي، وكلاهما مشكول بالكامل، وبعض القصص تتفرّع إلى نهايات مختلفة. في كل قصة ملصق مخبّأ في كل صفحة ينتظر من يجده، وتنتهي بأسئلة قصيرة. حكايات تراثية مثل جحا بجانب قصص حيوانات أصلية، وقصص جديدة كل شهر. اضغط على القصة لترى عدد صفحاتها ومستوى قراءتها وسعرها قبل فتحها، ويمكن تصفية المكتبة لإظهار القصص غير المقروءة أو مستوى قراءة واحدًا."
+      },
+      "note": "Some stories are free, some are bought with coins (subscribers pay less and get new ones early), and some are included with Premium. Finished stories earn reading badges shown on the Progress screen; downloads for offline reading are managed in Settings.",
+      "title": {
+        "en": "Stories",
+        "ar": "قصص"
+      }
+    },
+    {
       "id": "games",
       "parent": "home",
       "kind": "hub",

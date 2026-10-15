@@ -7,7 +7,9 @@ import Overview from "./Overview";
 import { LeafPane, ScreenPane } from "./panes";
 import { AbxContext, useIsoLayoutEffect, useReducedMotion } from "./context";
 import { T } from "../../lib/abjad/ui";
-import { STORE_FALLBACK } from "../../config/abjad";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram, faFacebookF } from "@fortawesome/free-brands-svg-icons";
+import { STORE_FALLBACK, SOCIAL_LINKS } from "../../config/abjad";
 import { createTree } from "../../lib/abjad/tree";
 // The webpack loader in config/abjad/manifest-loader.js ships only the public fields of the manifest.
 import manifest from "../../data/abjad/app-manifest.json";
@@ -173,6 +175,10 @@ export default function ExploreShell({ pageContext, location }) {
           <div className="abx-stores abx-head-stores">
             <a className="abx-store" href={stores.appStore || STORE_FALLBACK.appStore} target="_blank" rel="noopener noreferrer"><small>{tt.dl}</small><b>App Store</b></a>
             <a className="abx-store" href={stores.playStore || STORE_FALLBACK.playStore} target="_blank" rel="noopener noreferrer"><small>{tt.gp}</small><b>Google Play</b></a>
+            <div className="abx-social">
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Abjad on Instagram"><FontAwesomeIcon icon={faInstagram} /></a>
+              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" aria-label="Abjad on Facebook"><FontAwesomeIcon icon={faFacebookF} /></a>
+            </div>
           </div>
         </header>
         <main className="abx-shell">

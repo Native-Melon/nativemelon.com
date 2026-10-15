@@ -18,3 +18,8 @@ export const STORE_FALLBACK = {
 };
 
 export const clipUrl = (id, ext) => `${MEDIA_BASE_URL}/${id}.${ext}`;
+
+export const SOCIAL_LINKS = {
+  instagram: "https://www.instagram.com/get.abjad/",
+  facebook: "https://www.facebook.com/people/Abjad-Learn-Arabic-Letters/61591922849915/",
+};

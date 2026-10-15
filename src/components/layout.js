@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { Container, Image, Navbar, Nav } from "react-bootstrap";
 import { isMobile } from "react-device-detect";
 import logo from "../images/logo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faFacebookF, faLinkedinIn, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Layout = ({ location, title, bare, children }) => {
   const headerModes = {
@@ -74,7 +74,7 @@ const Layout = ({ location, title, bare, children }) => {
             <div className="row align-items-center">
                 <div className="col-lg-4 text-lg-start">{new Date().getFullYear()} Native Melon Consulting LLC &copy;</div>
                 <div className="col-lg-4 my-3 my-lg-0">
-                    <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter">
+                    {/* <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter">
                       <FontAwesomeIcon icon={faXTwitter} />
                     </a>
                     <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook">
@@ -82,7 +82,7 @@ const Layout = ({ location, title, bare, children }) => {
                     </a>
                     <a className="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn">
                       <FontAwesomeIcon icon={faLinkedinIn} />
-                    </a>
+                    </a> */}
                 </div>
                 <div className="col-lg-4 text-lg-end">
                     <a className="link-dark text-decoration-none me-3" href="/privacy-policy">Privacy Policy</a>
